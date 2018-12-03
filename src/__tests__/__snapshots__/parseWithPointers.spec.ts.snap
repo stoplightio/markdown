@@ -1,0 +1,487 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`parseWithPointers should parse simple 1`] = `
+Object {
+  "data": Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "position": Object {
+                  "end": Object {
+                    "column": 9,
+                    "line": 1,
+                    "offset": 8,
+                  },
+                  "indent": Array [],
+                  "start": Object {
+                    "column": 3,
+                    "line": 1,
+                    "offset": 2,
+                  },
+                },
+                "type": "text",
+                "value": "simple",
+              },
+            ],
+            "position": Object {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+                "offset": 10,
+              },
+              "indent": Array [],
+              "start": Object {
+                "column": 1,
+                "line": 1,
+                "offset": 0,
+              },
+            },
+            "type": "strong",
+          },
+        ],
+        "position": Object {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+          "indent": Array [],
+          "start": Object {
+            "column": 1,
+            "line": 1,
+            "offset": 0,
+          },
+        },
+        "type": "paragraph",
+      },
+    ],
+    "position": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+        "offset": 10,
+      },
+      "start": Object {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+    },
+    "type": "root",
+  },
+  "pointers": Object {
+    "": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/end": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/end/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/end/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/end/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/indent": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/start": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/start/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/start/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/position/start/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/type": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/children/0/value": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/end": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/end/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/end/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/end/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/indent": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/start": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/start/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/start/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/position/start/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/children/0/type": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/end": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/end/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/end/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/end/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/indent": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/start": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/start/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/start/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/position/start/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/children/0/type": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/end": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/end/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/end/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/end/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/start": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/start/column": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/start/line": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/position/start/offset": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+    "/type": Object {
+      "end": Object {
+        "line": 1,
+      },
+      "start": Object {
+        "line": 1,
+      },
+    },
+  },
+  "validations": Array [],
+}
+`;
