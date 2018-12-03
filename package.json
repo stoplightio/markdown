@@ -42,6 +42,7 @@
     "@stoplight/fast-safe-stringify": "2.1.2",
     "@stoplight/json": "^1.1.0",
     "@stoplight/types": "2.x.x",
+    "js-yaml": "^3.12.0",
     "json-source-map": "0.4.0",
     "lodash": "4.x.x",
     "remark-parse": "^6.0.3",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@stoplight/scripts": "3.0.2",
+    "@types/js-yaml": "^3.11.2",
     "typescript": "3.1.6"
   },
   "lint-staged": {

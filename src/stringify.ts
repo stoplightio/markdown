@@ -1,6 +1,7 @@
-import unified, { Node, Processor } from 'unified';
+import unified, { Processor } from 'unified';
 import remarkStringify, { StringifyOpts } from 'remark-stringify';
 import remarkParse from 'remark-parse';
+import { INode as Node } from './ast-types/unist';
 
 const defaultOpts: StringifyOpts = {
   commonmark: true,
