@@ -1,7 +1,6 @@
 import * as yaml from 'js-yaml';
 
-import * as UnistTypes from '@core/unist';
-
+import * as UnistTypes from '../ast-types/unist';
 import * as Mdast from '../ast-types/mdast';
 import * as SMdast from '../ast-types/smdast';
 
