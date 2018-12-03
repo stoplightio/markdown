@@ -1,55 +1,6 @@
 declare module 'unified' {
   import VFile from 'vfile';
-
-  export interface INodeObj {
-    type: string;
-    data?: IDataObj;
-    position?: IPositionObj;
-
-    [index: string]: any;
-  }
-
-  export interface Node extends INodeObj {
-  }
-
-  export interface IDataObj {
-    [key: string]: any;
-  }
-
-  export interface Data extends IDataObj {
-  }
-
-  export interface IPositionObj {
-    start: IPointObj;
-    end: IPointObj;
-    indent?: number;
-  }
-
-  export interface Position extends IPositionObj {
-  }
-
-  export interface IPointObj {
-    line: number;
-    column: number;
-    offset?: number;
-  }
-
-  export interface Point extends IPointObj {
-  }
-
-  export interface IParentObj extends INodeObj {
-    children: INodeObj[];
-  }
-
-  export interface Parent extends IParentObj {
-  }
-
-  export interface ITextObj extends INodeObj {
-    value: string;
-  }
-
-  export interface Text extends ITextObj {
-  }
+  import { INode as Node } from './ast-types/unist';
 
   export declare function attacher(options?: any): transformer | void;
 
