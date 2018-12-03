@@ -1,0 +1,81 @@
+{
+  "name": "@stoplight/markdown",
+  "version": "0.0.0",
+  "description": "Useful functions when working with JSON.",
+  "keywords": [
+    "markdown",
+    "markdown parser",
+    "parser",
+    "sourcemap"
+  ],
+  "sideEffects": false,
+  "homepage": "https://github.com/stoplightio/json",
+  "bugs": "https://github.com/stoplightio/json/issues",
+  "author": "Stoplight <support@stoplight.io>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stoplightio/json"
+  },
+  "license": "Apache-2.0",
+  "main": "src/index.ts",
+  "files": [
+    "**/*"
+  ],
+  "engines": {
+    "node": ">=8.3.0"
+  },
+  "scripts": {
+    "build": "sl-scripts build",
+    "build.docs": "sl-scripts build:typedoc",
+    "commit": "git-cz",
+    "lint": "sl-scripts lint",
+    "lint.fix": "yarn lint --fix",
+    "release": "sl-scripts release",
+    "release.docs": "sl-scripts release:docs",
+    "release.dryRun": "sl-scripts release --dry-run --debug",
+    "test": "sl-scripts test",
+    "test.prod": "yarn lint && yarn test --coverage --no-cache",
+    "test.update": "yarn test --updateSnapshot",
+    "test.watch": "yarn test --watch"
+  },
+  "dependencies": {
+    "@stoplight/fast-safe-stringify": "2.1.2",
+    "@stoplight/json": "^1.1.0",
+    "@stoplight/types": "2.x.x",
+    "json-source-map": "0.4.0",
+    "lodash": "4.x.x",
+    "remark-parse": "^6.0.3",
+    "remark-stringify": "^6.0.4",
+    "unified": "^7.0.2",
+    "vfile": "^3.0.1"
+  },
+  "devDependencies": {
+    "@stoplight/scripts": "3.0.2",
+    "typescript": "3.1.6"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}$": [
+      "yarn lint.fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "extends": "@stoplight/scripts/release"
+  }
+}
