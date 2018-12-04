@@ -1,7 +1,7 @@
 {
   "name": "@stoplight/markdown",
   "version": "0.0.0",
-  "description": "Useful functions when working with JSON.",
+  "description": "Useful functions when working with Markdown.",
   "keywords": [
     "markdown",
     "markdown parser",
@@ -9,12 +9,12 @@
     "sourcemap"
   ],
   "sideEffects": false,
-  "homepage": "https://github.com/stoplightio/json",
-  "bugs": "https://github.com/stoplightio/json/issues",
+  "homepage": "https://github.com/stoplightio/markdown",
+  "bugs": "https://github.com/stoplightio/markdown/issues",
   "author": "Stoplight <support@stoplight.io>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/stoplightio/json"
+    "url": "https://github.com/stoplightio/markdown"
   },
   "license": "Apache-2.0",
   "main": "src/index.ts",
@@ -39,21 +39,17 @@
     "test.watch": "yarn test --watch"
   },
   "dependencies": {
-    "@stoplight/fast-safe-stringify": "2.1.2",
-    "@stoplight/json": "^1.1.0",
-    "@stoplight/types": "2.x.x",
-    "js-yaml": "^3.12.0",
-    "json-source-map": "0.4.0",
-    "lodash": "4.x.x",
-    "remark-parse": "^6.0.3",
-    "remark-stringify": "^6.0.4",
-    "unified": "^7.0.2",
-    "vfile": "^3.0.1"
+    "@stoplight/types": "3.x.x",
+    "js-yaml": "3.x.x",
+    "remark-parse": "6.0.x",
+    "remark-stringify": "6.0.x",
+    "unified": "7.0.x",
+    "vfile": "3.x.x"
   },
   "devDependencies": {
     "@stoplight/scripts": "3.0.2",
-    "@types/js-yaml": "^3.11.2",
-    "typescript": "3.1.6"
+    "@types/js-yaml": "3.x.x",
+    "typescript": "3.2.1"
   },
   "lint-staged": {
     "*.{ts,tsx}$": [
