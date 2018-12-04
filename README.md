@@ -1,6 +1,8 @@
 # @stoplight/markdown
 
-Useful functions when working with Markdown.
+[![Maintainability](https://api.codeclimate.com/v1/badges/751d2319d7d0fd68d8c9/maintainability)](https://codeclimate.com/github/stoplightio/markdown/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/751d2319d7d0fd68d8c9/test_coverage)](https://codeclimate.com/github/stoplightio/markdown/test_coverage)
+
+Useful functions when working with Markdown. Leverages the Unified / Remark ecosystem under the hood.
 
 - Explore the interfaces: [TSDoc](https://stoplightio.github.io/markdown)
 - View the changelog: [Releases](https://github.com/stoplightio/markdown/releases)
@@ -16,7 +18,6 @@ yarn add @stoplight/markdown
 
 ### Usage
 
-
 #### Example `parseWithPointers`
 
 _Note: Unlike most of the other functions, parseWithPointers is not exported from root. You must import by name._
@@ -24,7 +25,7 @@ _Note: Unlike most of the other functions, parseWithPointers is not exported fro
 ```ts
 import { parseWithPointers } from "@stoplight/markdown/parseWithPointers";
 
-const result = parseWithPointers('**markdown**');
+const result = parseWithPointers("**markdown**");
 
 console.log(result.data); // => the MDAST compliant tree
 console.log(result.pointers); // => the source map with pointers
