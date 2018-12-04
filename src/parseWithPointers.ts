@@ -1,35 +1,40 @@
-import { Processor } from 'unified';
-import { IParserResult } from '@stoplight/types';
-import { ParseOpts } from 'remark-parse';
+import { IParserResult, IParserResultPointers } from '@stoplight/types';
+import { IParseOpts } from 'remark-parse';
+import { IProcessor } from 'unified';
 
-import { parse } from './parse';
-import * as Mdast from './ast-types/mdast';
-import { IPosition } from './ast-types/unist';
 import * as TUnist from './ast-types/unist';
+import { parse } from './parse';
 
-interface Pointers {
-  [key: string]: IPosition
-}
-
-const getPointers = (node: Partial<TUnist.IParent>, pointers: Pointers = {}, path: string = '/'): Pointers  => {
+const getPointers = <T extends TUnist.Parent = TUnist.IParent>(
+  node: Partial<T>,
+  pointers: IParserResultPointers = {},
+  path: string = ''
+): IParserResultPointers => {
   if (node.position) {
-    pointers[path] = node.position;
+    pointers[path === '' ? '/' : path] = {
+      start: node.position.start,
+      end: node.position.end,
+    };
   }
 
   if (node.children) {
     for (const [i, child] of node.children.entries()) {
-      getPointers(child, pointers, `${path}children/${i}/`)
+      getPointers(child, pointers, `${path}/children/${i}`);
     }
   }
 
   return pointers;
 };
 
-export const parseWithPointers = (value: string, opts?: ParseOpts, processor?: Processor): IParserResult<Mdast.IRoot> => {
+export const parseWithPointers = <T extends TUnist.Parent = TUnist.IParent>(
+  value: string,
+  opts?: IParseOpts,
+  processor?: IProcessor
+): IParserResult<T> => {
   const tree = parse(value, opts, processor);
   return {
     data: tree,
-    pointers: getPointers(tree),
+    pointers: getPointers<T>(tree),
     validations: [],
   };
 };

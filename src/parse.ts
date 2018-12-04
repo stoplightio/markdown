@@ -1,17 +1,14 @@
-import unified, { Processor } from 'unified';
-import remarkParse, { ParseOpts } from 'remark-parse';
+import remarkParse, { IParseOpts } from 'remark-parse';
+import unified, { IProcessor } from 'unified';
 
-const defaultOpts: ParseOpts = {
+const defaultOpts: IParseOpts = {
   commonmark: true,
   gfm: true,
 };
 
-const defaultProcessor = unified()
-  .use(remarkParse);
+const defaultProcessor = unified().use(remarkParse);
 
-export const parse = (input: string, opts: ParseOpts = defaultOpts, processor: Processor = defaultProcessor) => {
+export const parse = (input: string, opts: IParseOpts = defaultOpts, processor: IProcessor = defaultProcessor) => {
   // return the parsed remark ast
-  return processor
-    .data('settings', opts)
-    .parse(input);
+  return processor.data('settings', opts).parse(input);
 };

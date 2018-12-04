@@ -1,8 +1,8 @@
 declare module 'remark-stringify' {
-  import { Parser , transformer } from 'unified';
+  import { IParser, transformer } from 'unified';
 
   // https://github.com/remarkjs/remark/tree/master/packages/remark-stringify#processorusestringify-options
-  export interface StringifyOpts {
+  export interface IStringifyOpts {
     commonmark?: boolean; // true by default
     gfm?: boolean; // false by default
     pedantic?: boolean; // false by default
@@ -26,9 +26,9 @@ declare module 'remark-stringify' {
   }
 
   const compile: {
-    (options?: StringifyOpts): transformer;
+    (options?: IStringifyOpts): transformer;
 
-    Compiler: Parser;
+    Compiler: IParser;
   };
 
   export default parse;

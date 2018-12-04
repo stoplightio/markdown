@@ -85,39 +85,36 @@ Object {
         "offset": 0,
       },
     },
-    "/children/0/": Position {
+    "/children/0": Object {
       "end": Object {
         "column": 11,
         "line": 1,
         "offset": 10,
       },
-      "indent": Array [],
       "start": Object {
         "column": 1,
         "line": 1,
         "offset": 0,
       },
     },
-    "/children/0/children/0/": Position {
+    "/children/0/children/0": Object {
       "end": Object {
         "column": 11,
         "line": 1,
         "offset": 10,
       },
-      "indent": Array [],
       "start": Object {
         "column": 1,
         "line": 1,
         "offset": 0,
       },
     },
-    "/children/0/children/0/children/0/": Position {
+    "/children/0/children/0/children/0": Object {
       "end": Object {
         "column": 9,
         "line": 1,
         "offset": 8,
       },
-      "indent": Array [],
       "start": Object {
         "column": 3,
         "line": 1,
