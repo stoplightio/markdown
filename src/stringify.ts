@@ -1,4 +1,3 @@
-import remarkParse from 'remark-parse';
 import remarkStringify, { IStringifyOpts } from 'remark-stringify';
 import unified, { IProcessor } from 'unified';
 import { INode as Node } from './ast-types/unist';
@@ -8,10 +7,10 @@ const defaultOpts: IStringifyOpts = {
   gfm: true,
 };
 
-const defaultProcessor = unified()
-  .use(remarkParse)
-  .use(remarkStringify);
+const defaultProcessor = unified().use(remarkStringify);
 
 export const stringify = (tree: Node, opts: IStringifyOpts = defaultOpts, processor: IProcessor = defaultProcessor) => {
-  return processor.data('settings', defaultOpts).stringify(tree);
+  return processor()
+    .data('settings', defaultOpts)
+    .stringify(tree);
 };

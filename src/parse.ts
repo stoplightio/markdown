@@ -10,5 +10,7 @@ const defaultProcessor = unified().use(remarkParse);
 
 export const parse = (input: string, opts: IParseOpts = defaultOpts, processor: IProcessor = defaultProcessor) => {
   // return the parsed remark ast
-  return processor.data('settings', opts).parse(input);
+  return processor()
+    .data('settings', opts)
+    .parse(input);
 };
