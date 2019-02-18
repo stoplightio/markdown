@@ -1,6 +1,6 @@
 import remarkParse, { IParseOpts } from 'remark-parse';
-import * as Unist from 'unist';
 import unified from 'unified';
+import * as Unist from 'unist';
 
 const defaultOpts: IParseOpts = {
   commonmark: true,
