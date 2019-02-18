@@ -1,6 +1,6 @@
 import remarkStringify, { IStringifyOpts } from 'remark-stringify';
-import unified, { IProcessor } from 'unified';
-import { INode as Node } from './ast-types/unist';
+import unified from 'unified';
+import { Node } from 'unist';
 
 const defaultOpts: IStringifyOpts = {
   commonmark: true,
@@ -9,7 +9,11 @@ const defaultOpts: IStringifyOpts = {
 
 const defaultProcessor = unified().use(remarkStringify);
 
-export const stringify = (tree: Node, opts: IStringifyOpts = defaultOpts, processor: IProcessor = defaultProcessor) => {
+export const stringify = (
+  tree: Node,
+  opts: IStringifyOpts = defaultOpts,
+  processor: unified.Processor = defaultProcessor
+) => {
   return processor()
     .data('settings', defaultOpts)
     .stringify(tree);
