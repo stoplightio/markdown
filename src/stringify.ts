@@ -15,6 +15,6 @@ export const stringify = (
   processor: unified.Processor = defaultProcessor
 ) => {
   return processor()
-    .data('settings', defaultOpts)
+    .data('settings', opts)
     .stringify(tree);
 };
