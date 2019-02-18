@@ -1,7 +1,7 @@
 declare module 'remark-stringify' {
-  import { IParser, transformer } from 'unified';
-
+  import * as unified from 'unified';
   // https://github.com/remarkjs/remark/tree/master/packages/remark-stringify#processorusestringify-options
+
   export interface IStringifyOpts {
     commonmark?: boolean; // true by default
     gfm?: boolean; // false by default
@@ -25,11 +25,7 @@ declare module 'remark-stringify' {
     emphasis?: '_' | '*'; // '_' by default
   }
 
-  const compile: {
-    (options?: IStringifyOpts): transformer;
+  const compile: unified.Plugin;
 
-    Compiler: IParser;
-  };
-
-  export default parse;
+  export default compile;
 }

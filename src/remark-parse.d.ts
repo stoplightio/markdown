@@ -1,5 +1,5 @@
 declare module 'remark-parse' {
-  import { IParser, transformer } from 'unified';
+  import * as unified from 'unified';
 
   export interface IParseOpts {
     commonmark?: boolean; // true by default
@@ -9,11 +9,7 @@ declare module 'remark-parse' {
     pedantic?: boolean; // false by default
   }
 
-  const parse: {
-    (options?: IParseOpts): transformer;
-
-    Parser: IParser;
-  };
+  const parse: unified.Plugin;
 
   export default parse;
 }

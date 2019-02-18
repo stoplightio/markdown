@@ -39,17 +39,18 @@
     "test.watch": "yarn test --watch"
   },
   "dependencies": {
-    "@stoplight/types": "3.x.x",
-    "js-yaml": "3.x.x",
+    "@stoplight/types": "3.1.0",
+    "js-yaml": "3.12.1",
     "remark-parse": "6.0.x",
     "remark-stringify": "6.0.x",
-    "unified": "7.0.x",
+    "unified": "7.1.0",
     "vfile": "3.x.x"
   },
   "devDependencies": {
-    "@stoplight/scripts": "3.0.2",
-    "@types/js-yaml": "3.x.x",
-    "typescript": "3.2.1"
+    "@stoplight/scripts": "4.3.0",
+    "@types/js-yaml": "3.12.0",
+    "@types/unist": "2.0.3",
+    "typescript": "3.3.3"
   },
   "lint-staged": {
     "*.{ts,tsx}$": [

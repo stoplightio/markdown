@@ -1,11 +1,11 @@
 import { IParserResult, IParserResultPointers } from '@stoplight/types';
 import { IParseOpts } from 'remark-parse';
-import { IProcessor } from 'unified';
+import * as unified from 'unified';
+import * as Unist from 'unist';
 
-import * as TUnist from './ast-types/unist';
 import { parse } from './parse';
 
-const getPointers = <T extends TUnist.Parent = TUnist.IParent>(
+const getPointers = <T extends Unist.Parent = Unist.Parent>(
   node: Partial<T>,
   pointers: IParserResultPointers = {},
   path: string = ''
@@ -26,12 +26,13 @@ const getPointers = <T extends TUnist.Parent = TUnist.IParent>(
   return pointers;
 };
 
-export const parseWithPointers = <T extends TUnist.Parent = TUnist.IParent>(
+export const parseWithPointers = <T extends Unist.Parent = Unist.Parent>(
   value: string,
   opts?: IParseOpts,
-  processor?: IProcessor
+  processor?: unified.Processor
 ): IParserResult<T> => {
-  const tree = parse(value, opts, processor);
+  // todo fix
+  const tree = parse(value, opts, processor) as any;
   return {
     data: tree,
     pointers: getPointers<T>(tree),
