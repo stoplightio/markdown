@@ -25,21 +25,12 @@ function captureAnnotations(node: Unist.Node | undefined): SMdast.IAnnotations {
   return {};
 }
 
-function processBlockquote(node: Mdast.IBlockquote, anno: SMdast.IAnnotations): SMdast.IBlockquote {
-  return {
-    type: 'blockquote',
-    annotations: {
-      ...anno,
-    },
-    children: node.children,
-  };
-}
-
-function processNode(node: Unist.Node, anno: SMdast.IAnnotations | null): Unist.Node {
-  const { type } = node;
-
-  if (type === 'blockquote' && anno) {
-    return processBlockquote(node as Mdast.IBlockquote, anno);
+function processNode(node: Unist.Node, annotations: SMdast.IAnnotations | null): Unist.Node {
+  if (annotations) {
+    return {
+      ...node,
+      annotations,
+    };
   }
 
   return node;
@@ -138,7 +129,7 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
       processed.push(processNode(next, anno));
       skipNext = true;
     } else {
-      processed.push(processNode(node, {}));
+      processed.push(processNode(node, null));
     }
   }
 
