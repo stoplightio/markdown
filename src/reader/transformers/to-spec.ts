@@ -25,7 +25,7 @@ function captureAnnotations(node: Unist.Node | undefined): SMdast.IAnnotations {
   return {};
 }
 
-function processNode(node: Unist.Node, annotations: SMdast.IAnnotations | null): Unist.Node {
+function processNode(node: Unist.Node, annotations?: SMdast.IAnnotations): Unist.Node {
   if (annotations) {
     return {
       ...node,
@@ -129,7 +129,7 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
       processed.push(processNode(next, anno));
       skipNext = true;
     } else {
-      processed.push(processNode(node, null));
+      processed.push(processNode(node));
     }
   }
 
