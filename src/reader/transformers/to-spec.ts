@@ -1,9 +1,10 @@
+import { Dictionary } from '@stoplight/types';
 import * as yaml from 'js-yaml';
 import * as Unist from 'unist';
 import * as Mdast from '../../ast-types/mdast';
 import * as SMdast from '../../ast-types/smdast';
 
-function captureAnnotations(node: Unist.Node | undefined): SMdast.IAnnotations {
+function captureAnnotations<T extends Dictionary<any>>(node: Unist.Node | undefined): T | {} {
   if (!node || !node.value) {
     return {};
   }
@@ -72,11 +73,11 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
     // collect annotations, if this is an html node
     const anno = captureAnnotations(node);
 
-    if (anno.type) {
+    if ('type' in anno) {
       const { type } = anno;
 
       // remove type annotation so that we can pass the annotation object around wholesale
-      delete anno.type;
+      delete (anno as Partial<{ type: SMdast.AnnotationType }>).type;
 
       if (type === 'tab') {
         const { children } = tabPlaceholder;

@@ -1,9 +1,9 @@
-export type ThemeType = 'info' | 'warning' | 'danger' | 'success';
+import { Dictionary } from '@stoplight/types';
 
 export type AnnotationType = 'tab' | 'tab-end';
 
-export interface IAnnotations {
-  type?: AnnotationType;
-  theme?: ThemeType;
-  title?: string;
+export type ThemeType = 'info' | 'warning' | 'danger' | 'success';
+
+export interface IAnnotations<T extends Dictionary<any> = {}> {
+  annotations?: T;
 }
