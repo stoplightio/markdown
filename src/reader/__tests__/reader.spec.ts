@@ -1,10 +1,14 @@
 import { Reader } from '../reader';
 
 describe('Reader', () => {
+  let mdReader: Reader;
+
+  beforeEach(() => {
+    mdReader = new Reader();
+  });
+
   describe('fromLang', () => {
     test('parses a line of text', () => {
-      const mdReader = new Reader();
-
       const tree = mdReader.fromLang(`A line of text.`);
 
       expect(tree).toEqual({
@@ -62,8 +66,6 @@ describe('Reader', () => {
     });
 
     test('parses text with marks', () => {
-      const mdReader = new Reader();
-
       const tree = mdReader.fromLang(`A line of text with **_nested_ marks** in a paragraph.`);
 
       expect(tree).toEqual({
@@ -210,8 +212,6 @@ describe('Reader', () => {
 
   describe('toSpec', () => {
     test('captures annotations for code blocks', () => {
-      const mdReader = new Reader();
-
       const markdown = `<!--
 title: "My code snippet"
 lineNumbers: false
