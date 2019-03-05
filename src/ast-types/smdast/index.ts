@@ -1,9 +1,12 @@
+import { Dictionary } from '@stoplight/types';
+import * as MDASst from '../mdast';
+import { IAnnotations } from './annotations';
+
 export {
   IThematicBreak,
   ITable,
   ITableCell,
   ITableRow,
-  ICode,
   IDefinition,
   IDelete,
   IEmphasis,
@@ -20,7 +23,9 @@ export {
   IList,
   IListItem,
 } from '../mdast';
-export * from './blockquote';
 export * from './element';
 export * from './annotations';
 export * from './tab';
+
+export interface IBlockquote<T extends Dictionary<any> = {}> extends IAnnotations<T>, MDASst.IBlockquote {}
+export interface ICode<T extends Dictionary<any> = {}> extends IAnnotations<T>, MDASst.ICode {}
