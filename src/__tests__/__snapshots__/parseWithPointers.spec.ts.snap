@@ -2,6 +2,76 @@
 
 exports[`parseWithPointers should parse simple 1`] = `
 Object {
+  "ast": Object {
+    "children": Array [
+      Object {
+        "children": Array [
+          Object {
+            "children": Array [
+              Object {
+                "position": Position {
+                  "end": Object {
+                    "column": 9,
+                    "line": 1,
+                    "offset": 8,
+                  },
+                  "indent": Array [],
+                  "start": Object {
+                    "column": 3,
+                    "line": 1,
+                    "offset": 2,
+                  },
+                },
+                "type": "text",
+                "value": "simple",
+              },
+            ],
+            "position": Position {
+              "end": Object {
+                "column": 11,
+                "line": 1,
+                "offset": 10,
+              },
+              "indent": Array [],
+              "start": Object {
+                "column": 1,
+                "line": 1,
+                "offset": 0,
+              },
+            },
+            "type": "strong",
+          },
+        ],
+        "position": Position {
+          "end": Object {
+            "column": 11,
+            "line": 1,
+            "offset": 10,
+          },
+          "indent": Array [],
+          "start": Object {
+            "column": 1,
+            "line": 1,
+            "offset": 0,
+          },
+        },
+        "type": "paragraph",
+      },
+    ],
+    "position": Object {
+      "end": Object {
+        "column": 11,
+        "line": 1,
+        "offset": 10,
+      },
+      "start": Object {
+        "column": 1,
+        "line": 1,
+        "offset": 0,
+      },
+    },
+    "type": "root",
+  },
   "data": Object {
     "children": Array [
       Object {
@@ -73,7 +143,6 @@ Object {
     "type": "root",
   },
   "diagnostics": Array [],
-  "getJsonPathForPosition": [Function],
-  "getLocationForJsonPath": [Function],
+  "lineMap": undefined,
 }
 `;
