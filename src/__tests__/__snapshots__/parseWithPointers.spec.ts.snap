@@ -2,6 +2,7 @@
 
 exports[`parseWithPointers should parse simple 1`] = `
 Object {
+  "ast": Any<Object>,
   "data": Object {
     "children": Array [
       Object {
@@ -72,56 +73,7 @@ Object {
     },
     "type": "root",
   },
-  "pointers": Object {
-    "/": Object {
-      "end": Object {
-        "column": 11,
-        "line": 1,
-        "offset": 10,
-      },
-      "start": Object {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "/children/0": Object {
-      "end": Object {
-        "column": 11,
-        "line": 1,
-        "offset": 10,
-      },
-      "start": Object {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "/children/0/children/0": Object {
-      "end": Object {
-        "column": 11,
-        "line": 1,
-        "offset": 10,
-      },
-      "start": Object {
-        "column": 1,
-        "line": 1,
-        "offset": 0,
-      },
-    },
-    "/children/0/children/0/children/0": Object {
-      "end": Object {
-        "column": 9,
-        "line": 1,
-        "offset": 8,
-      },
-      "start": Object {
-        "column": 3,
-        "line": 1,
-        "offset": 2,
-      },
-    },
-  },
-  "validations": Array [],
+  "diagnostics": Array [],
+  "lineMap": undefined,
 }
 `;

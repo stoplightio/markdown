@@ -1,7 +1,9 @@
 import { parseWithPointers } from '../parseWithPointers';
 
 describe('parseWithPointers', () => {
-  test('should parse simple', () => {
-    expect(parseWithPointers('**simple**')).toMatchSnapshot();
+  it('should parse simple', () => {
+    expect(parseWithPointers('**simple**')).toMatchSnapshot({
+      ast: expect.any(Object),
+    });
   });
 });
