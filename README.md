@@ -28,7 +28,6 @@ import { parseWithPointers } from "@stoplight/markdown/parseWithPointers";
 const result = parseWithPointers("**markdown**");
 
 console.log(result.data); // => the MDAST compliant tree
-console.log(result.pointers); // => the source map with pointers
 ```
 
 ### Contributing
