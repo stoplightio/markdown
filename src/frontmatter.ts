@@ -3,6 +3,7 @@ import { parseWithPointers as parseYamlWithPointers, safeStringify as safeString
 import * as Unist from 'unist';
 import { YAMLNode } from 'yaml-ast-parser';
 import { parseWithPointers } from './parseWithPointers';
+import { stringify } from './stringify';
 import { MarkdownParserResult } from './types';
 
 export interface IFrontmatter<T extends object = any> {
@@ -10,6 +11,7 @@ export interface IFrontmatter<T extends object = any> {
   get(prop: keyof T): T[keyof T] | void;
   set(prop: keyof T, value: T[keyof T]): void;
   unset(prop: keyof T): void;
+  stringify(): string;
 }
 
 // todo: stringify method for string data?
@@ -17,6 +19,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   private readonly document: MarkdownParserResult;
   private readonly annotation: IParserASTResult<T, YAMLNode, number[]> | null;
   private readonly node: Unist.Literal | null;
+  private readonly root: Unist.Parent | null;
 
   private get properties() {
     return this.annotation && this.annotation.data;
@@ -30,6 +33,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       throw new TypeError('Malformed yaml was provided');
     }
 
+    this.root = root;
     this.node =
       root.children.length > 0 && root.children[0].type === 'yaml' ? (root.children[0] as Unist.Literal) : null;
 
@@ -37,10 +41,11 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   private updateDocument() {
-    // todo: indent
     this.node!.value = safeStringifyYaml(this.properties, {
       flowLevel: 1,
+      indent: 2,
     }).trim();
+
     // todo: update offsets
   }
 
@@ -68,5 +73,9 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       delete this.properties[prop];
       this.updateDocument();
     }
+  }
+
+  public stringify() {
+    return this.root !== null ? stringify(this.root) : '';
   }
 }
