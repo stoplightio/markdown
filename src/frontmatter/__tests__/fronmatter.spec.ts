@@ -1,17 +1,48 @@
 import * as fs from 'fs';
 import { join } from 'path';
+import * as Unist from 'unist';
 import { parseWithPointers } from '../../parseWithPointers';
 import { stringify } from '../../stringify';
 import { Frontmatter } from '../frontmatter';
 
 const FIXTURES_DIR = join(__dirname, './fixtures');
 
-const front = fs.readFileSync(join(FIXTURES_DIR, 'front.md'), 'utf-8');
+const tags = fs.readFileSync(join(FIXTURES_DIR, 'tags.md'), 'utf-8');
 
 describe('Frontmatter', () => {
-  describe('front.md fixture', () => {
+  it('should throw when invalid ast is provided', () => {
+    const node: Unist.Parent = {
+      type: 'paragraph',
+      value: '',
+      children: [],
+    };
+
+    expect(() => new Frontmatter({ ast: node } as any)).toThrow();
+  });
+
+  describe('invalid fixture', () => {
+    const fixture = '**welcome**\n~test~\n';
+    it('should return undefined when trying to access properties', () => {
+      const instance = new Frontmatter(fixture);
+
+      expect(instance.getAll()).toBeUndefined();
+      expect(instance.get('test')).toBeUndefined();
+    });
+
+    it('should do nothing when trying to modify the content', () => {
+      const instance = new Frontmatter(fixture);
+
+      instance.set('test', 23);
+      instance.set('foo', 123);
+      expect(instance.stringify()).toEqual(fixture);
+      instance.unset('foo');
+      expect(instance.stringify()).toEqual(fixture);
+    });
+  });
+
+  describe('tags fixture', () => {
     it('should get all properties', () => {
-      const instance = new Frontmatter(front);
+      const instance = new Frontmatter(tags);
 
       expect(instance.getAll()).toEqual({
         tags: ['introductions', 'guides'],
@@ -19,17 +50,16 @@ describe('Frontmatter', () => {
       });
     });
 
-    describe('#get', () => {
-      it('should value for single item', () => {
-        const instance = new Frontmatter(front);
+    it('should get value for single item', () => {
+      const instance = new Frontmatter(tags);
 
-        expect(instance.get('tags')).toEqual(['introductions', 'guides']);
-      });
+      expect(instance.get('title')).toEqual('Graphite Introduction');
+      expect(instance.get('tags')).toEqual(['introductions', 'guides']);
     });
 
     describe('#set', () => {
       it('should update properties', () => {
-        const instance = new Frontmatter(front);
+        const instance = new Frontmatter(tags);
 
         instance.set('tags', ['foo']);
 
@@ -37,7 +67,7 @@ describe('Frontmatter', () => {
       });
 
       it('should update ast', () => {
-        const parsed = parseWithPointers(front);
+        const parsed = parseWithPointers(tags);
         const instance = new Frontmatter(parsed);
 
         instance.set('tags', ['foo']);
@@ -46,7 +76,7 @@ describe('Frontmatter', () => {
       });
 
       it('document should be serializable', () => {
-        const parsed = parseWithPointers(front);
+        const parsed = parseWithPointers(tags);
         const instance = new Frontmatter(parsed);
 
         instance.set('tags', ['foo']);
@@ -65,7 +95,7 @@ Coolio.
 
     describe('#unset', () => {
       it('should update properties', () => {
-        const instance = new Frontmatter(front);
+        const instance = new Frontmatter(tags);
 
         instance.unset('tags');
 
@@ -73,7 +103,7 @@ Coolio.
       });
 
       it('should update ast', () => {
-        const parsed = parseWithPointers(front);
+        const parsed = parseWithPointers(tags);
         const instance = new Frontmatter(parsed);
 
         instance.unset('tags');
@@ -82,7 +112,7 @@ Coolio.
       });
 
       it('document should be serializable', () => {
-        const parsed = parseWithPointers(front);
+        const parsed = parseWithPointers(tags);
         const instance = new Frontmatter(parsed);
 
         instance.unset('tags');
@@ -96,6 +126,11 @@ title: Graphite Introduction
 Coolio.
 `);
       });
+    });
+
+    it('should expose a way to stringify existing document', () => {
+      const instance = new Frontmatter(tags);
+      expect(instance.stringify()).toEqual(tags);
     });
   });
 });

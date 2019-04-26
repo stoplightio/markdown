@@ -8,7 +8,7 @@ import { IFrontmatter } from './types';
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   private readonly document: MarkdownParserResult;
   private readonly node: Unist.Literal | null;
-  private readonly root: Unist.Parent | null;
+  private readonly root: Unist.Parent;
   private readonly properties: T | null;
 
   constructor(data: MarkdownParserResult | string) {
@@ -64,6 +64,6 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public stringify() {
-    return this.root !== null ? stringify(this.root) : '';
+    return stringify(this.root);
   }
 }
