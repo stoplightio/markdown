@@ -1,8 +1,8 @@
 import * as fs from 'fs';
 import { join } from 'path';
+import { parseWithPointers } from '../../parseWithPointers';
+import { stringify } from '../../stringify';
 import { Frontmatter } from '../frontmatter';
-import { parseWithPointers } from '../parseWithPointers';
-import { stringify } from '../stringify';
 
 const FIXTURES_DIR = join(__dirname, './fixtures');
 

@@ -3,3 +3,4 @@ export * from './getLocationForJsonPath';
 export * from './stringify';
 export * from './parse';
 export * from './parseWithPointers';
+export * from './types';
