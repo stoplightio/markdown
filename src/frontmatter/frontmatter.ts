@@ -4,6 +4,7 @@ import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { MarkdownParserResult } from '../types';
 import { IFrontmatter } from './types';
+import { countNewLines, shiftLines } from './utils';
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   private readonly document: MarkdownParserResult;
@@ -27,6 +28,8 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   private updateDocument() {
+    const oldValue = this.node!.value;
+
     this.node!.value = yaml
       .safeDump(this.properties, {
         flowLevel: 1,
@@ -34,7 +37,11 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       })
       .trim();
 
-    // todo: update offsets
+    const diff = countNewLines(this.node!.value as string) - countNewLines(oldValue as string);
+
+    if (diff !== 0) {
+      shiftLines(this.root, diff);
+    }
   }
 
   public getAll(): T | void {
