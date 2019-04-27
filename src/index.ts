@@ -4,3 +4,4 @@ export * from './stringify';
 export * from './parse';
 export * from './parseWithPointers';
 export * from './types';
+export * from './frontmatter';
