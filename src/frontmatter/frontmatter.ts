@@ -74,8 +74,12 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       const lastSegment = Number(path[path.length - 1]);
       if (!Number.isNaN(lastSegment)) {
         const baseObj = path.length > 1 ? this.get(path.slice(0, path.length - 1)) : this.getAll();
-        if (!Array.isArray(baseObj) || baseObj.length < lastSegment) return;
-        _pullAt(baseObj, lastSegment);
+        if (Array.isArray(baseObj)) {
+          if (baseObj.length < lastSegment) return;
+          _pullAt(baseObj, lastSegment);
+        } else {
+          _unset(this.properties, prop);
+        }
       } else {
         _unset(this.properties, prop);
       }
