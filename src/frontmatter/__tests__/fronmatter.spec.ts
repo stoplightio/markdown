@@ -50,11 +50,20 @@ describe('Frontmatter', () => {
       });
     });
 
-    it('should get value for single item', () => {
-      const instance = new Frontmatter(tags);
+    describe('#get', () => {
+      it('should return value for single item', () => {
+        const instance = new Frontmatter(tags);
 
-      expect(instance.get('title')).toEqual('Graphite Introduction');
-      expect(instance.get('tags')).toEqual(['introductions', 'guides']);
+        expect(instance.get('title')).toEqual('Graphite Introduction');
+        expect(instance.get('tags')).toEqual(['introductions', 'guides']);
+      });
+
+      it('should support nested properties', () => {
+        const instance = new Frontmatter(tags);
+
+        expect(instance.get(['tags', 1])).toEqual('guides');
+        expect(instance.get('tags.0')).toEqual('introductions');
+      });
     });
 
     describe('#set', () => {
@@ -73,6 +82,14 @@ describe('Frontmatter', () => {
         instance.set('tags', ['foo']);
 
         expect(parsed.ast.children[0]!.value).toEqual('title: Graphite Introduction\ntags: [foo]'); // should be quoted?
+      });
+
+      it('should support nested properties', () => {
+        const instance = new Frontmatter(tags);
+        instance.set('tags.0', 'new guides');
+        instance.set(['tags', 1], 'start');
+
+        expect(instance.get('tags')).toEqual(['new guides', 'start']);
       });
 
       it('should shift lines if applicable', () => {
@@ -182,6 +199,22 @@ Coolio.
         instance.unset('tags');
 
         expect(parsed.ast.children[0]!.value).toEqual('title: Graphite Introduction');
+      });
+
+      it('should support nested properties', () => {
+        const instance = new Frontmatter(tags);
+        instance.unset('tags.0');
+
+        expect(instance.get('tags')).toEqual(['guides']);
+      });
+
+      it('should handle non-existing properties gracefully', () => {
+        const instance = new Frontmatter(tags);
+        instance.unset('tags.3');
+        instance.unset('5');
+        instance.unset('foo');
+
+        expect(instance.getAll()).toEqual(new Frontmatter(tags).getAll());
       });
 
       it('should shift lines', () => {

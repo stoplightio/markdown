@@ -1,9 +1,14 @@
 import * as yaml from 'js-yaml';
+import _get = require('lodash/get');
+import _pullAt = require('lodash/pullAt');
+import _set = require('lodash/set');
+import _toPath = require('lodash/toPath');
+import _unset = require('lodash/unset');
 import * as Unist from 'unist';
 import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { MarkdownParserResult } from '../types';
-import { IFrontmatter } from './types';
+import { IFrontmatter, PropertyPath } from './types';
 import { countNewLines, shiftLines } from './utils';
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
@@ -50,22 +55,31 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     }
   }
 
-  public get(prop: keyof T): T[keyof T] | void {
+  public get<V = unknown>(prop: PropertyPath): V | void {
     if (this.properties !== null) {
-      return this.properties[prop];
+      return _get(this.properties, prop);
     }
   }
 
-  public set(prop: keyof T, value: T[keyof T]) {
+  public set(prop: PropertyPath, value: unknown) {
     if (this.properties !== null) {
-      this.properties[prop] = value;
+      _set(this.properties, prop, value);
       this.updateDocument();
     }
   }
 
-  public unset(prop: keyof T) {
+  public unset(prop: PropertyPath) {
     if (this.properties !== null) {
-      delete this.properties[prop];
+      const path = _toPath(prop);
+      const lastSegment = Number(path[path.length - 1]);
+      if (!Number.isNaN(lastSegment)) {
+        const baseObj = path.length > 1 ? this.get(path.slice(0, path.length - 1)) : this.getAll();
+        if (!Array.isArray(baseObj) || baseObj.length < lastSegment) return;
+        _pullAt(baseObj, lastSegment);
+      } else {
+        _unset(this.properties, prop);
+      }
+
       this.updateDocument();
     }
   }
