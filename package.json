@@ -28,32 +28,36 @@
     "build": "sl-scripts build",
     "build.docs": "sl-scripts build:typedoc",
     "commit": "git-cz",
-    "lint": "sl-scripts lint",
+    "lint": "tslint 'src/**/*.{ts,tsx}'",
     "lint.fix": "yarn lint --fix",
     "release": "sl-scripts release",
     "release.docs": "sl-scripts release:docs",
     "release.dryRun": "sl-scripts release --dry-run --debug",
-    "test": "sl-scripts test",
+    "test": "jest",
     "test.prod": "yarn lint && yarn test --coverage --no-cache",
     "test.update": "yarn test --updateSnapshot",
     "test.watch": "yarn test --watch"
   },
   "dependencies": {
-    "js-yaml": "3.12.1",
-    "lodash": "^4.17.11",
-    "remark-frontmatter": "^1.3.1",
+    "js-yaml": "3.13.x",
+    "lodash": ">=4.17",
+    "remark-frontmatter": "1.3.x",
     "remark-parse": "6.0.x",
     "remark-stringify": "6.0.x",
-    "unified": "7.1.0",
-    "vfile": "3.x.x"
+    "unified": "7.1.x"
   },
   "devDependencies": {
-    "@stoplight/scripts": "4.3.0",
-    "@stoplight/types": "4.0.0",
-    "@types/js-yaml": "3.12.0",
+    "@stoplight/scripts": "5.1.0",
+    "@stoplight/types": "4.1.0",
+    "@types/jest": "^24.0.12",
+    "@types/js-yaml": "3.12.1",
     "@types/lodash": "^4.14.123",
     "@types/unist": "2.0.3",
-    "typescript": "3.3.3"
+    "jest": "^24.7.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
+    "tslint-config-stoplight": "^1.2.0",
+    "typescript": "3.4.5"
   },
   "lint-staged": {
     "*.{ts,tsx}$": [
