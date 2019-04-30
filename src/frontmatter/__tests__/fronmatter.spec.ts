@@ -1,6 +1,7 @@
 import * as fs from 'fs';
 import { join } from 'path';
 import * as Unist from 'unist';
+
 import { parseWithPointers } from '../../parseWithPointers';
 import { stringify } from '../../stringify';
 import { Frontmatter } from '../frontmatter';
@@ -77,7 +78,7 @@ describe('Frontmatter', () => {
 
       it('should update ast', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.set('tags', ['foo']);
 
@@ -94,7 +95,7 @@ describe('Frontmatter', () => {
 
       it('should shift lines if applicable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.set('new', ['foo']);
 
@@ -156,7 +157,7 @@ describe('Frontmatter', () => {
 
       it('should add new properties', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.set('new item', 2);
 
@@ -167,7 +168,7 @@ describe('Frontmatter', () => {
 
       it('document should be serializable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.set('tags', ['foo']);
 
@@ -194,7 +195,7 @@ Coolio.
 
       it('should update ast', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.unset('tags');
 
@@ -219,7 +220,7 @@ Coolio.
 
       it('should shift lines', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.unset('tags');
 
@@ -281,7 +282,7 @@ Coolio.
 
       it('should do nothing if property does not exist', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.unset('test');
 
@@ -293,7 +294,7 @@ Coolio.
 
       it('document should be serializable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.unset('tags');
 
