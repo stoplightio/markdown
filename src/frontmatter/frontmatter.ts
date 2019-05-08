@@ -9,9 +9,9 @@ import { IFrontmatter, PropertyPath } from './types';
 import { countNewLines, shiftLines } from './utils';
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
-  private readonly node: Unist.Literal | null;
+  private readonly node: Unist.Literal;
   private readonly root: Unist.Parent;
-  private readonly properties: T | null;
+  private properties: Partial<T> | null;
 
   constructor(data: Unist.Parent | string) {
     const root = typeof data === 'string' ? parseWithPointers(data).data : data;
@@ -20,13 +20,29 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     }
 
     this.root = root;
-    this.node =
-      root.children.length > 0 && root.children[0].type === 'yaml' ? (root.children[0] as Unist.Literal) : null;
-
-    this.properties = this.node !== null ? yaml.safeLoad(String(this.node.value)) : null;
+    if (root.children.length > 0 && root.children[0].type === 'yaml') {
+      this.node = root.children[0] as Unist.Literal;
+      this.properties = yaml.safeLoad(String(this.node.value));
+    } else {
+      this.node = {
+        type: 'yaml',
+        value: '',
+      };
+      this.properties = null;
+    }
   }
 
-  public getAll(): T | void {
+  public get isEmpty() {
+    for (const _ in this.properties) {
+      if (Object.hasOwnProperty.call(this.properties, _)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public getAll(): Partial<T> | void {
     if (this.properties !== null) {
       return this.properties;
     }
@@ -39,10 +55,12 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public set(prop: PropertyPath, value: unknown) {
-    if (this.properties !== null) {
-      set(this.properties, prop, value);
-      this.updateDocument();
+    if (this.properties === null) {
+      this.properties = {};
     }
+
+    set(this.properties, prop, value);
+    this.updateDocument();
   }
 
   public unset(prop: PropertyPath) {
@@ -70,19 +88,28 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   private updateDocument() {
-    const oldValue = this.node!.value;
+    const index = this.root.children.indexOf(this.node);
 
-    this.node!.value = yaml
+    const oldValue = this.node.value;
+    this.node.value = yaml
       .safeDump(this.properties, {
         flowLevel: 1,
         indent: 2,
       })
       .trim();
 
-    const diff = countNewLines(this.node!.value as string) - countNewLines(oldValue as string);
+    const diff = countNewLines(this.node.value as string) - countNewLines(oldValue as string);
 
     if (diff !== 0) {
       shiftLines(this.root, diff);
+    }
+
+    if (this.isEmpty) {
+      if (index !== -1) {
+        this.root.children.splice(index, 1);
+      }
+    } else if (index === -1) {
+      this.root.children.unshift(this.node);
     }
   }
 }

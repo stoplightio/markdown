@@ -21,7 +21,7 @@ describe('Frontmatter', () => {
     expect(() => new Frontmatter({ ast: node } as any)).toThrow();
   });
 
-  describe('invalid fixture', () => {
+  describe('no frontmatter fixture', () => {
     const fixture = '**welcome**\n~test~\n';
     it('should return undefined when trying to access properties', () => {
       const instance = new Frontmatter(fixture);
@@ -30,14 +30,25 @@ describe('Frontmatter', () => {
       expect(instance.get('test')).toBeUndefined();
     });
 
-    it('should do nothing when trying to modify the content', () => {
-      const instance = new Frontmatter(fixture);
+    describe('set', () => {
+      it('should create frontmatter block', () => {
+        const instance = new Frontmatter(fixture);
 
-      instance.set('test', 23);
-      instance.set('foo', 123);
-      expect(instance.stringify()).toEqual(fixture);
-      instance.unset('foo');
-      expect(instance.stringify()).toEqual(fixture);
+        instance.set('test', 23);
+        instance.set('foo', 123);
+        expect(instance.getAll()).toEqual({
+          test: 23,
+          foo: 123,
+        });
+        expect(instance.stringify()).toEqual(`---
+test: 23
+foo: 123
+---
+
+**welcome**
+~test~
+`);
+      });
     });
   });
 
@@ -91,6 +102,28 @@ describe('Frontmatter', () => {
         instance.set(['tags', 1], 'start');
 
         expect(instance.get('tags')).toEqual(['new guides', 'start']);
+      });
+
+      it('should re-add previously removed block', () => {
+        const parsed = parseWithPointers(tags);
+        const instance = new Frontmatter(parsed.ast);
+
+        instance.unset('tags');
+        instance.unset('title');
+
+        expect(parsed.ast.children[0]!.type).toEqual('heading'); // verifies block is not there, more decent assertion is done in #unset test case
+
+        instance.set('tags', []);
+
+        expect(parsed.ast.children[0]!.type).toEqual('yaml');
+        expect(stringify(parsed.ast)).toEqual(`---
+tags: []
+---
+
+# Introduction
+
+Coolio.
+`);
       });
 
       it('should shift lines if applicable', () => {
@@ -200,6 +233,22 @@ Coolio.
         instance.unset('tags');
 
         expect(parsed.ast.children[0]!.value).toEqual('title: Graphite Introduction');
+      });
+
+      it('should remove block if all properties are removed', () => {
+        const parsed = parseWithPointers(tags);
+        const instance = new Frontmatter(parsed);
+
+        instance.unset('tags');
+        instance.unset('title');
+        instance.unset('title');
+
+        expect(instance.stringify()).toEqual(`# Introduction
+
+Coolio.
+`);
+        expect(parsed.ast.children[0]!.type).toEqual('heading');
+        expect(parsed.ast.children).toHaveLength(2);
       });
 
       it('should support nested properties', () => {
