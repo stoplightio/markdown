@@ -11,6 +11,13 @@ const FIXTURES_DIR = join(__dirname, './fixtures');
 const tags = fs.readFileSync(join(FIXTURES_DIR, 'tags.md'), 'utf-8');
 
 describe('Frontmatter', () => {
+  it('should clone given data if dirty is set to false', () => {
+    const parsed = parseWithPointers(tags);
+    const instance = new Frontmatter(parsed.ast, false);
+
+    expect(instance.document).not.toBe(parsed.ast);
+  });
+
   it('should throw when invalid ast is provided', () => {
     const node: Unist.Parent = {
       type: 'paragraph',
@@ -18,7 +25,7 @@ describe('Frontmatter', () => {
       children: [],
     };
 
-    expect(() => new Frontmatter({ ast: node } as any)).toThrow();
+    expect(() => new Frontmatter(node)).toThrow();
   });
 
   describe('no frontmatter fixture', () => {

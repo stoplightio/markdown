@@ -9,17 +9,18 @@ import { IFrontmatter, PropertyPath } from './types';
 import { countNewLines, shiftLines } from './utils';
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
+  public readonly document: Unist.Parent;
   private readonly node: Unist.Literal;
-  private readonly root: Unist.Parent;
   private properties: Partial<T> | null;
 
-  constructor(data: Unist.Parent | string) {
-    const root = typeof data === 'string' ? parseWithPointers(data).data : data;
+  constructor(data: Unist.Parent | string, dirty = true) {
+    const root =
+      typeof data === 'string' ? parseWithPointers(data).data : dirty ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
       throw new TypeError('Malformed yaml was provided');
     }
 
-    this.root = root;
+    this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
       this.node = root.children[0] as Unist.Literal;
       this.properties = yaml.safeLoad(String(this.node.value));
@@ -84,11 +85,11 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public stringify() {
-    return stringify(this.root);
+    return stringify(this.document);
   }
 
   private updateDocument() {
-    const index = this.root.children.indexOf(this.node);
+    const index = this.document.children.indexOf(this.node);
 
     const oldValue = this.node.value;
     this.node.value = yaml
@@ -101,15 +102,15 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     const diff = countNewLines(this.node.value as string) - countNewLines(oldValue as string);
 
     if (diff !== 0) {
-      shiftLines(this.root, diff);
+      shiftLines(this.document, diff);
     }
 
     if (this.isEmpty) {
       if (index !== -1) {
-        this.root.children.splice(index, 1);
+        this.document.children.splice(index, 1);
       }
     } else if (index === -1) {
-      this.root.children.unshift(this.node);
+      this.document.children.unshift(this.node);
     }
   }
 }
