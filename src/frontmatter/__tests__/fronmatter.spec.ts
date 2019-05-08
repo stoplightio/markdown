@@ -237,7 +237,7 @@ Coolio.
 
       it('should remove block if all properties are removed', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed);
+        const instance = new Frontmatter(parsed.ast);
 
         instance.unset('tags');
         instance.unset('title');
