@@ -13,9 +13,9 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   private readonly node: Unist.Literal;
   private properties: Partial<T> | null;
 
-  constructor(data: Unist.Parent | string, dirty = true) {
+  constructor(data: Unist.Parent | string, mutate = false) {
     const root =
-      typeof data === 'string' ? parseWithPointers(data).data : dirty ? data : JSON.parse(JSON.stringify(data));
+      typeof data === 'string' ? parseWithPointers(data).data : mutate ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
       throw new TypeError('Malformed yaml was provided');
     }

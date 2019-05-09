@@ -11,9 +11,9 @@ const FIXTURES_DIR = join(__dirname, './fixtures');
 const tags = fs.readFileSync(join(FIXTURES_DIR, 'tags.md'), 'utf-8');
 
 describe('Frontmatter', () => {
-  it('should clone given data if dirty is set to false', () => {
+  it('should clone given data by default', () => {
     const parsed = parseWithPointers(tags);
-    const instance = new Frontmatter(parsed.ast, false);
+    const instance = new Frontmatter(parsed.ast);
 
     expect(instance.document).not.toBe(parsed.ast);
   });
@@ -96,7 +96,7 @@ foo: 123
 
       it('should update ast', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.set('tags', ['foo']);
 
@@ -113,7 +113,7 @@ foo: 123
 
       it('should re-add previously removed block', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('tags');
         instance.unset('title');
@@ -135,7 +135,7 @@ Coolio.
 
       it('should shift lines if applicable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.set('new', ['foo']);
 
@@ -197,7 +197,7 @@ Coolio.
 
       it('should add new properties', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.set('new item', 2);
 
@@ -208,7 +208,7 @@ Coolio.
 
       it('document should be serializable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.set('tags', ['foo']);
 
@@ -226,7 +226,7 @@ Coolio.
 
     describe('#unset', () => {
       it('should update properties', () => {
-        const instance = new Frontmatter(tags);
+        const instance = new Frontmatter(tags, true);
 
         instance.unset('tags');
 
@@ -235,7 +235,7 @@ Coolio.
 
       it('should update ast', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('tags');
 
@@ -244,7 +244,7 @@ Coolio.
 
       it('should remove block if all properties are removed', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('tags');
         instance.unset('title');
@@ -276,7 +276,7 @@ Coolio.
 
       it('should shift lines', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('tags');
 
@@ -338,7 +338,7 @@ Coolio.
 
       it('should do nothing if property does not exist', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('test');
 
@@ -350,7 +350,7 @@ Coolio.
 
       it('document should be serializable', () => {
         const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast);
+        const instance = new Frontmatter(parsed.ast, true);
 
         instance.unset('tags');
 
