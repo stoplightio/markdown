@@ -99,18 +99,20 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       })
       .trim();
 
-    const diff = countNewLines(this.node.value as string) - countNewLines(oldValue as string);
-
-    if (diff !== 0) {
-      shiftLines(this.document, diff);
-    }
+    let diff = countNewLines(this.node.value as string) - countNewLines(oldValue as string);
 
     if (this.isEmpty) {
       if (index !== -1) {
         this.document.children.splice(index, 1);
+        diff -= 2;
       }
     } else if (index === -1) {
       this.document.children.unshift(this.node);
+      diff += 2;
+    }
+
+    if (diff !== 0) {
+      shiftLines(this.document, diff);
     }
   }
 }
