@@ -6,8 +6,6 @@ import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
 
-import { countNewLines, shiftLines } from './utils';
-
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   public readonly document: Unist.Parent;
   private readonly node: Unist.Literal;
@@ -91,28 +89,21 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   private updateDocument() {
     const index = this.document.children.indexOf(this.node);
 
-    const oldValue = this.node.value;
-    this.node.value = yaml
-      .safeDump(this.properties, {
-        flowLevel: 1,
-        indent: 2,
-      })
-      .trim();
-
-    let diff = countNewLines(this.node.value as string) - countNewLines(oldValue as string);
+    this.node.value = this.isEmpty
+      ? ''
+      : yaml
+          .safeDump(this.properties, {
+            flowLevel: 1,
+            indent: 2,
+          })
+          .trim();
 
     if (this.isEmpty) {
       if (index !== -1) {
         this.document.children.splice(index, 1);
-        diff -= 2;
       }
     } else if (index === -1) {
       this.document.children.unshift(this.node);
-      diff += 2;
-    }
-
-    if (diff !== 0) {
-      shiftLines(this.document, diff);
     }
   }
 }

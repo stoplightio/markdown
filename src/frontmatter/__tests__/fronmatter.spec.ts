@@ -133,68 +133,6 @@ Coolio.
 `);
       });
 
-      it('should shift lines if applicable', () => {
-        const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast, true);
-
-        instance.set('new', ['foo']);
-
-        expect(parsed.ast).toEqual({
-          children: [
-            expect.objectContaining({
-              position: expect.objectContaining({
-                end: expect.objectContaining({ column: 4, line: 5 }),
-                start: expect.objectContaining({ column: 1, line: 1 }),
-              }),
-              type: 'yaml',
-              value: 'title: Graphite Introduction\ntags: [introductions, guides]\nnew: [foo]',
-            }),
-            expect.objectContaining({
-              children: [
-                expect.objectContaining({
-                  position: expect.objectContaining({
-                    end: expect.objectContaining({ column: 15, line: 7 }),
-                    start: expect.objectContaining({ column: 3, line: 7 }),
-                  }),
-                  type: 'text',
-                  value: 'Introduction',
-                }),
-              ],
-              type: 'heading',
-              position: expect.objectContaining({
-                end: expect.objectContaining({
-                  column: 15,
-                  line: 7,
-                }),
-                start: expect.objectContaining({ column: 1, line: 7 }),
-              }),
-            }),
-            expect.objectContaining({
-              children: [
-                expect.objectContaining({
-                  position: expect.objectContaining({
-                    end: expect.objectContaining({ column: 8, line: 9 }),
-                    start: expect.objectContaining({ column: 1, line: 9 }),
-                  }),
-                  type: 'text',
-                  value: 'Coolio.',
-                }),
-              ],
-              type: 'paragraph',
-              position: expect.objectContaining({
-                end: expect.objectContaining({ column: 8, line: 9 }),
-                start: expect.objectContaining({ column: 1, line: 9 }),
-              }),
-            }),
-          ],
-          position: expect.objectContaining({
-            end: expect.objectContaining({ column: 1, line: 10 }),
-            start: expect.objectContaining({ column: 1, line: 1 }),
-          }),
-          type: 'root',
-        });
-      });
-
       it('should add new properties', () => {
         const parsed = parseWithPointers(tags);
         const instance = new Frontmatter(parsed.ast, true);
@@ -272,68 +210,6 @@ Coolio.
         instance.unset('foo');
 
         expect(instance.getAll()).toEqual(new Frontmatter(tags).getAll());
-      });
-
-      it('should shift lines', () => {
-        const parsed = parseWithPointers(tags);
-        const instance = new Frontmatter(parsed.ast, true);
-
-        instance.unset('tags');
-
-        expect(parsed.ast).toEqual({
-          children: [
-            expect.objectContaining({
-              position: expect.objectContaining({
-                end: expect.objectContaining({ column: 4, line: 3 }),
-                start: expect.objectContaining({ column: 1, line: 1 }),
-              }),
-              type: 'yaml',
-              value: 'title: Graphite Introduction',
-            }),
-            expect.objectContaining({
-              children: [
-                expect.objectContaining({
-                  position: expect.objectContaining({
-                    end: expect.objectContaining({ column: 15, line: 5 }),
-                    start: expect.objectContaining({ column: 3, line: 5 }),
-                  }),
-                  type: 'text',
-                  value: 'Introduction',
-                }),
-              ],
-              type: 'heading',
-              position: expect.objectContaining({
-                end: expect.objectContaining({
-                  column: 15,
-                  line: 5,
-                }),
-                start: expect.objectContaining({ column: 1, line: 5 }),
-              }),
-            }),
-            expect.objectContaining({
-              children: [
-                expect.objectContaining({
-                  position: expect.objectContaining({
-                    end: expect.objectContaining({ column: 8, line: 7 }),
-                    start: expect.objectContaining({ column: 1, line: 7 }),
-                  }),
-                  type: 'text',
-                  value: 'Coolio.',
-                }),
-              ],
-              type: 'paragraph',
-              position: expect.objectContaining({
-                end: expect.objectContaining({ column: 8, line: 7 }),
-                start: expect.objectContaining({ column: 1, line: 7 }),
-              }),
-            }),
-          ],
-          position: expect.objectContaining({
-            end: expect.objectContaining({ column: 1, line: 8 }),
-            start: expect.objectContaining({ column: 1, line: 1 }),
-          }),
-          type: 'root',
-        });
       });
 
       it('should do nothing if property does not exist', () => {
