@@ -6,27 +6,42 @@ import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
 
-import { countNewLines, shiftLines } from './utils';
-
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
-  private readonly node: Unist.Literal | null;
-  private readonly root: Unist.Parent;
-  private readonly properties: T | null;
+  public readonly document: Unist.Parent;
+  private readonly node: Unist.Literal;
+  private properties: Partial<T> | null;
 
-  constructor(data: Unist.Parent | string) {
-    const root = typeof data === 'string' ? parseWithPointers(data).data : data;
+  constructor(data: Unist.Parent | string, mutate = false) {
+    const root =
+      typeof data === 'string' ? parseWithPointers(data).data : mutate ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
       throw new TypeError('Malformed yaml was provided');
     }
 
-    this.root = root;
-    this.node =
-      root.children.length > 0 && root.children[0].type === 'yaml' ? (root.children[0] as Unist.Literal) : null;
-
-    this.properties = this.node !== null ? yaml.safeLoad(String(this.node.value)) : null;
+    this.document = root;
+    if (root.children.length > 0 && root.children[0].type === 'yaml') {
+      this.node = root.children[0] as Unist.Literal;
+      this.properties = yaml.safeLoad(String(this.node.value));
+    } else {
+      this.node = {
+        type: 'yaml',
+        value: '',
+      };
+      this.properties = null;
+    }
   }
 
-  public getAll(): T | void {
+  public get isEmpty() {
+    for (const _ in this.properties) {
+      if (Object.hasOwnProperty.call(this.properties, _)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  public getAll(): Partial<T> | void {
     if (this.properties !== null) {
       return this.properties;
     }
@@ -39,10 +54,12 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public set(prop: PropertyPath, value: unknown) {
-    if (this.properties !== null) {
-      set(this.properties, prop, value);
-      this.updateDocument();
+    if (this.properties === null) {
+      this.properties = {};
     }
+
+    set(this.properties, prop, value);
+    this.updateDocument();
   }
 
   public unset(prop: PropertyPath) {
@@ -66,23 +83,27 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public stringify() {
-    return stringify(this.root);
+    return stringify(this.document);
   }
 
   private updateDocument() {
-    const oldValue = this.node!.value;
+    const index = this.document.children.indexOf(this.node);
 
-    this.node!.value = yaml
-      .safeDump(this.properties, {
-        flowLevel: 1,
-        indent: 2,
-      })
-      .trim();
+    this.node.value = this.isEmpty
+      ? ''
+      : yaml
+          .safeDump(this.properties, {
+            flowLevel: 1,
+            indent: 2,
+          })
+          .trim();
 
-    const diff = countNewLines(this.node!.value as string) - countNewLines(oldValue as string);
-
-    if (diff !== 0) {
-      shiftLines(this.root, diff);
+    if (this.isEmpty) {
+      if (index !== -1) {
+        this.document.children.splice(index, 1);
+      }
+    } else if (index === -1) {
+      this.document.children.unshift(this.node);
     }
   }
 }
