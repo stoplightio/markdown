@@ -22,7 +22,9 @@ function captureAnnotations<T extends Dictionary<any>>(node: Unist.Node | undefi
         // annotations must be objects, otherwise it's just a regular ol html comment
         return contents;
       }
-    } catch (error) {}
+    } catch (error) {
+      // ignore invalid YAML
+    }
   }
 
   return {};
