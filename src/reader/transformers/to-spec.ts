@@ -16,10 +16,14 @@ function captureAnnotations<T extends Dictionary<any>>(node: Unist.Node | undefi
       .trim();
 
     // load contents of annotation into yaml
-    const contents = yaml.safeLoad(raw);
-    if (typeof contents === 'object') {
-      // annotations must be objects, otherwise it's just a regular ol html comment
-      return contents;
+    try {
+      const contents = yaml.safeLoad(raw);
+      if (typeof contents === 'object') {
+        // annotations must be objects, otherwise it's just a regular ol html comment
+        return contents;
+      }
+    } catch (error) {
+      // ignore invalid YAML
     }
   }
 

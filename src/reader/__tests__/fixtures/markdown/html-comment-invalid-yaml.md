@@ -1,0 +1,4 @@
+<!--
+type: foo
+path bar
+-->
