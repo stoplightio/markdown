@@ -29,7 +29,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
       this.node = root.children[0] as Unist.Literal;
-      this.properties = safeParse(String(this.node.value));
+      this.properties = safeParse(this.node.value as string);
     } else {
       this.node = {
         type: 'yaml',
