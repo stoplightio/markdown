@@ -9,6 +9,7 @@ import { Frontmatter } from '../frontmatter';
 const FIXTURES_DIR = join(__dirname, './fixtures');
 
 const tags = fs.readFileSync(join(FIXTURES_DIR, 'tags.md'), 'utf-8');
+const invalid = fs.readFileSync(join(FIXTURES_DIR, 'invalid.md'), 'utf-8');
 
 describe('Frontmatter', () => {
   it('should clone given data by default', () => {
@@ -55,6 +56,44 @@ foo: 123
 **welcome**
 ~test~
 `);
+      });
+    });
+  });
+
+  describe('invalid fixture', () => {
+    it('should return empty object', () => {
+      const instance = new Frontmatter(invalid);
+
+      expect(instance.getAll()).toEqual({});
+    });
+
+    describe('set', () => {
+      it('should update frontmatter block correctly', () => {
+        const instance = new Frontmatter(invalid);
+
+        instance.set('title', 'hello!');
+        instance.set('tags', ['test']);
+        expect(instance.getAll()).toEqual({
+          tags: ['test'],
+          title: 'hello!',
+        });
+        expect(instance.stringify()).toEqual(`---
+title: hello!
+tags: [test]
+---
+
+# Hello world!
+`);
+      });
+    });
+
+    describe('unset', () => {
+      it('should do nothing', () => {
+        const instance = new Frontmatter(invalid);
+
+        instance.unset('tit');
+
+        expect(instance.getAll()).toEqual({});
       });
     });
   });

@@ -6,6 +6,14 @@ import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
 
+const safeParse = (value: string) => {
+  try {
+    return yaml.safeLoad(String(value));
+  } catch {
+    return {};
+  }
+};
+
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   public readonly document: Unist.Parent;
   private readonly node: Unist.Literal;
@@ -21,7 +29,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
       this.node = root.children[0] as Unist.Literal;
-      this.properties = yaml.safeLoad(String(this.node.value));
+      this.properties = safeParse(this.node.value as string);
     } else {
       this.node = {
         type: 'yaml',
