@@ -4,15 +4,11 @@
 > * asterisk 2
 > * asterisk 3
 
-<!--
-theme: danger
--->
+<!-- theme: danger -->
 
 > This is a callout with **danger** as the theme
 
-<!--
-theme: info
--->
+<!-- theme: info -->
 
 > This is a callout with **info** as the theme
 

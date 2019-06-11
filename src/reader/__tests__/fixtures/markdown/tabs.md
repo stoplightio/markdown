@@ -27,6 +27,4 @@ type: tab
 
 And another one
 
-<!--
-type: tab-end
--->
+<!-- type: tab-end -->

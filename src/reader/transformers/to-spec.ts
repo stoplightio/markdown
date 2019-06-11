@@ -80,9 +80,6 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
     if ('type' in anno) {
       const { type } = anno;
 
-      // remove type annotation so that we can pass the annotation object around wholesale
-      delete (anno as Partial<{ type: SMdast.AnnotationType }>).type;
-
       if (type === 'tab') {
         const { children } = tabPlaceholder;
 
@@ -103,6 +100,8 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
         }
 
         tabPlaceholder.children = children;
+
+        continue;
       } else if (type === 'tab-end') {
         // finalize tabContainer
         processed.push(tabPlaceholder);
@@ -118,9 +117,9 @@ export const toSpec = (root: Mdast.IRoot): SMdast.IRoot => {
             },
           ],
         };
-      }
 
-      continue;
+        continue;
+      }
     }
 
     if (inTab) {
