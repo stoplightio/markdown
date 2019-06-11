@@ -4,30 +4,24 @@ import * as Mdast from '../../ast-types/mdast';
 import * as SMdast from '../../ast-types/smdast';
 
 function transformAnnotations(node: Unist.Node): Unist.Node | null {
-  if (!node.annotations || Object.keys(node.annotations as object).length === 0) {
-    return null;
-  }
+  if (!node.annotations) return null;
+
+  const propCount = Object.keys(node.annotations as object).length;
+  if (propCount === 0) return null;
 
   return {
     type: 'html',
-    value: `<!--\n${yaml.safeDump(node.annotations).trim()}\n-->`,
+    value: `<!--${propCount > 1 ? '\n' : ' '}${yaml.safeDump(node.annotations).trim()}${propCount > 1 ? '\n' : ' '}-->`,
   };
 }
 
 function transformBlockquote(node: SMdast.IBlockquote): Unist.Node[] {
-  const res: Unist.Node[] = [];
-
-  const anno = transformAnnotations(node);
-  if (anno) {
-    res.push(anno);
-  }
-
-  res.push({
-    type: 'blockquote',
-    children: node.children,
-  });
-
-  return res;
+  return [
+    {
+      type: 'blockquote',
+      children: node.children,
+    },
+  ];
 }
 
 function transformTabContainer(node: SMdast.ITabContainer): Unist.Node[] {
@@ -39,30 +33,14 @@ function transformTabContainer(node: SMdast.ITabContainer): Unist.Node[] {
   // follow with 'tab-end' annotation type, marking the end of the tab container
   res.push({
     type: 'html',
-    value: `<!--\n${yaml.safeDump({ type: 'tab-end' }).trim()}\n-->`,
+    value: `<!-- ${yaml.safeDump({ type: 'tab-end' }).trim()} -->`,
   });
 
   return res;
 }
 
 function transformTab(node: SMdast.ITab): Unist.Node[] {
-  const res: Unist.Node[] = [];
-
-  if (!node.annotations) {
-    node.annotations = {};
-  }
-
-  // add tab type back to annotation
-  node.annotations.type = 'tab';
-
-  const anno = transformAnnotations(node);
-  if (anno) {
-    res.push(anno);
-  }
-
-  res.push(...transform(node.children));
-
-  return res;
+  return transform(node.children);
 }
 
 function transform(nodes: Unist.Node[]): Unist.Node[] {
@@ -73,8 +51,12 @@ function transform(nodes: Unist.Node[]): Unist.Node[] {
 
     const node = nodes[i];
 
-    const { type } = node;
+    const anno = transformAnnotations(node);
+    if (anno) {
+      processed.push(anno);
+    }
 
+    const { type } = node;
     if (type === 'blockquote') {
       processed.push(...transformBlockquote(node as SMdast.IBlockquote));
     } else if (type === 'tabContainer') {
