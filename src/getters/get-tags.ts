@@ -21,7 +21,7 @@ export const getTags = (data?: Unist.Node): string[] => {
         }, []);
       }
     } catch (e) {
-      console.warn('Error getting title from markdown document', e);
+      console.warn('Error getting tags from markdown document', e);
     }
   }
 
