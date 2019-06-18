@@ -3,7 +3,7 @@ import { getSummary } from '../get-summary';
 
 describe('get-summary', () => {
   it('should return frontmatter summary if present', () => {
-    const title = getSummary(
+    const summary = getSummary(
       parse(`---
 summary: my summary
 ---
@@ -14,11 +14,11 @@ Yo
 `),
     );
 
-    expect(title).toBe('my summary');
+    expect(summary).toBe('my summary');
   });
 
   it('should return first paragraph if present', () => {
-    const title = getSummary(
+    const summary = getSummary(
       parse(`# Other Title
 
 Paragraph 1.
@@ -27,36 +27,36 @@ Paragraph 2.
 `),
     );
 
-    expect(title).toBe('Paragraph 1.');
+    expect(summary).toBe('Paragraph 1.');
   });
 
   it('should strip markdown out of paragraph', () => {
-    const title = getSummary(parse(`this has a [link](./foo.json)`));
+    const summary = getSummary(parse(`this has a [link](./foo.json)`));
 
-    expect(title).toBe('this has a link');
+    expect(summary).toBe('this has a link');
   });
 
-  it('should limit to 50 by default', () => {
-    const title = getSummary(
-      parse(`this is a longer paragraph that is over fifty characters long. it goes on and on and on`),
-    );
+  it('should limit to 150 by default', () => {
+    const val = `this is a longer paragraph that is over fifty characters long. it goes on and on and on. it wont stop cant stop forever and ever def more than 100 characters.`;
 
-    expect(title).toBe('this is a longer paragraph that is over fifty char');
+    const summary = getSummary(parse(val));
+
+    expect(summary).toBe(val.slice(0, 150));
   });
 
   it('should accept a length option', () => {
-    const title = getSummary(
+    const summary = getSummary(
       parse(`this is a longer paragraph that is over fifty characters long. it goes on and on and on`),
       {
         length: 4,
       },
     );
 
-    expect(title).toBe('this');
+    expect(summary).toBe('this');
   });
 
   it('should return undefined if no frontmatter summary and no paragraphs', () => {
-    const title = getSummary(parse(`## Hello`));
-    expect(title).toBe(undefined);
+    const summary = getSummary(parse(`## Hello`));
+    expect(summary).toBe(undefined);
   });
 });

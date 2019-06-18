@@ -11,7 +11,7 @@ export interface IGetSummaryOpts {
 
 // Priority: yaml title, then first heading
 export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
-  const length = opts.length || 50;
+  const length = opts.length || 150;
 
   let summary: string | void | undefined;
 
