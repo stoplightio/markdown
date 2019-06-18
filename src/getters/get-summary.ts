@@ -10,7 +10,7 @@ export interface IGetSummaryOpts {
   truncate?: number;
 }
 
-// Priority: yaml title, then first heading
+// Priority: yaml summary, then first paragraph
 export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
   let summary: string | void | undefined;
 
