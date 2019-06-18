@@ -36,23 +36,12 @@ Paragraph 2.
     expect(summary).toBe('this has a link');
   });
 
-  it('should limit to 150 by default', () => {
-    const val = `this is a longer paragraph that is over fifty characters long. it goes on and on and on. it wont stop cant stop forever and ever def more than 100 characters.`;
-
-    const summary = getSummary(parse(val));
-
-    expect(summary).toBe(`${val.slice(0, 150)}...`);
-  });
-
   it('should accept a length option', () => {
-    const summary = getSummary(
-      parse(`this is a longer paragraph that is over fifty characters long. it goes on and on and on`),
-      {
-        truncate: 4,
-      },
-    );
+    const summary = getSummary(parse(`the dog barks`), {
+      truncate: 3,
+    });
 
-    expect(summary).toBe('this...');
+    expect(summary).toBe('the...');
   });
 
   it('should return undefined if no frontmatter summary and no paragraphs', () => {

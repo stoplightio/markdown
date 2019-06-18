@@ -12,8 +12,6 @@ export interface IGetSummaryOpts {
 
 // Priority: yaml title, then first heading
 export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
-  const length = opts.truncate || 150;
-
   let summary: string | void | undefined;
 
   if (data) {
@@ -32,9 +30,9 @@ export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
     }
   }
 
-  if (summary) {
+  if (summary && opts.truncate) {
     // +3 to account for ellipsis
-    summary = truncate(summary, { length: length + 3 });
+    summary = truncate(summary, { length: opts.truncate + 3 });
   }
 
   return summary;
