@@ -48,7 +48,7 @@ Paragraph 2.
     const summary = getSummary(
       parse(`this is a longer paragraph that is over fifty characters long. it goes on and on and on`),
       {
-        length: 4,
+        truncate: 4,
       },
     );
 

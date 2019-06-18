@@ -7,12 +7,12 @@ const toString = require('mdast-util-to-string');
 import { Frontmatter } from '../frontmatter';
 
 export interface IGetSummaryOpts {
-  length?: number;
+  truncate?: number;
 }
 
 // Priority: yaml title, then first heading
 export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
-  const length = opts.length || 150;
+  const length = opts.truncate || 150;
 
   let summary: string | void | undefined;
 
