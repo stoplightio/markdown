@@ -41,7 +41,7 @@ Paragraph 2.
 
     const summary = getSummary(parse(val));
 
-    expect(summary).toBe(val.slice(0, 150));
+    expect(summary).toBe(`${val.slice(0, 150)}...`);
   });
 
   it('should accept a length option', () => {
@@ -52,7 +52,7 @@ Paragraph 2.
       },
     );
 
-    expect(summary).toBe('this');
+    expect(summary).toBe('this...');
   });
 
   it('should return undefined if no frontmatter summary and no paragraphs', () => {

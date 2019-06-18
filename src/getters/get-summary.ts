@@ -1,3 +1,4 @@
+import { truncate } from 'lodash';
 import * as Unist from 'unist';
 
 const { select } = require('unist-util-select');
@@ -32,7 +33,8 @@ export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
   }
 
   if (summary) {
-    summary = summary.slice(0, length);
+    // +3 to account for ellipsis
+    summary = truncate(summary, { length: length + 3 });
   }
 
   return summary;
