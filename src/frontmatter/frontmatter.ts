@@ -15,11 +15,11 @@ const safeParse = (value: string) => {
 };
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
-  public readonly document: Unist.Parent;
+  public readonly document: Unist.Node;
   private readonly node: Unist.Literal;
   private properties: Partial<T> | null;
 
-  constructor(data: Unist.Parent | string, mutate = false) {
+  constructor(data: Unist.Node | string, mutate = false) {
     const root =
       typeof data === 'string' ? parseWithPointers(data).data : mutate ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
@@ -95,7 +95,10 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   private updateDocument() {
-    const index = this.document.children.indexOf(this.node);
+    const children = this.document.children as Unist.Parent['children'] | undefined;
+    if (!children) return;
+
+    const index = children.indexOf(this.node);
 
     this.node.value = this.isEmpty
       ? ''
@@ -108,10 +111,10 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
     if (this.isEmpty) {
       if (index !== -1) {
-        this.document.children.splice(index, 1);
+        children.splice(index, 1);
       }
     } else if (index === -1) {
-      this.document.children.unshift(this.node);
+      children.unshift(this.node);
     }
   }
 }

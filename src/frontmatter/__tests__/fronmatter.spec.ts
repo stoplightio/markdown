@@ -179,7 +179,7 @@ Coolio.
         instance.set('new item', 2);
 
         expect(parsed.ast.children[0]!.value).toEqual(
-          'title: Graphite Introduction\ntags: [introductions, guides]\nnew item: 2'
+          'title: Graphite Introduction\ntags: [introductions, guides]\nnew item: 2',
         );
       });
 

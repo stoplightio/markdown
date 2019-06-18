@@ -15,7 +15,7 @@ const defaultProcessor = unified()
 export const stringify = (
   tree: Node,
   opts: IStringifyOpts = defaultOpts,
-  processor: unified.Processor = defaultProcessor
+  processor: unified.Processor = defaultProcessor,
 ) => {
   return processor()
     .data('settings', opts)

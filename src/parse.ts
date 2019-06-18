@@ -15,7 +15,7 @@ const defaultProcessor = unified()
 export const parse = (
   input: string,
   opts: IParseOpts = defaultOpts,
-  processor: unified.Processor = defaultProcessor
+  processor: unified.Processor = defaultProcessor,
 ): Unist.Node => {
   // return the parsed remark ast
   return processor()
