@@ -8,7 +8,7 @@ import { MarkdownParserResult } from './types';
 export const parseWithPointers = (
   value: string,
   opts?: IParseOpts,
-  processor?: unified.Processor
+  processor?: unified.Processor,
 ): MarkdownParserResult => {
   const tree = parse(value, opts, processor) as Unist.Parent;
   return {

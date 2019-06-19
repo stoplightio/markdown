@@ -5,3 +5,4 @@ export * from './parse';
 export * from './parseWithPointers';
 export * from './types';
 export * from './frontmatter';
+export * from './getters';
