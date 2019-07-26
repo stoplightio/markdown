@@ -1,20 +1,20 @@
-import remarkParse, { IParseOpts } from 'remark-parse';
+import remarkParse, { RemarkParseOptions } from 'remark-parse';
 import unified from 'unified';
 import * as Unist from 'unist';
 const frontmatter = require('remark-frontmatter');
 
-const defaultOpts: IParseOpts = {
+const defaultOpts: Partial<RemarkParseOptions> = {
   commonmark: true,
   gfm: true,
 };
 
 const defaultProcessor = unified()
-  .use(remarkParse)
+  .use<RemarkParseOptions[]>(remarkParse)
   .use(frontmatter, ['yaml']);
 
 export const parse = (
   input: string,
-  opts: IParseOpts = defaultOpts,
+  opts: Partial<RemarkParseOptions> = defaultOpts,
   processor: unified.Processor = defaultProcessor,
 ): Unist.Node => {
   // return the parsed remark ast

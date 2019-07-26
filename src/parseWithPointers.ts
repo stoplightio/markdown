@@ -1,4 +1,4 @@
-import { IParseOpts } from 'remark-parse';
+import { RemarkParseOptions } from 'remark-parse';
 import * as unified from 'unified';
 import * as Unist from 'unist';
 
@@ -7,7 +7,7 @@ import { MarkdownParserResult } from './types';
 
 export const parseWithPointers = (
   value: string,
-  opts?: IParseOpts,
+  opts?: Partial<RemarkParseOptions>,
   processor?: unified.Processor,
 ): MarkdownParserResult => {
   const tree = parse(value, opts, processor) as Unist.Parent;
