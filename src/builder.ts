@@ -1,10 +1,11 @@
 import * as Unist from 'unist';
+import { IRoot } from './ast-types/mdast';
 import { Reader } from './reader';
 import { ILangReader } from './reader/types';
 import { stringify } from './stringify';
 
 export class Builder {
-  public root: Unist.Parent;
+  public root: IRoot;
 
   constructor(public reader: ILangReader = new Reader()) {
     this.root = {
