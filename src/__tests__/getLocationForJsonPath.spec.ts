@@ -14,6 +14,7 @@ describe('getLocationForJsonPath', () => {
 
     it.each`
       start      | end         | path
+      ${[0, 0]}  | ${[21, 0]}  | ${[]}
       ${[0, 0]}  | ${[0, 10]}  | ${['children', 0]}
       ${[2, 0]}  | ${[2, 31]}  | ${['children', 1, 'children', 0]}
       ${[2, 32]} | ${[2, 40]}  | ${['children', 1, 'children', 1, 'children', 0]}
