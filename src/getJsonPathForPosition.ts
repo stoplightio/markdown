@@ -1,7 +1,8 @@
 import { GetJsonPathForPosition, IPosition, JsonPath } from '@stoplight/types';
 import * as Unist from 'unist';
+import { MarkdownParserResult } from './types';
 
-export const getJsonPathForPosition: GetJsonPathForPosition<Unist.Node> = ({ ast }, position) => {
+export const getJsonPathForPosition: GetJsonPathForPosition<MarkdownParserResult> = ({ ast }, position) => {
   const path: JsonPath = [];
   findNodeAtPosition(ast, position, path);
   return path;
