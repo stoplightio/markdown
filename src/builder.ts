@@ -1,13 +1,12 @@
 import * as Unist from 'unist';
 import { IRoot } from './ast-types/mdast';
 import { Reader } from './reader';
-import { ILangReader } from './reader/types';
 import { stringify } from './stringify';
 
 export class Builder {
   public root: IRoot;
 
-  constructor(public reader: ILangReader = new Reader()) {
+  constructor(public reader = new Reader()) {
     this.root = {
       type: 'root',
       children: [],
@@ -15,14 +14,18 @@ export class Builder {
   }
 
   public addMarkdown(markdown: string) {
-    this.root.children.push(...this.reader.fromLang(markdown).children);
+    this.root.children.push(...this.reader.toSpec(this.reader.fromLang(markdown)).children);
+
+    return this;
   }
 
   public addChild(node: Unist.Node) {
     this.root.children.push(node);
+
+    return this;
   }
 
   public toString() {
-    return stringify(this.root);
+    return stringify(this.reader.fromSpec(this.root));
   }
 }
