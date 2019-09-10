@@ -15,10 +15,14 @@ export class Builder {
 
   public addMarkdown(markdown: string) {
     this.root.children.push(...this.reader.toSpec(this.reader.fromLang(markdown)).children);
+
+    return this;
   }
 
   public addChild(node: Unist.Node) {
     this.root.children.push(node);
+
+    return this;
   }
 
   public toString() {
