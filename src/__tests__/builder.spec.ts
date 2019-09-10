@@ -1,5 +1,5 @@
 import fs = require('fs');
-import path = require('path');
+import * as path from 'path';
 import { Builder } from '../builder';
 
 describe('Builder', () => {
