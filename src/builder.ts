@@ -22,6 +22,6 @@ export class Builder {
   }
 
   public toString() {
-    return stringify(this.root);
+    return stringify(this.reader.fromSpec(this.root));
   }
 }

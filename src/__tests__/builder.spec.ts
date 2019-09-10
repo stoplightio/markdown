@@ -1,3 +1,5 @@
+import fs = require('fs');
+import path = require('path');
 import { Builder } from '../builder';
 
 describe('Builder', () => {
@@ -7,6 +9,16 @@ describe('Builder', () => {
       const markdown = '**foo**\n\nwooo';
       b.addMarkdown(markdown);
       expect(b.toString()).toEqual(`${markdown}\n`);
+    });
+
+    it('correctly parses stoplight markdown tabs', () => {
+      const b = new Builder();
+
+      const tabsMarkdown = fs.readFileSync(path.resolve(__dirname, './__fixtures__/tabs.md'), 'utf-8');
+
+      b.addMarkdown(tabsMarkdown);
+
+      expect(b.toString()).toEqual(tabsMarkdown);
     });
   });
 
