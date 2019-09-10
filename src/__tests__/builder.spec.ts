@@ -1,4 +1,4 @@
-import fs = require('fs');
+import * as fs from 'fs';
 import * as path from 'path';
 import { Builder } from '../builder';
 
