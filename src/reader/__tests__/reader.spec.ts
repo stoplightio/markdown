@@ -230,7 +230,10 @@ highlightLines: [[1,2], [4,5]]
           annotations: {
             title: 'My code snippet',
             lineNumbers: false,
-            highlightLines: [[1, 2], [4, 5]],
+            highlightLines: [
+              [1, 2],
+              [4, 5],
+            ],
           },
         }),
       ]);
