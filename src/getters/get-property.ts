@@ -1,6 +1,6 @@
 import * as Unist from 'unist';
+import { select } from 'unist-util-select';
 
-const { select } = require('unist-util-select');
 const toString = require('mdast-util-to-string');
 
 import { Frontmatter } from '../frontmatter';
