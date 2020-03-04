@@ -1,3 +1,4 @@
+import { Optional } from '@stoplight/types';
 import * as yaml from 'js-yaml';
 import { get, pullAt, set, toPath, unset } from 'lodash';
 import * as Unist from 'unist';
@@ -92,6 +93,12 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
   public stringify() {
     return stringify(this.document);
+  }
+
+  // based on https://github.com/remarkjs/remark-frontmatter/blob/3c18752b01af683d94641e47bd79581690a995b7/lib/parse.js
+  public static getFrontmatterBlock(value: string): Optional<string> {
+    const match = value.match(/^(\s*\n)?---.*?\n---/s);
+    return match === null ? void 0 : match[0];
   }
 
   private updateDocument() {

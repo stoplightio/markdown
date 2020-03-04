@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import { join } from 'path';
 import * as Unist from 'unist';
 
+import { parse } from '../../parse';
 import { parseWithPointers } from '../../parseWithPointers';
 import { stringify } from '../../stringify';
 import { Frontmatter } from '../frontmatter';
@@ -38,6 +39,10 @@ describe('Frontmatter', () => {
       expect(instance.get('test')).toBeUndefined();
     });
 
+    it('getFrontmatterBlock should return undefined', () => {
+      expect(Frontmatter.getFrontmatterBlock(fixture)).toBeUndefined();
+    });
+
     describe('set', () => {
       it('should create frontmatter block', () => {
         const instance = new Frontmatter(fixture);
@@ -65,6 +70,13 @@ foo: 123
       const instance = new Frontmatter(invalid);
 
       expect(instance.getAll()).toEqual({});
+    });
+
+    it('getFrontmatterBlock should return block', () => {
+      expect(Frontmatter.getFrontmatterBlock(invalid)).toEqual(`---
+tti
+tags: [Hubs]
+---`);
     });
 
     describe('set', () => {
@@ -106,6 +118,13 @@ tags: [test]
         tags: ['introductions', 'guides'],
         title: 'Graphite Introduction',
       });
+    });
+
+    it('getFrontmatterBlock should return block', () => {
+      expect(Frontmatter.getFrontmatterBlock(tags)).toEqual(`---
+title: Graphite Introduction
+tags: ['introductions', 'guides']
+---`);
     });
 
     describe('#get', () => {
@@ -283,6 +302,30 @@ Coolio.
     it('should expose a way to stringify existing document', () => {
       const instance = new Frontmatter(tags);
       expect(instance.stringify()).toEqual(tags);
+    });
+  });
+
+  describe('getFrontmatterBlock method', () => {
+    it.each(['---', '------', '---\nfoo', '--\n---', '---\na--', '\na\n---'])(
+      'should return undefined for incomplete block `%s`',
+      document => {
+        const block = Frontmatter.getFrontmatterBlock(document);
+        expect(block).toBeUndefined();
+        expect(parse(document)).toEqual(
+          expect.objectContaining({
+            type: 'root',
+            children: expect.arrayContaining([expect.not.objectContaining({ type: 'yaml' })]),
+          }),
+        );
+      },
+    );
+
+    it.each(['---\n---', '---\nfoo\n---'])('should produce the same result for `%s`', () => {
+      const document = `---\n---`;
+      const block = Frontmatter.getFrontmatterBlock(document)!;
+
+      expect(block).toEqual(document);
+      expect(stringify(parse(block))).toEqual(stringify(parse(document)));
     });
   });
 });
