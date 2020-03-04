@@ -1,6 +1,7 @@
 import remarkParse, { RemarkParseOptions } from 'remark-parse';
 import unified from 'unified';
 import * as Unist from 'unist';
+import { FRONTMATTER_SETTINGS } from './consts';
 const frontmatter = require('remark-frontmatter');
 
 const defaultOpts: Partial<RemarkParseOptions> = {
@@ -10,7 +11,7 @@ const defaultOpts: Partial<RemarkParseOptions> = {
 
 const defaultProcessor = unified()
   .use<RemarkParseOptions[]>(remarkParse)
-  .use(frontmatter, ['yaml']);
+  .use(frontmatter, FRONTMATTER_SETTINGS);
 
 export const parse = (
   input: string,

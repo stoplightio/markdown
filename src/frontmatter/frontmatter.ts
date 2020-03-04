@@ -1,7 +1,11 @@
+import { Optional } from '@stoplight/types';
 import * as yaml from 'js-yaml';
 import { get, pullAt, set, toPath, unset } from 'lodash';
 import * as Unist from 'unist';
+const fence = require('remark-frontmatter/lib/fence');
+const matters = require('remark-frontmatter/lib/matters');
 
+import { FRONTMATTER_SETTINGS } from '../consts';
 import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
@@ -92,6 +96,33 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
   public stringify() {
     return stringify(this.document);
+  }
+
+  // based on https://github.com/remarkjs/remark-frontmatter/blob/3c18752b01af683d94641e47bd79581690a995b7/lib/parse.js
+  public static getFrontmatterBlock(value: string): Optional<string> {
+    const [matter] = matters(FRONTMATTER_SETTINGS);
+    const open = fence(matter, 'open');
+    const close = fence(matter, 'close');
+    const newline = '\n';
+
+    let index = open.length;
+
+    if (value.slice(0, index) !== open || value.charAt(index) !== newline) {
+      return;
+    }
+
+    let offset = value.indexOf(close, index);
+
+    while (offset !== -1 && value.charAt(offset - 1) !== newline) {
+      index = offset + close.length;
+      offset = value.indexOf(close, index);
+    }
+
+    if (offset !== -1) {
+      return value.slice(0, offset + close.length);
+    }
+
+    return;
   }
 
   private updateDocument() {
