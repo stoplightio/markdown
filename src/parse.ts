@@ -2,6 +2,7 @@ import remarkParse, { RemarkParseOptions } from 'remark-parse';
 import unified from 'unified';
 import * as Unist from 'unist';
 const frontmatter = require('remark-frontmatter');
+import jiraBlocks from './plugins/jiraBlocks';
 
 const defaultOpts: Partial<RemarkParseOptions> = {
   commonmark: true,
@@ -10,6 +11,8 @@ const defaultOpts: Partial<RemarkParseOptions> = {
 
 const defaultProcessor = unified()
   .use<RemarkParseOptions[]>(remarkParse)
+  // @ts-ignore
+  .use(jiraBlocks)
   .use(frontmatter, ['yaml']);
 
 export const parse = (
