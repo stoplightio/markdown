@@ -11,7 +11,6 @@ const defaultOpts: Partial<RemarkParseOptions> = {
 
 const defaultProcessor = unified()
   .use<RemarkParseOptions[]>(remarkParse)
-  // @ts-ignore
   .use(jiraBlocks)
   .use(frontmatter, ['yaml']);
 

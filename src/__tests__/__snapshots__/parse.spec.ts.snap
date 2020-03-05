@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parse jira blocks parses more complex document correctly 1`] = `
+exports[`parse jira blocks should parse more complex document correctly 1`] = `
 Object {
   "children": Array [
     Object {

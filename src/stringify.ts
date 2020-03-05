@@ -1,15 +1,18 @@
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 import { Node } from 'unist';
+import jiraBlocks from './plugins/jiraBlocks';
 const frontmatter = require('remark-frontmatter');
 
 const defaultOpts: Partial<RemarkStringifyOptions> = {
   commonmark: true,
   gfm: true,
+  listItemIndent: 'mixed', // this is needed to preserve the original indentation
 };
 
 const defaultProcessor = unified()
   .use<RemarkStringifyOptions[]>(remarkStringify)
+  .use(jiraBlocks)
   .use(frontmatter, ['yaml']);
 
 export const stringify = (

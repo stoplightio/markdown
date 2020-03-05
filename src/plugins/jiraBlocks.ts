@@ -1,23 +1,25 @@
 import * as remarkParse from 'remark-parse';
+import * as unified from 'unified';
+import { IJiraNode } from '../ast-types/mdast';
 
-export default function(this: remarkParse.Parse) {
-  const Parser = this.Parser;
+export default function(this: unified.Processor) {
+  const { Compiler, Parser } = this;
 
-  // @ts-ignore
-  Parser.prototype.blockTokenizers.jira = tokenizeJiraBlock;
+  if (Compiler !== void 0) {
+    Compiler.prototype.visitors.jira = compileJiraBlock;
+  } else if (Parser !== void 0) {
+    Parser.prototype.blockTokenizers.jira = tokenizeJiraBlock;
+    Parser.prototype.interruptParagraph.push(['jira']);
 
-  // @ts-ignore
-  Parser.prototype.interruptParagraph.push(['jira']);
-
-  // @ts-ignore
-  const methods = Parser.prototype.blockMethods;
-  methods.splice(methods.indexOf('fencedCode') + 1, 0, 'jira');
+    const methods = Parser.prototype.blockMethods;
+    methods.splice(methods.indexOf('fencedCode') + 1, 0, 'jira');
+  }
 }
 
 const blockStart = /^\[block:([A-Za-z]+)\][^\S\n]*(?=\n)/;
 const blockEnd = /\[\/block\][^\S\n]*(?=\n|$)/;
 
-const tokenizeJiraBlock = (eat: remarkParse.Eat, value: string, silent: boolean) => {
+function tokenizeJiraBlock(eat: remarkParse.Eat, value: string, silent: boolean) {
   const blockStartMatch = blockStart.exec(value);
   const blockEndMatch = blockEnd.exec(value); // let's naively assume block cannot be placed in any node besides content
 
@@ -26,12 +28,18 @@ const tokenizeJiraBlock = (eat: remarkParse.Eat, value: string, silent: boolean)
       return true;
     }
 
-    return eat(value.slice(0, blockEndMatch.index + blockEndMatch[0].length))({
+    const node: IJiraNode = {
       type: 'jira',
       code: blockStartMatch[1],
       value: value.slice(blockStartMatch[0].length + 1, blockEndMatch.index - 1),
-    });
+    };
+
+    return eat(value.slice(0, blockEndMatch.index + blockEndMatch[0].length))(node);
   }
 
   return false;
-};
+}
+
+function compileJiraBlock(node: IJiraNode) {
+  return `[block:${node.code}]\n${node.value}\n[/block]`;
+}

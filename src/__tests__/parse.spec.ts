@@ -14,7 +14,7 @@ describe('parse', () => {
   });
 
   describe('jira blocks', () => {
-    it('parses simple jira block', () => {
+    it('should parse simple jira block', () => {
       expect(
         parse(`[block:image]
 {}
@@ -45,11 +45,11 @@ describe('parse', () => {
       );
     });
 
-    it('parses more complex document correctly', () => {
+    it('should parse more complex document correctly', () => {
       expect(parse(fs.readFileSync(join(__dirname, '__fixtures__/jira.md'), 'utf8'))).toMatchSnapshot();
     });
 
-    it('does not recognize blocks contained in fenced code', () => {
+    it('should not recognize blocks contained in fenced code', () => {
       expect(
         parse(`\`\`\`
 [block:image]
@@ -71,7 +71,7 @@ describe('parse', () => {
       );
     });
 
-    describe('does not recognize invalid blocks', () => {
+    describe('should not recognize invalid blocks', () => {
       it('no new-line', () => {
         expect(
           parse(`[block:image] {}

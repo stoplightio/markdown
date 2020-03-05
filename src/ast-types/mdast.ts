@@ -142,3 +142,9 @@ export interface IElement extends Unist.Node {
   properties: object;
   children: Unist.Node[];
 }
+
+export interface IJiraNode extends Unist.Node {
+  type: 'jira';
+  code: string;
+  value: string;
+}
