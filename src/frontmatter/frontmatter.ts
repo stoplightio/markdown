@@ -95,7 +95,6 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     return stringify(this.document);
   }
 
-  // based on https://github.com/remarkjs/remark-frontmatter/blob/3c18752b01af683d94641e47bd79581690a995b7/lib/parse.js
   public static getFrontmatterBlock(value: string): Optional<string> {
     const match = value.match(/^(\s*\n)?---.*?\n---/s);
     return match === null ? void 0 : match[0];
