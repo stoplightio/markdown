@@ -4,6 +4,7 @@
   // target all ts files
   "include": ["."],
   "compilerOptions": {
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "module": "CommonJS"
   }
 }
