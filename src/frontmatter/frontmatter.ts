@@ -96,7 +96,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   public static getFrontmatterBlock(value: string): Optional<string> {
-    const match = value.match(/^(\s*\n)?---.*?\n---/s);
+    const match = value.match(/^(\s*\n)?---(?:.|[\n\r\u2028\u2029])*?\n---/);
     return match === null ? void 0 : match[0];
   }
 
