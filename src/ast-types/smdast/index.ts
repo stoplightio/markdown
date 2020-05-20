@@ -27,7 +27,6 @@ export {
   IFootnote,
   IFootnoteReference,
   IFootnoteDefinition,
-  IElement,
   IJiraNode,
 } from '../mdast';
 export * from './element';
