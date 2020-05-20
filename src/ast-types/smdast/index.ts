@@ -3,6 +3,7 @@ import * as MDASst from '../mdast';
 import { IAnnotations } from './annotations';
 
 export {
+  IBreak,
   IThematicBreak,
   ITable,
   ITableCell,
@@ -16,12 +17,17 @@ export {
   IParagraph,
   ILink,
   ILinkReference,
+  IYAML,
   IImage,
   IImageReference,
   IInlineCode,
   ITextNode,
   IList,
   IListItem,
+  IFootnote,
+  IFootnoteReference,
+  IFootnoteDefinition,
+  IJiraNode,
 } from '../mdast';
 export * from './element';
 export * from './annotations';
