@@ -1,5 +1,5 @@
 import { Dictionary } from '@stoplight/types';
-import * as yaml from 'js-yaml';
+import { parse } from '@stoplight/yaml';
 import * as Unist from 'unist';
 import * as Mdast from '../../ast-types/mdast';
 import * as SMdast from '../../ast-types/smdast';
@@ -17,7 +17,7 @@ function captureAnnotations<T extends Dictionary<any>>(node: Unist.Node | undefi
 
     // load contents of annotation into yaml
     try {
-      const contents = yaml.safeLoad(raw);
+      const contents = parse<T>(raw);
       if (typeof contents === 'object') {
         // annotations must be objects, otherwise it's just a regular ol html comment
         return contents;

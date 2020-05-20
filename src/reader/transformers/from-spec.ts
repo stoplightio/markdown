@@ -1,4 +1,4 @@
-import * as yaml from 'js-yaml';
+import { safeStringify } from '@stoplight/yaml';
 import * as Unist from 'unist';
 import * as Mdast from '../../ast-types/mdast';
 import * as SMdast from '../../ast-types/smdast';
@@ -11,7 +11,7 @@ function transformAnnotations(node: Unist.Node): Unist.Node | null {
 
   return {
     type: 'html',
-    value: `<!--${propCount > 1 ? '\n' : ' '}${yaml.safeDump(node.annotations).trim()}${propCount > 1 ? '\n' : ' '}-->`,
+    value: `<!--${propCount > 1 ? '\n' : ' '}${safeStringify(node.annotations).trim()}${propCount > 1 ? '\n' : ' '}-->`,
   };
 }
 
@@ -33,7 +33,7 @@ function transformTabContainer(node: SMdast.ITabContainer): Unist.Node[] {
   // follow with 'tab-end' annotation type, marking the end of the tab container
   res.push({
     type: 'html',
-    value: `<!-- ${yaml.safeDump({ type: 'tab-end' }).trim()} -->`,
+    value: `<!-- ${safeStringify({ type: 'tab-end' }).trim()} -->`,
   });
 
   return res;

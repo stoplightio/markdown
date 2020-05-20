@@ -1,5 +1,5 @@
-import { Optional } from '@stoplight/types';
-import * as yaml from 'js-yaml';
+import { DiagnosticSeverity, IDiagnostic, Optional } from '@stoplight/types';
+import { parseWithPointers as parseYaml, safeStringify } from '@stoplight/yaml';
 import { get, pullAt, set, toPath, unset } from 'lodash';
 import * as Unist from 'unist';
 
@@ -7,9 +7,17 @@ import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
 
-const safeParse = (value: string) => {
+const isError = ({ severity }: IDiagnostic) => severity === DiagnosticSeverity.Error;
+
+const safeParse = <T>(value: string): T | {} => {
   try {
-    return yaml.safeLoad(String(value));
+    const { data, diagnostics } = parseYaml<T>(String(value));
+
+    if (data === void 0 || (diagnostics.length > 0 && diagnostics.some(isError))) {
+      return {};
+    }
+
+    return data;
   } catch {
     return {};
   }
@@ -30,7 +38,8 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
     this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
       this.node = root.children[0] as Unist.Literal;
-      this.properties = safeParse(this.node.value as string);
+      // typings are a bit tricked, but let's move the burden of validation to consumer
+      this.properties = safeParse<Partial<T>>(this.node.value as string);
     } else {
       this.node = {
         type: 'yaml',
@@ -108,12 +117,10 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
     this.node.value = this.isEmpty
       ? ''
-      : yaml
-          .safeDump(this.properties, {
-            flowLevel: 1,
-            indent: 2,
-          })
-          .trim();
+      : safeStringify(this.properties, {
+          flowLevel: 1,
+          indent: 2,
+        }).trim();
 
     if (this.isEmpty) {
       if (index !== -1) {
