@@ -56,7 +56,6 @@
     "@types/lodash": "^4.14.152",
     "@types/unist": "^2.0.3",
     "jest": "^26.0.1",
-    "js-yaml": "^3.13.1",
     "ts-jest": "^26.0.0",
     "tslint": "^5.20.1",
     "tslint-config-stoplight": "^1.4.0",
