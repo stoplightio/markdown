@@ -23,6 +23,7 @@ export {
   IInlineCode,
   ITextNode,
   IList,
+  IStrong,
   IListItem,
   IFootnote,
   IFootnoteReference,
