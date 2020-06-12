@@ -1,6 +1,6 @@
 import { DiagnosticSeverity, IDiagnostic, Optional } from '@stoplight/types';
 import { parseWithPointers as parseYaml, safeStringify } from '@stoplight/yaml';
-import { get, pullAt, set, toPath, unset } from 'lodash';
+import { get, pullAt, set, toPath, unset } from 'lodash-es';
 import * as Unist from 'unist';
 
 import { parseWithPointers } from '../parseWithPointers';

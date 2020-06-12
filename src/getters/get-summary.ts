@@ -1,4 +1,4 @@
-import { truncate } from 'lodash';
+import { truncate } from 'lodash-es';
 import * as Unist from 'unist';
 
 import { getProperty } from './get-property';
