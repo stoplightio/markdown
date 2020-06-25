@@ -10,24 +10,23 @@ describe('merge HTML plugin', () => {
       unified()
         .use(mergeHtml)
         .runSync(parsed),
-    ).toStrictEqual(
-      expect.objectContaining({
-        type: 'root',
-        children: [
-          {
-            type: 'paragraph',
-            position: expect.any(Object),
-            children: [
-              {
-                type: 'html',
-                value: '<span></span>',
-                position: expect.any(Object),
-              },
-            ],
-          },
-        ],
-      }),
-    );
+    ).toStrictEqual({
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          position: expect.any(Object),
+          children: [
+            {
+              type: 'html',
+              value: '<span></span>',
+              position: expect.any(Object),
+            },
+          ],
+        },
+      ],
+      position: expect.any(Object),
+    });
   });
 
   it('should parse attributes', () => {
@@ -38,36 +37,35 @@ describe('merge HTML plugin', () => {
       unified()
         .use(mergeHtml)
         .runSync(parsed),
-    ).toStrictEqual(
-      expect.objectContaining({
-        type: 'root',
-        children: [
-          {
-            type: 'paragraph',
-            position: expect.any(Object),
-            children: [
-              {
-                type: 'inlineHtml',
-                attributes: {
-                  attr: true,
-                  class: 'animated infinite',
-                  'ng-class': 'main.classAnimation',
-                },
-                tagName: 'span',
-                position: expect.any(Object),
-                children: [
-                  {
-                    type: 'text',
-                    value: 'foo',
-                    position: expect.any(Object),
-                  },
-                ],
+    ).toStrictEqual({
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          position: expect.any(Object),
+          children: [
+            {
+              type: 'inlineHtml',
+              attributes: {
+                attr: true,
+                class: 'animated infinite',
+                'ng-class': 'main.classAnimation',
               },
-            ],
-          },
-        ],
-      }),
-    );
+              tagName: 'span',
+              position: expect.any(Object),
+              children: [
+                {
+                  type: 'text',
+                  value: 'foo',
+                  position: expect.any(Object),
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      position: expect.any(Object),
+    });
   });
 
   it('should prepare children for inline html element', () => {
@@ -77,87 +75,86 @@ describe('merge HTML plugin', () => {
       unified()
         .use(mergeHtml)
         .runSync(parsed),
-    ).toStrictEqual(
-      expect.objectContaining({
-        type: 'root',
-        children: [
-          {
-            type: 'paragraph',
-            position: expect.any(Object),
-            children: [
-              {
-                type: 'text',
-                value: 'HTML link ',
-                position: expect.any(Object),
+    ).toStrictEqual({
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          position: expect.any(Object),
+          children: [
+            {
+              type: 'text',
+              value: 'HTML link ',
+              position: expect.any(Object),
+            },
+            {
+              type: 'inlineHtml',
+              attributes: {
+                href: 'https://google.com',
               },
-              {
-                type: 'inlineHtml',
-                attributes: {
-                  href: 'https://google.com',
+              tagName: 'a',
+              position: expect.any(Object),
+              children: [
+                {
+                  type: 'strong',
+                  position: expect.any(Object),
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'hello',
+                      position: expect.any(Object),
+                    },
+                  ],
                 },
-                tagName: 'a',
-                position: expect.any(Object),
-                children: [
-                  {
-                    type: 'strong',
-                    position: expect.any(Object),
-                    children: [
-                      {
-                        type: 'text',
-                        value: 'hello',
-                        position: expect.any(Object),
-                      },
-                    ],
-                  },
-                  {
-                    type: 'text',
-                    value: ' ',
-                    position: expect.any(Object),
-                  },
-                  {
-                    position: expect.any(Object),
-                    type: 'emphasis',
-                    children: [
-                      {
-                        type: 'text',
-                        position: expect.any(Object),
-                        value: 'world',
-                      },
-                    ],
-                  },
-                  {
-                    type: 'text',
-                    value: ' ',
-                    position: expect.any(Object),
-                  },
-                  {
-                    type: 'delete',
-                    position: expect.any(Object),
-                    children: [
-                      {
-                        type: 'text',
-                        value: 'navigate',
-                        position: expect.any(Object),
-                      },
-                    ],
-                  },
-                  {
-                    type: 'text',
-                    value: ' to',
-                    position: expect.any(Object),
-                  },
-                ],
-              },
-              {
-                type: 'text',
-                position: expect.any(Object),
-                value: '.',
-              },
-            ],
-          },
-        ],
-      }),
-    );
+                {
+                  type: 'text',
+                  value: ' ',
+                  position: expect.any(Object),
+                },
+                {
+                  position: expect.any(Object),
+                  type: 'emphasis',
+                  children: [
+                    {
+                      type: 'text',
+                      position: expect.any(Object),
+                      value: 'world',
+                    },
+                  ],
+                },
+                {
+                  type: 'text',
+                  value: ' ',
+                  position: expect.any(Object),
+                },
+                {
+                  type: 'delete',
+                  position: expect.any(Object),
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'navigate',
+                      position: expect.any(Object),
+                    },
+                  ],
+                },
+                {
+                  type: 'text',
+                  value: ' to',
+                  position: expect.any(Object),
+                },
+              ],
+            },
+            {
+              type: 'text',
+              position: expect.any(Object),
+              value: '.',
+            },
+          ],
+        },
+      ],
+      position: expect.any(Object),
+    });
   });
 
   it('should ignore any markdown inside block html element', () => {
