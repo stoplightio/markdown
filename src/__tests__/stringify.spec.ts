@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import { join } from 'path';
-import { parse } from '../parse';
 import { stringify } from '../stringify';
 
 describe('stringify', () => {
@@ -16,11 +15,5 @@ describe('stringify', () => {
     const json = JSON.parse(fs.readFileSync(join(__dirname, './__fixtures__/simple/root.json'), 'utf8'));
 
     expect(stringify(json)).toBe(stringify(json));
-  });
-
-  it('should stringify markdown containing jira blocks', () => {
-    const document = fs.readFileSync(join(__dirname, './__fixtures__/jira.md'), 'utf8');
-
-    expect(stringify(parse(document))).toBe(document);
   });
 });

@@ -1,3 +1,4 @@
+import { Dictionary } from '@stoplight/types';
 import * as Unist from 'unist';
 
 export type AlignType = 'left' | 'right' | 'center' | null;
@@ -35,6 +36,12 @@ export interface IYAML extends Unist.Literal {
 
 export interface IHTML extends Unist.Literal {
   type: 'html';
+}
+
+export interface IInlineHTML extends Unist.Parent {
+  type: 'inlineHtml';
+  attributes: Dictionary<string | true, string>;
+  tagName: string;
 }
 
 export interface IList extends Unist.Parent {
