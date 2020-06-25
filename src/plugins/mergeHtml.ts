@@ -38,39 +38,60 @@ function locateNextHtmlNode(parent: Parent, index: number): number {
   return -1;
 }
 
+function mergeSiblingsHtml(left: IHTML, right: IHTML): void {
+  if (typeof left.value !== 'string' || typeof right.value !== 'string') return;
+
+  left.value += right.value;
+  if (left.position !== void 0 && right.position !== void 0) {
+    left.position.end = right.position.end;
+  }
+}
+
 const onVisit: visit.Visitor<IHTML> = (node, index, parent) => {
   // isParentNode is unlikely to be needed, but let's trust typings
   if (!isParentNode(parent)) return;
 
   const nextHtmlNodeIndex = locateNextHtmlNode(parent, index);
   if (nextHtmlNodeIndex === -1 || typeof node.value !== 'string') return;
-  const { tagName, attributes } = parse(node.value);
 
-  const nextHtmlNode = parent.children[nextHtmlNodeIndex];
+  const nextHtmlNode = parent.children[nextHtmlNodeIndex] as IHTML;
 
-  const newNode: IInlineHTML = {
-    type: 'inlineHtml',
-    children: parent.children.slice(index + 1, index + nextHtmlNodeIndex - 1),
-    attributes,
-    tagName,
-    ...(node.position !== void 0 &&
-      nextHtmlNode.position !== void 0 && {
-        position: {
-          end: nextHtmlNode.position.end,
-          start: node.position.start,
-          indent: node.position.indent,
-        },
-      }),
-  };
+  if (index + 1 === nextHtmlNodeIndex) {
+    mergeSiblingsHtml(node, nextHtmlNode);
+    parent.children.splice(nextHtmlNodeIndex, 1);
+    return [visit.SKIP, nextHtmlNodeIndex];
+  }
 
-  parent.children[index] = newNode;
-  parent.children.splice(index + 1, nextHtmlNodeIndex - index);
+  try {
+    const { tagName, attributes } = parse(node.value);
 
-  return [visit.SKIP, nextHtmlNodeIndex];
+    const newNode: IInlineHTML = {
+      type: 'inlineHtml',
+      children: parent.children.slice(index + 1, nextHtmlNodeIndex),
+      attributes,
+      tagName,
+      ...(node.position !== void 0 &&
+        nextHtmlNode.position !== void 0 && {
+          position: {
+            end: nextHtmlNode.position.end,
+            start: node.position.start,
+            indent: node.position.indent,
+          },
+        }),
+    };
+
+    parent.children[index] = newNode;
+    parent.children.splice(index + 1, newNode.children.length + 1);
+
+    return [visit.SKIP, nextHtmlNodeIndex];
+  } catch (ex) {
+    // parsing failed, let's go with default nodes
+    return;
+  }
 };
 
 /**
- * based on https://github.com/nghiattran/html-attribute-parser with a few minor tweaks + a bugfix
+ * tweaked version of https://github.com/nghiattran/html-attribute-parser
  */
 function stringParser(source: typeof Source) {
   const stringSym = source.currentChar();
@@ -90,20 +111,53 @@ function stringParser(source: typeof Source) {
   return;
 }
 
-function parseName(source: typeof Source) {
-  let name = '';
+// the vast chunk of parsing is already done on the remark side of things, but let's have our own simple logic here as well to make sure React can render the element without any problems
 
+function isASCIIAlpha(charCode: number) {
+  return (
+    // https://infra.spec.whatwg.org/#ascii-upper-alpha
+    (charCode >= 65 && charCode <= 90) ||
+    // https://infra.spec.whatwg.org/#ascii-lower-alpha
+    (charCode >= 97 && charCode <= 122)
+  );
+}
+
+function isASCIIDigit(charCode: number) {
+  return (
+    // https://infra.spec.whatwg.org/#ascii-digit
+    charCode >= 48 && charCode <= 57
+  );
+}
+
+// https://html.spec.whatwg.org/multipage/syntax.html#syntax-tag-name
+function isValidTagIdentifierCharCode(charCode: number) {
+  return (
+    isASCIIAlpha(charCode) ||
+    isASCIIDigit(charCode) ||
+    // dash for web-components
+    charCode === 45
+  );
+}
+
+function parseName(source: typeof Source) {
   let char = source.nextChar();
-  while (char) {
-    if (char === ' ') {
-      source.nextChar();
-      return name;
-    } else if (char !== '>') {
-      name += char;
-    }
-    char = source.nextChar();
+  let name = char;
+
+  if (!isASCIIAlpha(char.charCodeAt(0))) {
+    throw new SyntaxError('tagName has to start with ascii alpha char');
   }
-  return name;
+
+  // tslint:disable-next-line:no-conditional-assignment
+  while ((char = source.nextChar()) && isValidTagIdentifierCharCode(char.charCodeAt(0))) {
+    name += char;
+  }
+
+  if (name === '') {
+    throw new SyntaxError('No valid tagName found');
+  }
+
+  source.nextChar(); // this is to scan `>`
+  return name.toLowerCase();
 }
 
 function parseAttributes(source: typeof Source): Dictionary<string | true, string> {
@@ -127,6 +181,7 @@ function parseAttributes(source: typeof Source): Dictionary<string | true, strin
         field += char;
       }
     }
+
     char = source.nextChar();
   }
 
