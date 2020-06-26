@@ -13,6 +13,7 @@ export {
   IEmphasis,
   IHeading,
   IHTML,
+  IInlineHTML,
   IRoot,
   IParagraph,
   ILink,
