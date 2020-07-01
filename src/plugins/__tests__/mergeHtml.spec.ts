@@ -157,6 +157,57 @@ describe('merge HTML plugin', () => {
     });
   });
 
+  it('should ignore self-closing tags', () => {
+    const parsed = parse(`<input>foo<img>bar<img />foobar`);
+
+    expect(
+      unified()
+        .use(mergeHtml)
+        .runSync(parsed),
+    ).toStrictEqual({
+      type: 'root',
+      children: [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'html',
+              value: '<input>',
+              position: expect.any(Object),
+            },
+            {
+              type: 'text',
+              value: 'foo',
+              position: expect.any(Object),
+            },
+            {
+              type: 'html',
+              value: '<img>',
+              position: expect.any(Object),
+            },
+            {
+              type: 'text',
+              value: 'bar',
+              position: expect.any(Object),
+            },
+            {
+              type: 'html',
+              value: '<img />',
+              position: expect.any(Object),
+            },
+            {
+              type: 'text',
+              value: 'foobar',
+              position: expect.any(Object),
+            },
+          ],
+          position: expect.any(Object),
+        },
+      ],
+      position: expect.any(Object),
+    });
+  });
+
   it('should ignore any markdown inside block html element', () => {
     const parsed = parse(`<dl>
   <dt>Definition list</dt>
