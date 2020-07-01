@@ -158,7 +158,7 @@ describe('merge HTML plugin', () => {
   });
 
   it('should ignore self-closing tags', () => {
-    const parsed = parse(`<input>foo<img>bar<img>`);
+    const parsed = parse(`<input>foo<img>bar<img />foobar`);
 
     expect(
       unified()
@@ -192,7 +192,12 @@ describe('merge HTML plugin', () => {
             },
             {
               type: 'html',
-              value: '<img>',
+              value: '<img />',
+              position: expect.any(Object),
+            },
+            {
+              type: 'text',
+              value: 'foobar',
               position: expect.any(Object),
             },
           ],
