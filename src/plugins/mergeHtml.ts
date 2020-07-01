@@ -7,6 +7,26 @@ import { IHTML } from '../ast-types/smdast';
 
 const Source = require('source-component');
 
+export const SELF_CLOSING_HTML_TAGS = Object.freeze([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'param',
+  'source',
+  'track',
+  'wbr',
+  'command',
+  'keygen',
+  'menuitem',
+]);
+
 const mergeHtml: Plugin = () => tree => {
   visit(tree, 'html', onVisit);
 };
@@ -63,7 +83,11 @@ const onVisit: visit.Visitor<IHTML> = (node, index, parent) => {
   }
 
   try {
-    const { tagName, attributes } = parse(node.value);
+    const { tagName, attributes, selfClosing } = parse(node.value);
+
+    if (selfClosing) {
+      return;
+    }
 
     const newNode: IInlineHTML = {
       type: 'inlineHtml',
@@ -190,9 +214,11 @@ function parseAttributes(source: typeof Source): Dictionary<string | true, strin
 
 function parse(text: string) {
   const source = new Source(text);
+  const tagName = parseName(source);
 
   return {
-    tagName: parseName(source),
+    tagName,
     attributes: parseAttributes(source),
+    selfClosing: SELF_CLOSING_HTML_TAGS.includes(tagName),
   };
 }
