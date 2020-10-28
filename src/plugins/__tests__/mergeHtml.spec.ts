@@ -235,6 +235,46 @@ describe('merge HTML plugin', () => {
     });
   });
 
+  it('should ignore plain text placed between block html elements', () => {
+    const parsed = parse(`<h1>Test</h1>
+
+some text
+
+<div>Test</div>`);
+
+    expect(
+      unified()
+        .use(mergeHtml)
+        .runSync(parsed),
+    ).toEqual({
+      type: 'root',
+      children: [
+        {
+          type: 'html',
+          value: '<h1>Test</h1>',
+          position: expect.any(Object),
+        },
+        {
+          type: 'paragraph',
+          children: [
+            {
+              type: 'text',
+              value: 'some text',
+              position: expect.any(Object),
+            },
+          ],
+          position: expect.any(Object),
+        },
+        {
+          type: 'html',
+          value: '<div>Test</div>',
+          position: expect.any(Object),
+        },
+      ],
+      position: expect.any(Object),
+    });
+  });
+
   it('should treat comments with care', () => {
     const parsed = parse(`<!-- theme: danger -->
 
