@@ -41,6 +41,12 @@ function isParentNode(node: Node): node is Parent {
   return 'children' in node;
 }
 
+const HTML_TAG_REGEXP = /^<[^>]*>$/;
+
+function isValueHtmlTag(value: string) {
+  return HTML_TAG_REGEXP.test(value);
+}
+
 function locateNextHtmlNode(parent: Parent, index: number): number {
   if (index > parent.children.length) {
     // out-of-bounds access check
@@ -73,6 +79,8 @@ const onVisit: visit.Visitor<IHTML> = (node, index, parent) => {
 
   const nextHtmlNodeIndex = locateNextHtmlNode(parent, index);
   if (nextHtmlNodeIndex === -1 || typeof node.value !== 'string') return;
+
+  if (!isValueHtmlTag(node.value) && nextHtmlNodeIndex !== index + 1) return;
 
   const nextHtmlNode = parent.children[nextHtmlNodeIndex] as IHTML;
 
