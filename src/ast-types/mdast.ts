@@ -24,6 +24,7 @@ export interface IHeading extends Unist.Parent {
 export interface ICode extends Unist.Literal {
   type: 'code';
   lang?: string;
+  resolved?: null | object;
 }
 
 export interface IInlineCode extends Unist.Literal {
