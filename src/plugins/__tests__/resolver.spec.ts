@@ -88,7 +88,7 @@ definitions:
     },
     "query": {
       "page": 2
-     }
+    }
   }
 }`,
             resolved: {
@@ -120,6 +120,91 @@ definitions:
                 },
               },
             },
+            value: `{
+  "type": "object",
+  "properties": {
+    "street": {
+      "$ref": "#/test"
+    }
+  }
+}`,
+            position: expect.any(Object),
+          },
+        ],
+        position: expect.any(Object),
+      });
+    });
+
+    it('should handle resolving failures gracefully', async () => {
+      const parsed = parse(fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8'));
+
+      expect(
+        await unified()
+          .use(resolver, {
+            async resolver(node, data) {
+              throw new Error('Cannot resolve');
+            },
+          })
+          .run(parsed),
+      ).toStrictEqual({
+        type: 'root',
+        children: [
+          expect.objectContaining({
+            type: 'heading',
+          }),
+          expect.objectContaining({
+            type: 'paragraph',
+          }),
+          {
+            type: 'code',
+            lang: 'yaml',
+            meta: 'json_schema',
+            value: `type: object
+properties:
+  user:
+    $ref: #/definitions/User
+definitions:
+  User:
+    $ref: ../reference/models/user.v1.yaml`,
+            resolved: null,
+            position: expect.any(Object),
+          },
+          expect.objectContaining({
+            type: 'heading',
+          }),
+          expect.objectContaining({
+            type: 'paragraph',
+          }),
+          expect.objectContaining({
+            type: 'html',
+          }),
+          {
+            type: 'code',
+            lang: 'http',
+            meta: null,
+            value: `{
+  "request": {
+    "method": "get",
+    "url": "https://next-api.stoplight.io/projects/45",
+    "headers": {
+      "$ref": "#/foo"
+    },
+    "query": {
+      "page": 2
+    }
+  }
+}`,
+            resolved: null,
+            position: expect.any(Object),
+          },
+          expect.objectContaining({
+            type: 'heading',
+          }),
+          {
+            type: 'code',
+            lang: 'json',
+            meta: 'json_schema',
+            resolved: null,
             value: `{
   "type": "object",
   "properties": {
@@ -202,6 +287,26 @@ definitions:
         \`\`\`
         "
       `);
+    });
+
+    it('given failed resolving, should dump original blocks', async () => {
+      const parsed = parse(fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8'));
+
+      const processor = await unified()
+        .use<RemarkStringifyOptions[]>(remarkStringify)
+        .use(resolver, {
+          async resolver(node, data) {
+            throw new Error('Cannot resolve');
+          },
+        });
+
+      const tree = await processor.run(JSON.parse(JSON.stringify(parsed)));
+
+      expect(processor.stringify(tree)).toEqual(
+        unified()
+          .use<RemarkStringifyOptions[]>(remarkStringify)
+          .stringify(parsed),
+      );
     });
   });
 });

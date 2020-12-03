@@ -29,7 +29,7 @@ be the http object to be rendered.
     },
     "query": {
       "page": 2
-     }
+    }
   }
 }
 ```
