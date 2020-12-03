@@ -72,13 +72,10 @@ definitions:
           expect.objectContaining({
             type: 'paragraph',
           }),
-          expect.objectContaining({
-            type: 'html',
-          }),
           {
             type: 'code',
-            lang: 'http',
-            meta: null,
+            lang: 'json',
+            meta: 'http',
             value: `{
   "request": {
     "method": "get",
@@ -175,13 +172,10 @@ definitions:
           expect.objectContaining({
             type: 'paragraph',
           }),
-          expect.objectContaining({
-            type: 'html',
-          }),
           {
             type: 'code',
-            lang: 'http',
-            meta: null,
+            lang: 'json',
+            meta: 'http',
             value: `{
   "request": {
     "method": "get",
@@ -256,9 +250,7 @@ definitions:
         A smd http try it out block is a smd code block with the \`http\` language tag. The contents of the code fence should
         be the http object to be rendered.
 
-        <!-- type: http -->
-
-        \`\`\`http
+        \`\`\`json http
         {
           \\"request\\": {
             \\"method\\": \\"get\\",

@@ -23,7 +23,7 @@ export default function(this: unified.Processor, { resolver }: { resolver: Resol
 
 const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visit.Visitor<ICode> => node => {
   if (typeof node.value !== 'string') return;
-  if (node.meta !== 'json_schema' && node.lang !== 'http') return;
+  if (node.meta !== 'json_schema' && node.meta !== 'http') return;
 
   try {
     promises.push(
@@ -50,9 +50,7 @@ function createCompiler(
         {
           ...node,
           value:
-            node.lang === 'json' || node.lang === 'http'
-              ? JSON.stringify(node.resolved, null, 2)
-              : safeStringify(node.resolved, { indent: 2 }),
+            node.lang === 'json' ? JSON.stringify(node.resolved, null, 2) : safeStringify(node.resolved, { indent: 2 }),
         },
         parent,
       );
