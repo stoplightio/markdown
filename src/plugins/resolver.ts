@@ -3,10 +3,9 @@ import { parse, safeStringify } from '@stoplight/yaml';
 import * as remarkStringify from 'remark-stringify';
 import * as unified from 'unified';
 import visit from 'unist-util-visit';
-import { ICode as IMDAstCode } from '../ast-types/mdast';
-import { ICode as ISMDAstCode } from '../ast-types/smdast';
+import { ICode } from '../ast-types/mdast';
 
-type Resolver = (node: IMDAstCode, data: Dictionary<unknown>) => Promise<object>;
+type Resolver = (node: ICode, data: Dictionary<unknown>) => Promise<object>;
 
 export default function(this: unified.Processor, { resolver }: { resolver: Resolver }): unified.Transformer {
   const { Compiler } = this;
@@ -22,7 +21,7 @@ export default function(this: unified.Processor, { resolver }: { resolver: Resol
   };
 }
 
-const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visit.Visitor<IMDAstCode> => node => {
+const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visit.Visitor<ICode> => node => {
   if (typeof node.value !== 'string') return;
   if (node.meta !== 'json_schema' && node.lang !== 'http') return;
 
@@ -30,14 +29,14 @@ const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visi
     promises.push(
       resolver(node, parse(node.value))
         .then(resolved => {
-          (node as ISMDAstCode).resolved = resolved;
+          node.resolved = resolved;
         })
         .catch(() => {
-          (node as ISMDAstCode).resolved = null;
+          node.resolved = null;
         }),
     );
   } catch {
-    (node as ISMDAstCode).resolved = null;
+    node.resolved = null;
   }
 };
 
