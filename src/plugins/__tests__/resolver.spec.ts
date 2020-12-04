@@ -3,6 +3,7 @@ import * as path from 'path';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 import { parse } from '../../parse';
+import { stringify } from '../../stringify';
 import resolver from '../resolver';
 
 function replaceRefs(obj: object) {
@@ -229,6 +230,7 @@ definitions:
 
       const tree = await processor.run(parsed);
 
+      expect(processor.stringify(tree)).toEqual(stringify(tree));
       expect(processor.stringify(tree)).toMatchInlineSnapshot(`
         "# My article with $refs
 
@@ -294,6 +296,7 @@ definitions:
 
       const tree = await processor.run(JSON.parse(JSON.stringify(parsed)));
 
+      expect(processor.stringify(tree)).toEqual(stringify(tree));
       expect(processor.stringify(tree)).toEqual(
         unified()
           .use<RemarkStringifyOptions[]>(remarkStringify)

@@ -15,11 +15,7 @@ const defaultProcessor = unified()
   .use<RemarkStringifyOptions[]>(remarkStringify)
   .use(jiraBlocks)
   .use(frontmatter, ['yaml'])
-  .use(resolver, {
-    async resolver() {
-      return {};
-    },
-  });
+  .use(resolver);
 
 export const stringify = (
   tree: Node,

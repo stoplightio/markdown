@@ -7,18 +7,20 @@ import { ICode } from '../ast-types/mdast';
 
 type Resolver = (node: ICode, data: Dictionary<unknown>) => Promise<object>;
 
-export default function(this: unified.Processor, { resolver }: { resolver: Resolver }): unified.Transformer {
+export default function(this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
   const { Compiler } = this;
 
   if (Compiler !== void 0) {
     Compiler.prototype.visitors.code = createCompiler(Compiler.prototype.visitors.code);
   }
 
-  return async tree => {
-    const promises: Array<Promise<void>> = [];
-    visit(tree, 'code', createVisitor(resolver, promises));
-    await Promise.all(promises);
-  };
+  if (opts?.resolver) {
+    return async tree => {
+      const promises: Array<Promise<void>> = [];
+      visit(tree, 'code', createVisitor(opts.resolver, promises));
+      await Promise.all(promises);
+    };
+  }
 }
 
 const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visit.Visitor<ICode> => node => {
