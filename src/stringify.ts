@@ -2,6 +2,7 @@ import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 import { Node } from 'unist';
 import jiraBlocks from './plugins/jiraBlocks';
+import resolver from './plugins/resolver';
 const frontmatter = require('remark-frontmatter');
 
 const defaultOpts: Partial<RemarkStringifyOptions> = {
@@ -13,7 +14,8 @@ const defaultOpts: Partial<RemarkStringifyOptions> = {
 const defaultProcessor = unified()
   .use<RemarkStringifyOptions[]>(remarkStringify)
   .use(jiraBlocks)
-  .use(frontmatter, ['yaml']);
+  .use(frontmatter, ['yaml'])
+  .use(resolver);
 
 export const stringify = (
   tree: Node,
