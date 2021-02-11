@@ -3,6 +3,7 @@ import unified from 'unified';
 import * as Unist from 'unist';
 const frontmatter = require('remark-frontmatter');
 import jiraBlocks from './plugins/jiraBlocks';
+import stripJsProtocol from './plugins/stripJsProtocol';
 
 const defaultOpts: Partial<RemarkParseOptions> = {
   commonmark: true,
@@ -11,6 +12,7 @@ const defaultOpts: Partial<RemarkParseOptions> = {
 
 const defaultProcessor = unified()
   .use<RemarkParseOptions[]>(remarkParse)
+  .use(stripJsProtocol)
   .use(jiraBlocks)
   .use(frontmatter, ['yaml']);
 
