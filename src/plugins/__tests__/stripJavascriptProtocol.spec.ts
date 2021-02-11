@@ -1,5 +1,5 @@
-import { parse } from '../../parse';
 import unified from 'unified';
+import { parse } from '../../parse';
 import stripJsProtocol from '../stripJsProtocol';
 
 describe('stripJsProtocol plugin', () => {
@@ -22,7 +22,7 @@ describe('stripJsProtocol plugin', () => {
           children: [
             {
               type: 'link',
-              url: '#',
+              url: '',
               title: null,
               children: expect.any(Array),
               position: expect.any(Object),
@@ -34,7 +34,7 @@ describe('stripJsProtocol plugin', () => {
             },
             {
               type: 'link',
-              url: '#',
+              url: '',
               title: null,
               children: expect.any(Array),
               position: expect.any(Object),
@@ -43,9 +43,11 @@ describe('stripJsProtocol plugin', () => {
               type: 'text',
               value: '\n',
               position: expect.any(Object),
-            },  {
+            },
+            {
               type: 'link',
-              url: 'window.require(\'child_process\').execFile(\'/System/Applications/Calculator.app/Contents/MacOS/Calculator\',function(){})',
+              url:
+                "window.require('child_process').execFile('/System/Applications/Calculator.app/Contents/MacOS/Calculator',function(){})",
               title: null,
               children: expect.any(Array),
               position: expect.any(Object),

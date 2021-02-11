@@ -17,6 +17,6 @@ export { stripJsProtocol as default };
 
 const onVisit: visit.Visitor<ILink> = (node, index, parent) => {
   if (hasJavascriptProtocol(node.url)) {
-    node.url = '#';
+    node.url = '';
   }
 };
