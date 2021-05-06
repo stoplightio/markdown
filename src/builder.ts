@@ -1,11 +1,9 @@
-import * as Unist from 'unist';
-
-import { IRoot } from './ast-types/mdast';
+import { MDAST } from './ast-types';
 import { Reader } from './reader';
 import { stringify } from './stringify';
 
 export class Builder {
-  public root: IRoot;
+  public root: MDAST.IRoot;
 
   constructor(public reader = new Reader()) {
     this.root = {
@@ -20,7 +18,7 @@ export class Builder {
     return this;
   }
 
-  public addChild(node: Unist.Node) {
+  public addChild(node: MDAST.Node) {
     this.root.children.push(node);
 
     return this;

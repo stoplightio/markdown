@@ -1,9 +1,9 @@
-import * as Unist from 'unist';
+import { MDAST } from '../ast-types';
 
 export type PropertyPath = PropertyKey | PropertyKey[];
 
 export interface IFrontmatter<T extends object = any> {
-  document: Unist.Node;
+  document: MDAST.Node;
   getAll(): Partial<T> | void;
   get<V = unknown>(prop: PropertyPath): V | void;
   set(prop: PropertyPath, value: unknown): void;

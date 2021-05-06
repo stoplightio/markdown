@@ -10,7 +10,7 @@ export function hasJavascriptProtocol(url: string) {
   return isJavaScriptProtocol.test(url);
 }
 
-const stripJsProtocol: Plugin = () => tree => {
+export const stripJsProtocol: Plugin = () => tree => {
   visit(tree, 'link', onVisit);
 };
 

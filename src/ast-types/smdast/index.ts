@@ -1,7 +1,7 @@
 import { Dictionary } from '@stoplight/types';
 
-import * as MDASst from '../mdast';
-import { IAnnotations } from './annotations';
+import * as MDAST from '../mdast';
+import { CodeAnnotations, IAnnotations } from './annotations';
 
 export {
   IBreak,
@@ -33,8 +33,9 @@ export {
   IYAML,
 } from '../mdast';
 export * from './annotations';
+export * from './codeGroup';
 export * from './element';
 export * from './tab';
 
-export interface IBlockquote<T extends Dictionary<any> = {}> extends IAnnotations<T>, MDASst.IBlockquote {}
-export interface ICode<T extends Dictionary<any> = {}> extends IAnnotations<T>, MDASst.ICode {}
+export interface IBlockquote<T extends Dictionary<any> = {}> extends IAnnotations<T>, MDAST.IBlockquote {}
+export interface ICode<T extends CodeAnnotations = CodeAnnotations> extends IAnnotations<T>, MDAST.ICode {}

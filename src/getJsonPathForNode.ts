@@ -1,13 +1,14 @@
 import { JsonPath } from '@stoplight/types';
-import * as Unist from 'unist';
 
-export const getJsonPathForNode = (root: Unist.Parent, node: Unist.Node): JsonPath | void => {
+import { MDAST } from './ast-types';
+
+export const getJsonPathForNode = (root: MDAST.Parent, node: MDAST.Node): JsonPath | void => {
   const path: JsonPath = [];
   findNode(root, node, path);
   return path;
 };
 
-function findNode(root: Unist.Parent | Unist.Node, node: Unist.Node, path: JsonPath): Unist.Node | undefined {
+function findNode(root: MDAST.Parent | MDAST.Node, node: MDAST.Node, path: JsonPath): MDAST.Node | undefined {
   if (node.position === undefined || root.position === undefined) return;
 
   if (

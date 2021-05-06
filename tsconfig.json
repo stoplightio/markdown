@@ -5,6 +5,7 @@
   "include": ["."],
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "target": "es2017"
   }
 }

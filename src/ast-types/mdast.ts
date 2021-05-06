@@ -4,6 +4,10 @@ import * as Unist from 'unist';
 export type AlignType = 'left' | 'right' | 'center' | null;
 export type ReferenceType = 'shortcut' | 'collapsed' | 'full';
 
+export interface Node extends Unist.Node {}
+export interface Parent extends Unist.Parent {}
+export interface Literal extends Unist.Literal {}
+
 export interface IRoot extends Unist.Parent {
   type: 'root';
 }
@@ -24,7 +28,7 @@ export interface IHeading extends Unist.Parent {
 export interface ICode extends Unist.Literal {
   type: 'code';
   lang?: string;
-  resolved?: null | object;
+  meta?: string;
 }
 
 export interface IInlineCode extends Unist.Literal {

@@ -1,7 +1,3 @@
----
-title: Stoplight Flavored Markdown
----
-
 # Stoplight Flavored Markdown (smd)
 
 ### The Two Laws
@@ -14,9 +10,12 @@ title: Stoplight Flavored Markdown
 1. Stoplight flavored markdown extends github flavor markdown with inline comment annotations.
 2. The value inside of the annotations is a yaml object, and the annotation affects the following markdown block.
 
-By leveraging comments to store annotations, Stoplight flavored markdown degrades gracefully to any other markdown renderer (Github, for example).
+By leveraging comments to store annotations, Stoplight flavored markdown degrades gracefully to any other markdown
+renderer (Github, for example).
 
-> [MDX](https://github.com/mdx-js/mdx) is an interesting project that might allow our users to add more interactivity to their docs, at the cost of complexity (this is a more advanced use case). We would have to figure out a way to introduce this WITHOUT impacting those users that do not need the feature.
+> [MDX](https://github.com/mdx-js/mdx) is an interesting project that might allow our users to add more interactivity to
+> their docs, at the cost of complexity (this is a more advanced use case). We would have to figure out a way to
+> introduce this WITHOUT impacting those users that do not need the feature.
 
 ## Tabs
 
@@ -126,62 +125,8 @@ lineNumbers: false
 highlightLines: [[1,2], [4,5]]
 -->
 
-```javascript
-function fibonacci(num) {
-  var a = 1,
-    b = 0,
-    temp;
-
-  while (num >= 0) {
-    temp = a;
-    a = a + b;
-    b = temp;
-    num--;
-  }
-
-  return b;
-}
-```
-
-## JSON Schema
-
-A smd json schema block is a smd code block with the `json_schema` language tag. The contents of the code fence should
-be the json schema object to be rendered.
-
-<!-- type: json_schema -->
-
-```json
-{
-  "title": "User",
-  "type": "object",
-  "properties": {
-    "name": {
-      "type": "string"
-    }
-  }
-}
-```
-
-## HTTP Try It Out
-
-A smd http try it out block is a smd code block with the `http` language tag. The contents of the code fence should
-be the http object to be rendered.
-
-<!-- type: http -->
-
-```http
-{
-    "request": {
-        "method": "get",
-        "url": "https://next-api.stoplight.io/projects/45",
-        "headers": {
-            "content-type": "application/json"
-        },
-        "query": {
-            "page": 2
-        }
-    }
-}
+```bash
+# hello
 ```
 
 ## Raw HTML
@@ -196,4 +141,4 @@ be the http object to be rendered.
 
 [foo], [foo][], [bar][foo].
 
-[foo]: http://example.com "Example Domain"
+[foo]: http://example.com 'Example Domain'

@@ -1,7 +1,7 @@
 import { RemarkParseOptions } from 'remark-parse';
 import * as unified from 'unified';
-import * as Unist from 'unist';
 
+import { MDAST } from './ast-types';
 import { parse } from './parse';
 import { MarkdownParserResult } from './types';
 
@@ -10,7 +10,7 @@ export const parseWithPointers = (
   opts?: Partial<RemarkParseOptions>,
   processor?: unified.Processor,
 ): MarkdownParserResult => {
-  const tree = parse(value, opts, processor) as Unist.Parent;
+  const tree = parse(value, opts, processor) as MDAST.Parent;
   return {
     data: tree,
     diagnostics: [],

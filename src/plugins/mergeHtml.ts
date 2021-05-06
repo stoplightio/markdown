@@ -3,7 +3,7 @@ import { Plugin } from 'unified';
 import { Node, Parent } from 'unist';
 import visit from 'unist-util-visit';
 
-import { IInlineHTML } from '..';
+import { IInlineHTML } from '../ast-types/mdast';
 import { IHTML } from '../ast-types/smdast';
 
 const Source = require('source-component');
@@ -28,7 +28,7 @@ export const SELF_CLOSING_HTML_TAGS = Object.freeze([
   'menuitem',
 ]);
 
-const mergeHtml: Plugin = () => tree => {
+export const mergeHtml: Plugin = () => tree => {
   visit(tree, 'html', onVisit);
 };
 
@@ -38,8 +38,8 @@ function isHtmlNode(node: Node): node is IHTML {
   return node.type === 'html';
 }
 
-function isParentNode(node: Node): node is Parent {
-  return 'children' in node;
+function isParentNode(node?: Node): node is Parent {
+  return !!(node && 'children' in node);
 }
 
 const HTML_TAG_REGEXP = /^<[^>]*>$/;

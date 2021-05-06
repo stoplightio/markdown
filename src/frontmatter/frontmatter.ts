@@ -1,8 +1,8 @@
 import { DiagnosticSeverity, IDiagnostic, Optional } from '@stoplight/types';
 import { parseWithPointers as parseYaml, safeStringify } from '@stoplight/yaml';
 import { get, pullAt, set, toPath, unset } from 'lodash';
-import * as Unist from 'unist';
 
+import { MDAST } from '../ast-types';
 import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
@@ -24,11 +24,11 @@ const safeParse = <T>(value: string): T | {} => {
 };
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
-  public readonly document: Unist.Node;
-  private readonly node: Unist.Literal;
+  public readonly document: MDAST.Node;
+  private readonly node: MDAST.Literal;
   private properties: Partial<T> | null;
 
-  constructor(data: Unist.Node | string, mutate = false) {
+  constructor(data: MDAST.Node | string, mutate = false) {
     const root =
       typeof data === 'string' ? parseWithPointers(data).data : mutate ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
@@ -37,7 +37,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
     this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
-      this.node = root.children[0] as Unist.Literal;
+      this.node = root.children[0] as MDAST.Literal;
       // typings are a bit tricked, but let's move the burden of validation to consumer
       this.properties = safeParse<Partial<T>>(this.node.value as string);
     } else {
@@ -110,7 +110,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
   }
 
   private updateDocument() {
-    const children = this.document.children as Unist.Parent['children'] | undefined;
+    const children = this.document.children as MDAST.Parent['children'] | undefined;
     if (!children) return;
 
     const index = children.indexOf(this.node);

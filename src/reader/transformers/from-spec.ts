@@ -1,8 +1,7 @@
 import { safeStringify } from '@stoplight/yaml';
 import * as Unist from 'unist';
 
-import * as Mdast from '../../ast-types/mdast';
-import * as SMdast from '../../ast-types/smdast';
+import { MDAST, SMDAST } from '../../ast-types';
 
 function transformAnnotations(node: Unist.Node): Unist.Node | null {
   if (!node.annotations) return null;
@@ -16,7 +15,7 @@ function transformAnnotations(node: Unist.Node): Unist.Node | null {
   };
 }
 
-function transformBlockquote(node: SMdast.IBlockquote): Unist.Node[] {
+function transformBlockquote(node: SMDAST.IBlockquote): Unist.Node[] {
   return [
     {
       type: 'blockquote',
@@ -25,7 +24,7 @@ function transformBlockquote(node: SMdast.IBlockquote): Unist.Node[] {
   ];
 }
 
-function transformTabContainer(node: SMdast.ITabContainer): Unist.Node[] {
+function transformTabs(node: SMDAST.ITabContainer): Unist.Node[] {
   const res: Unist.Node[] = [];
 
   // push transformed children
@@ -40,7 +39,7 @@ function transformTabContainer(node: SMdast.ITabContainer): Unist.Node[] {
   return res;
 }
 
-function transformTab(node: SMdast.ITab): Unist.Node[] {
+function transformTab(node: SMDAST.ITab): Unist.Node[] {
   return transform(node.children);
 }
 
@@ -59,12 +58,12 @@ function transform(nodes: Unist.Node[]): Unist.Node[] {
 
     const { type } = node;
     if (type === 'blockquote') {
-      processed.push(...transformBlockquote(node as SMdast.IBlockquote));
-    } else if (type === 'tabContainer') {
+      processed.push(...transformBlockquote(node as SMDAST.IBlockquote));
+    } else if (type === 'tabs') {
       // nothing needs to be done for tabContainers apart from processing the child tabs
-      processed.push(...transformTabContainer(node as SMdast.ITabContainer));
+      processed.push(...transformTabs(node as SMDAST.ITabContainer));
     } else if (type === 'tab') {
-      processed.push(...transformTab(node as SMdast.ITab));
+      processed.push(...transformTab(node as SMDAST.ITab));
     } else {
       processed.push(node);
     }
@@ -73,7 +72,7 @@ function transform(nodes: Unist.Node[]): Unist.Node[] {
   return processed;
 }
 
-export const fromSpec = (root: SMdast.IRoot): Mdast.IRoot => {
+export const fromSpec = (root: SMDAST.IRoot): MDAST.IRoot => {
   const nodes = root.children;
 
   return {
