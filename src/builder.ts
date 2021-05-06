@@ -1,4 +1,5 @@
 import * as Unist from 'unist';
+
 import { IRoot } from './ast-types/mdast';
 import { Reader } from './reader';
 import { stringify } from './stringify';

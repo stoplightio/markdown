@@ -1,5 +1,6 @@
 import { Dictionary } from '@stoplight/types';
 import * as Unist from 'unist';
+
 import { IAnnotations } from './annotations';
 
 export interface ITabContainer extends Unist.Parent {

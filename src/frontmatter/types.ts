@@ -1,5 +1,6 @@
-export type PropertyPath = PropertyKey | PropertyKey[];
 import * as Unist from 'unist';
+
+export type PropertyPath = PropertyKey | PropertyKey[];
 
 export interface IFrontmatter<T extends object = any> {
   document: Unist.Node;

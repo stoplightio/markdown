@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { join } from 'path';
+
 import { IParagraph, IStrong } from '../ast-types/mdast';
 import { getJsonPathForNode } from '../getJsonPathForNode';
 import { parseWithPointers } from '../parseWithPointers';

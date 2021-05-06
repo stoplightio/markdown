@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { join } from 'path';
+
 import { parse } from '../parse';
 import { stringify } from '../stringify';
 

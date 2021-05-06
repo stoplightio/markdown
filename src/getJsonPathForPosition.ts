@@ -1,5 +1,6 @@
 import { GetJsonPathForPosition, IPosition, JsonPath } from '@stoplight/types';
 import * as Unist from 'unist';
+
 import { MarkdownParserResult } from './types';
 
 export const getJsonPathForPosition: GetJsonPathForPosition<MarkdownParserResult> = ({ ast }, position) => {

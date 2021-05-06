@@ -1,4 +1,5 @@
 import unified from 'unified';
+
 import { parse } from '../../parse';
 import stripJsProtocol from '../stripJsProtocol';
 
@@ -9,11 +10,7 @@ describe('stripJsProtocol plugin', () => {
 [do call calc](window.require('child_process').execFile('/System/Applications/Calculator.app/Contents/MacOS/Calculator',function(){}))
 `);
 
-    expect(
-      unified()
-        .use(stripJsProtocol)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(stripJsProtocol).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {

@@ -1,6 +1,7 @@
 import { Dictionary } from '@stoplight/types';
 import { parse } from '@stoplight/yaml';
 import * as Unist from 'unist';
+
 import * as Mdast from '../../ast-types/mdast';
 import * as SMdast from '../../ast-types/smdast';
 

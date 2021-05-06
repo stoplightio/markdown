@@ -3,11 +3,12 @@ import { parse, safeStringify } from '@stoplight/yaml';
 import * as remarkStringify from 'remark-stringify';
 import * as unified from 'unified';
 import visit from 'unist-util-visit';
+
 import { ICode } from '../ast-types/mdast';
 
 type Resolver = (node: ICode, data: Dictionary<unknown>) => Promise<object>;
 
-export default function(this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
+export default function (this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
   const { Compiler } = this;
 
   if (Compiler !== void 0) {
@@ -45,7 +46,7 @@ const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visi
 function createCompiler(
   fn: typeof remarkStringify.Compiler['prototype']['visitors']['code'],
 ): typeof remarkStringify.Compiler['prototype']['visitors']['code'] {
-  return function(this: remarkStringify.Compiler, node, parent) {
+  return function (this: remarkStringify.Compiler, node, parent) {
     if (node.type === 'code' && 'resolved' in node && node.resolved !== null) {
       return fn.call(
         this,

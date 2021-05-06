@@ -1,4 +1,5 @@
 import unified from 'unified';
+
 import { parse } from '../../parse';
 import mergeHtml from '../mergeHtml';
 
@@ -6,11 +7,7 @@ describe('merge HTML plugin', () => {
   it('should handle empty element', () => {
     const parsed = parse(`<span></span>`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {
@@ -33,11 +30,7 @@ describe('merge HTML plugin', () => {
     // based on https://github.com/nghiattran/html-attribute-parser/blob/master/test.js#L6
     const parsed = parse(`<span attr class="animated infinite" ng-class="main.classAnimation">foo</span>`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {
@@ -71,11 +64,7 @@ describe('merge HTML plugin', () => {
   it('should prepare children for inline html element', () => {
     const parsed = parse(`HTML link <a href="https://google.com">**hello** _world_ ~~navigate~~ to</a>.`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {
@@ -160,11 +149,7 @@ describe('merge HTML plugin', () => {
   it('should ignore self-closing tags', () => {
     const parsed = parse(`<input>foo<img>bar<img />foobar`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {
@@ -217,11 +202,7 @@ describe('merge HTML plugin', () => {
   <dd>Does *not* work **very** well. Use HTML <em>tags</em>.</dd>
 </dl>`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {
@@ -242,11 +223,7 @@ some text
 
 <div>Test</div>`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toEqual({
       type: 'root',
       children: [
         {
@@ -284,11 +261,7 @@ some text
 
 <!-- theme: warning -->`);
 
-    expect(
-      unified()
-        .use(mergeHtml)
-        .runSync(parsed),
-    ).toStrictEqual({
+    expect(unified().use(mergeHtml).runSync(parsed)).toStrictEqual({
       type: 'root',
       children: [
         {

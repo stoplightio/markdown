@@ -2,6 +2,7 @@ import { Dictionary } from '@stoplight/types';
 import { Plugin } from 'unified';
 import { Node, Parent } from 'unist';
 import visit from 'unist-util-visit';
+
 import { IInlineHTML } from '..';
 import { IHTML } from '../ast-types/smdast';
 
@@ -53,8 +54,10 @@ function locateNextHtmlNode(parent: Parent, index: number): number {
     return -1;
   }
 
+  // eslint-disable-next-line no-param-reassign
   index++;
 
+  // eslint-disable-next-line no-param-reassign
   for (; index < parent.children.length; index++) {
     if (isHtmlNode(parent.children[index])) {
       return index;

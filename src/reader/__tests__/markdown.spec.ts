@@ -12,7 +12,7 @@ describe('markdown-tests', () => {
     }
 
     const filepath = `fixtures/markdown/${name}`;
-    test(filepath, () => {
+    it(filepath, () => {
       const contents = fs.readFileSync(`${__dirname}/${filepath}`, {
         encoding: 'utf8',
       });

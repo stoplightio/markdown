@@ -8,7 +8,7 @@ describe('Reader', () => {
   });
 
   describe('fromLang', () => {
-    test('parses a line of text', () => {
+    it('parses a line of text', () => {
       const tree = mdReader.fromLang(`A line of text.`);
 
       expect(tree).toEqual({
@@ -65,7 +65,7 @@ describe('Reader', () => {
       });
     });
 
-    test('parses text with marks', () => {
+    it('parses text with marks', () => {
       const tree = mdReader.fromLang(`A line of text with **_nested_ marks** in a paragraph.`);
 
       expect(tree).toEqual({
@@ -211,7 +211,7 @@ describe('Reader', () => {
   });
 
   describe('toSpec', () => {
-    test('captures annotations for code blocks', () => {
+    it('captures annotations for code blocks', () => {
       const markdown = `<!--
 title: "My code snippet"
 lineNumbers: false

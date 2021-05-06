@@ -1,9 +1,9 @@
 import * as Unist from 'unist';
 import { select } from 'unist-util-select';
 
-const toString = require('mdast-util-to-string');
-
 import { Frontmatter } from '../frontmatter';
+
+const toString = require('mdast-util-to-string');
 
 // Priority: yaml title, then first heading
 export const getProperty = (propName: string, element?: string, data?: Unist.Node) => {
