@@ -26,6 +26,7 @@ commands:
 jobs:
   # https://nodejs.org/en/about/releases/
   test_node_lts:
+    resource_class: large
     docker:
       - image: circleci/node:lts
     steps:
@@ -46,6 +47,7 @@ jobs:
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
 
   test_node_latest:
+    resource_class: large
     docker:
       - image: circleci/node:latest
     steps:
@@ -53,6 +55,7 @@ jobs:
       - install_and_test
 
   release:
+    resource_class: large
     docker:
       - image: circleci/node:lts
     steps:
