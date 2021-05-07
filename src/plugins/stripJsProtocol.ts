@@ -1,5 +1,6 @@
 import { Plugin } from 'unified';
 import visit from 'unist-util-visit';
+
 import { ILink } from '../ast-types/mdast';
 
 // taken from https://github.com/facebook/react/blob/9198a5cec0936a21a5ba194a22fcbac03eba5d1d/packages/react-dom/src/shared/sanitizeURL.js#L23
@@ -15,7 +16,7 @@ const stripJsProtocol: Plugin = () => tree => {
 
 export { stripJsProtocol as default };
 
-const onVisit: visit.Visitor<ILink> = (node, index, parent) => {
+const onVisit: visit.Visitor<ILink> = node => {
   if (hasJavascriptProtocol(node.url)) {
     node.url = '';
   }

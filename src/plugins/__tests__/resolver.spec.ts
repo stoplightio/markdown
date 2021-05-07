@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
+
 import { parse } from '../../parse';
 import { stringify } from '../../stringify';
 import resolver from '../resolver';
@@ -139,7 +140,7 @@ definitions:
       expect(
         await unified()
           .use(resolver, {
-            async resolver(node, data) {
+            async resolver() {
               throw new Error('Cannot resolve');
             },
           })
@@ -289,7 +290,7 @@ definitions:
       const processor = await unified()
         .use<RemarkStringifyOptions[]>(remarkStringify)
         .use(resolver, {
-          async resolver(node, data) {
+          async resolver() {
             throw new Error('Cannot resolve');
           },
         });
@@ -298,9 +299,7 @@ definitions:
 
       expect(processor.stringify(tree)).toEqual(stringify(tree));
       expect(processor.stringify(tree)).toEqual(
-        unified()
-          .use<RemarkStringifyOptions[]>(remarkStringify)
-          .stringify(parsed),
+        unified().use<RemarkStringifyOptions[]>(remarkStringify).stringify(parsed),
       );
     });
   });

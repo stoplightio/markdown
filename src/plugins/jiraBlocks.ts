@@ -1,8 +1,9 @@
 import * as remarkParse from 'remark-parse';
 import * as unified from 'unified';
+
 import { IJiraNode } from '../ast-types/mdast';
 
-export default function(this: unified.Processor) {
+export default function (this: unified.Processor) {
   const { Compiler, Parser } = this;
 
   if (Compiler !== void 0) {

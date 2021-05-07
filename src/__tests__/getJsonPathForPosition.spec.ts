@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import { join } from 'path';
+
 import { getJsonPathForPosition } from '../getJsonPathForPosition';
 import { parseWithPointers } from '../parseWithPointers';
 
