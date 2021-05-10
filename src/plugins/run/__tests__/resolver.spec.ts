@@ -1,12 +1,16 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import { dirname } from 'path';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
+import { fileURLToPath } from 'url';
 
 import { MDAST } from '../../../ast-types';
 import { parse } from '../../../parse';
 import { stringify } from '../../../stringify';
 import { resolveCodeBlocks } from '../resolver';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function replaceRefs(obj: object) {
   for (const value of Object.values(obj)) {

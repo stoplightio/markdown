@@ -1,5 +1,5 @@
 import { GetLocationForJsonPath, JsonPath } from '@stoplight/types';
-import { get as _get } from 'lodash';
+import { get as _get } from 'lodash-es';
 
 import { MDAST } from './ast-types';
 import { MarkdownParserResult } from './types';

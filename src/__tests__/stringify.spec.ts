@@ -1,7 +1,10 @@
 import * as fs from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 import { stringify } from '../stringify';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe('stringify', () => {
   it('should work', () => {

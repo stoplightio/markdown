@@ -7,3 +7,4 @@ coverage
 .yarn
 .cache
 gen
+src/**/__fixtures__/**/*.{yml,yaml,json,md,markdown}
