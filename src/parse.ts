@@ -15,6 +15,7 @@ import {
   smdAnnotations,
   smdCode,
 } from './plugins/run';
+import { replaceThirdPartyBlocks } from './replaceThirdPartyBlocks';
 
 export type ParseSettings = RemarkParseOptions & {
   resolver?: Resolver;
@@ -42,10 +43,12 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
 const defaultProcessor = unified().use(remarkParse).use(remarkParsePreset);
 
 export const parse = (
-  markdown: VFileCompatible,
+  input: VFileCompatible,
   opts: Partial<ParseOptions> = {},
   processor: unified.Processor = defaultProcessor,
 ): MDAST.Root => {
+  const markdown = replaceThirdPartyBlocks(input);
+
   const processorInstance = processor()
     .data('settings', Object.assign({}, remarkParsePreset.settings, opts.settings))
     .use(opts.remarkPlugins || []);

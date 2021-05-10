@@ -4,7 +4,7 @@ import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 
 import { MDAST } from './ast-types';
-import { blockquoteHandler, codeHandler, tabHandler, tabsHandler } from './plugins/stringify';
+import { blockquoteHandler, codeGroupHandler, codeHandler, tabHandler, tabsHandler } from './plugins/stringify';
 // import resolver from './plugins/resolver';
 
 export type StringifySettings = RemarkStringifyOptions;
@@ -32,6 +32,7 @@ const remarkStringifyPreset: unified.Preset<StringifySettings> = {
       code: codeHandler,
       tabs: tabsHandler,
       tab: tabHandler,
+      codegroup: codeGroupHandler,
     },
   },
 };
