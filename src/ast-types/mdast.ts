@@ -115,13 +115,14 @@ export interface Code extends Literal {
   meta?: string;
 
   // custom
+  resolved?: unknown;
   annotations?: {
     title?: string;
     lineNumbers?: boolean;
     highlightLines?: string[] | string[][];
     inline?: boolean;
     live?: boolean;
-    json_schema?: boolean;
+    jsonSchema?: boolean;
     http?: boolean;
   };
 }

@@ -29,7 +29,7 @@ export interface Code extends HAST.Element {
     highlightLines?: string[] | string[][];
     inline?: boolean;
     live?: boolean;
-    json_schema?: boolean;
+    jsonSchema?: boolean;
     http?: boolean;
   } & HAST.Properties;
 }

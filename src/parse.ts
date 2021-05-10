@@ -7,9 +7,18 @@ import unified from 'unified';
 import type { VFileCompatible } from 'vfile';
 
 import { MDAST } from './ast-types';
-import { blockquoteMdast2Hast, inlineCodeMdast2Hast, smdAnnotations, smdCode } from './plugins/run';
+import {
+  blockquoteMdast2Hast,
+  inlineCodeMdast2Hast,
+  resolveCodeBlocks,
+  Resolver,
+  smdAnnotations,
+  smdCode,
+} from './plugins/run';
 
-export type ParseSettings = RemarkParseOptions;
+export type ParseSettings = RemarkParseOptions & {
+  resolver?: Resolver;
+};
 
 export type ParseOptions = {
   remarkPlugins?: unified.PluggableList<unified.Settings>;
@@ -25,6 +34,7 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
     smdCode,
     inlineCodeMdast2Hast,
     blockquoteMdast2Hast,
+    resolveCodeBlocks,
   ],
   settings: {},
 };
