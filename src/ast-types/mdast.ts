@@ -122,7 +122,7 @@ export interface Code extends Literal {
     highlightLines?: string[] | string[][];
     inline?: boolean;
     live?: boolean;
-    jsonSchema?: boolean;
+    jsonSchema?: boolean | 'true' | 'false';
     http?: boolean;
   };
 }

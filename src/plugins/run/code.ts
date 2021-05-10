@@ -67,6 +67,29 @@ function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex:
   });
 }
 
+function handleLegacyAnnotations(annotations: MDAST.Code['annotations']) {
+  if (!annotations) return;
+
+  if (annotations.hasOwnProperty('type')) {
+    // @ts-expect-error type is no longer part of the typings, it is deprecated
+    const type = annotations.type;
+    if (type === 'json_schema') {
+      annotations.jsonSchema = 'true';
+    } else {
+      annotations[type] = 'true';
+    }
+
+    // @ts-expect-error ditto above
+    delete annotations.type;
+  }
+
+  if (annotations.hasOwnProperty('json_schema')) {
+    annotations.jsonSchema = 'true';
+    // @ts-expect-error ditto above
+    delete annotations.json_schema;
+  }
+}
+
 export function smdCode() {
   return function transform(root: UNIST.Node) {
     let sequentialCodeBlocks: MDAST.Code[] = [];
@@ -91,6 +114,9 @@ export function smdCode() {
           ...annotations,
         };
       }
+
+      handleLegacyAnnotations(annotations);
+
       node.annotations = annotations;
 
       const data = node.data || (node.data = {});
