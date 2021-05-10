@@ -50,6 +50,6 @@ describe('replaceThirdPartyBlocks', () => {
     const t1 = performance.now();
     const timeTaken = Math.round(t1 - t0);
 
-    expect(timeTaken).toBeLessThan(100);
+    expect(timeTaken).toBeLessThan(200);
   });
 });
