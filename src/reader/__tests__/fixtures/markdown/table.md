@@ -5,9 +5,9 @@ Some tests taken from here:
 <https://github.com/showdownjs/showdown/tree/master/test/functional/makehtml/cases/features/tables>
 
 | First Header | Second Header |
-| ============= | ============= |
-| Row 1 Cell 1 | Row 1 Cell 2 |
-| Row 2 Cell 1 | Row 2 Cell 2 |
+| ------------ | ------------- |
+| Row 1 Cell 1 | Row 1 Cell 2  |
+| Row 2 Cell 1 | Row 2 Cell 2  |
 
 | Operator | Description  |
 | -------- | ------------ |

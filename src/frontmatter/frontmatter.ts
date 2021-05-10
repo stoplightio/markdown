@@ -24,11 +24,11 @@ const safeParse = <T>(value: string): T | {} => {
 };
 
 export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
-  public readonly document: MDAST.Node;
-  private readonly node: MDAST.Literal;
+  public readonly document: MDAST.Root;
+  private readonly node: MDAST.Content;
   private properties: Partial<T> | null;
 
-  constructor(data: MDAST.Node | string, mutate = false) {
+  constructor(data: MDAST.Root | string, mutate = false) {
     const root =
       typeof data === 'string' ? parseWithPointers(data).data : mutate ? data : JSON.parse(JSON.stringify(data));
     if (root.type !== 'root') {
@@ -37,7 +37,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
     this.document = root;
     if (root.children.length > 0 && root.children[0].type === 'yaml') {
-      this.node = root.children[0] as MDAST.Literal;
+      this.node = root.children[0] as MDAST.Content;
       // typings are a bit tricked, but let's move the burden of validation to consumer
       this.properties = safeParse<Partial<T>>(this.node.value as string);
     } else {

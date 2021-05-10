@@ -1,6 +1,6 @@
 import { truncate } from 'lodash';
-import * as Unist from 'unist';
 
+import { MDAST } from '../ast-types';
 import { getProperty } from './get-property';
 
 export interface IGetSummaryOpts {
@@ -8,7 +8,7 @@ export interface IGetSummaryOpts {
 }
 
 // Priority: yaml summary, then first paragraph
-export const getSummary = (data?: Unist.Node, opts: IGetSummaryOpts = {}) => {
+export const getSummary = (data?: MDAST.Root, opts: IGetSummaryOpts = {}) => {
   let summary = getProperty('summary', 'paragraph', data);
 
   if (summary && opts.truncate) {

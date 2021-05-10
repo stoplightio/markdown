@@ -2,28 +2,28 @@ Just a [URL](/url/).
 
 [URL and title](/url/ "title").
 
-[Empty](<>).
+[Empty]().
 
-Link: <http://example.com/>.
+Auto Link: <http://example.com>.
 
-With an ampersand: <http://example.com/?foo=1&bar=2>
+With a query string: <http://example.com?foo=1>
 
-* In a list?
-* <http://example.com/>
-* It should.
+- In a list?
+- <http://example.com>
+- It should.
 
-> Blockquoted: <http://example.com/>
+> Blockquoted: <http://example.com>
 
-Auto-links should not occur here: `<http://example.com/>`
+Auto-links should not occur here: `<http://example.com>`
 
 ```
-or here: <http://example.com/>
+or here: <http://example.com>
 ```
 
-Here's an inline [link](/script?foo=1&bar=2).
-
-Here's an inline [link](/script?foo=1&bar=2).
+Here's a [inline link](/script?foo=1).
 
 # Oh, a heading with a [link](http://example.com)
 
-[an example][id]
+Here's a [reference link][reference-link-id].
+
+[reference-link-id]: http://example.com?foo=1 "Optional Title Here"

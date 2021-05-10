@@ -10,15 +10,15 @@ code block
 
 Normal text
 
-* [ ] unchecked
-* [x] checked
-* no checkbox
+- [ ] unchecked
+- [x] checked
+- no checkbox
 
 > blockquote
 
-* unordered list
-* two
-* three
+- unordered list
+- two
+- three
 
 1. ordered list
 2. two

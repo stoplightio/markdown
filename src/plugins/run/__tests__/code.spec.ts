@@ -22,10 +22,14 @@ describe('code plugin', () => {
       "<>
         <codegroup>
           <pre>
-            <code class=\\"language-bash\\"># my bash</code>
+            <code class=\\"language-bash\\" lang=\\"bash\\">
+              # my bash
+            </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\">var x = 'y';</code>
+            <code class=\\"language-js\\" lang=\\"js\\">
+              var x = 'y';
+            </code>
           </pre>
         </codegroup>
       </>;
@@ -42,12 +46,23 @@ describe('code plugin', () => {
         <p>Starting paragraph.</p>
         <codegroup>
           <pre>
-            <code class=\\"language-bash\\" title=\\"title 1\\">
+            <code
+              class=\\"language-bash\\"
+              lang=\\"bash\\"
+              meta=\\"title=&#x22;title 1&#x22;\\"
+              title=\\"title 1\\"
+            >
               # my bash
             </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\" lineNumbers=\\"true\\" title=\\"title 2\\">
+            <code
+              class=\\"language-js\\"
+              lang=\\"js\\"
+              meta=\\"lineNumbers title=&#x22;title 2&#x22;\\"
+              title=\\"title 2\\"
+              lineNumbers=\\"true\\"
+            >
               var x = 'y';
             </code>
           </pre>
@@ -64,11 +79,15 @@ describe('code plugin', () => {
     expect(parse(input)).toMatchInlineSnapshot(`
       "<>
         <pre>
-          <code class=\\"language-bash\\"># my bash</code>
+          <code class=\\"language-bash\\" lang=\\"bash\\">
+            # my bash
+          </code>
         </pre>
         <p>Has a line in between, so not grouped.</p>
         <pre>
-          <code class=\\"language-js\\">var x = 'y';</code>
+          <code class=\\"language-js\\" lang=\\"js\\">
+            var x = 'y';
+          </code>
         </pre>
       </>;
       "
@@ -82,36 +101,52 @@ describe('code plugin', () => {
       "<>
         <codegroup>
           <pre>
-            <code class=\\"language-bash\\"># my bash</code>
+            <code class=\\"language-bash\\" lang=\\"bash\\">
+              # my bash
+            </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\">var x = 'y';</code>
+            <code class=\\"language-js\\" lang=\\"js\\">
+              var x = 'y';
+            </code>
           </pre>
         </codegroup>
         <p>Something in between 1.</p>
         <codegroup>
           <pre>
-            <code class=\\"language-bash\\"># my bash 2</code>
+            <code class=\\"language-bash\\" lang=\\"bash\\">
+              # my bash 2
+            </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\">var x = 'y';</code>
+            <code class=\\"language-js\\" lang=\\"js\\">
+              var x = 'y';
+            </code>
           </pre>
         </codegroup>
         <p>Something in between 2.</p>
         <codegroup>
           <pre>
-            <code class=\\"language-bash\\"># my bash 3</code>
+            <code class=\\"language-bash\\" lang=\\"bash\\">
+              # my bash 3
+            </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\">var x = 'y';</code>
+            <code class=\\"language-js\\" lang=\\"js\\">
+              var x = 'y';
+            </code>
           </pre>
           <pre>
-            <code class=\\"language-js\\">var x2 = 'y2';</code>
+            <code class=\\"language-js\\" lang=\\"js\\">
+              var x2 = 'y2';
+            </code>
           </pre>
         </codegroup>
         <p>Something in between 3 - next one is not grouped.</p>
         <pre>
-          <code class=\\"language-js\\">var x3 = 'y3';</code>
+          <code class=\\"language-js\\" lang=\\"js\\">
+            var x3 = 'y3';
+          </code>
         </pre>
       </>;
       "

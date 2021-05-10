@@ -9,7 +9,11 @@ export const getJsonPathForPosition: GetJsonPathForPosition<MarkdownParserResult
   return path;
 };
 
-function findNodeAtPosition(node: MDAST.Node, position: IPosition, path: JsonPath): MDAST.Node | undefined {
+function findNodeAtPosition(
+  node: MDAST.Parent | MDAST.Content,
+  position: IPosition,
+  path: JsonPath,
+): MDAST.Parent | MDAST.Content | undefined {
   if (position.line >= node.position!.start.line - 1 && position.line <= node.position!.end.line - 1) {
     const { children } = node;
     if (Array.isArray(children)) {

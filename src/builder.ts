@@ -3,7 +3,7 @@ import { Reader } from './reader';
 import { stringify } from './stringify';
 
 export class Builder {
-  public root: MDAST.IRoot;
+  public root: MDAST.Root;
 
   constructor(public reader = new Reader()) {
     this.root = {
@@ -13,18 +13,18 @@ export class Builder {
   }
 
   public addMarkdown(markdown: string) {
-    this.root.children.push(...this.reader.toSpec(this.reader.fromLang(markdown)).children);
+    this.root.children.push(...this.reader.fromLang(markdown).children);
 
     return this;
   }
 
-  public addChild(node: MDAST.Node) {
+  public addChild(node: MDAST.Content) {
     this.root.children.push(node);
 
     return this;
   }
 
   public toString() {
-    return stringify(this.reader.fromSpec(this.root));
+    return stringify(this.root);
   }
 }

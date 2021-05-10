@@ -1,8 +1,22 @@
-import visit from 'unist-util-visit';
+import * as UNIST from 'unist';
+import { visit } from 'unist-util-visit';
 
-import { MDAST, SMDAST } from '../ast-types';
-import { CodeAnnotations } from '../ast-types/smdast';
+import { MDAST } from '../../ast-types';
 
+export function inlineCodeMdast2Hast() {
+  return function transform(root: MDAST.Root) {
+    visit<MDAST.InlineCode>(root, 'inlineCode', node => {
+      const data = node.data || (node.data = {});
+
+      // mark inline code blocks with a property so that we can distinguish during rendering later
+      data.hProperties = {
+        inline: 'true',
+      };
+    });
+  };
+}
+
+const highlightLinesRangeRegex = /{([\d,-]+)}/;
 const metaKeyValPairMatcher = /(\S+)\s*=\s*(\"?)([^"]*)(\2|\s|$)/g;
 function parseMeta(metastring?: string | null) {
   const props: Record<string, boolean | string> = {};
@@ -10,7 +24,6 @@ function parseMeta(metastring?: string | null) {
   if (!metastring) return props;
 
   let metaWithoutKeyValPairs = metastring;
-  // const keyValPairs = metastring.matchAll(metaKeyValPairMatcher);
   let keyValPair: RegExpExecArray | null;
   while ((keyValPair = metaKeyValPairMatcher.exec(metastring)) !== null) {
     props[keyValPair[1]] = keyValPair[3];
@@ -19,7 +32,10 @@ function parseMeta(metastring?: string | null) {
 
   const booleanProps = metaWithoutKeyValPairs.split(' ');
   for (const booleanProp of booleanProps) {
-    if (booleanProp) {
+    const highlightLinesMatch = booleanProp.match(highlightLinesRangeRegex);
+    if (highlightLinesMatch) {
+      props.highlightLines = highlightLinesMatch[1];
+    } else if (booleanProp) {
       props[booleanProp] = 'true';
     }
   }
@@ -27,15 +43,15 @@ function parseMeta(metastring?: string | null) {
   return props;
 }
 
-type Grouping = { codeGroup: SMDAST.ICodeGroup; parent: MDAST.Parent; startIndex: number; numCodeBlocks: number };
+type Grouping = { codeGroup: MDAST.CodeGroup; parent: MDAST.Parent; startIndex: number; numCodeBlocks: number };
 
-function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex: number, children: SMDAST.ICode[]) {
+function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex: number, children: MDAST.Code[]) {
   // if only one code block.. don't group
   if (children.length <= 1) return;
 
   const numCodeBlocks = children.length;
 
-  const codeGroup: SMDAST.ICodeGroup = {
+  const codeGroup: MDAST.CodeGroup = {
     type: 'codegroup',
     data: {
       hName: 'codegroup',
@@ -52,33 +68,35 @@ function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex:
 }
 
 export function smdCode() {
-  return function transform(root: MDAST.Node) {
-    let sequentialCodeBlocks: SMDAST.ICode[] = [];
+  return function transform(root: UNIST.Node) {
+    let sequentialCodeBlocks: MDAST.Code[] = [];
     let lastIndex = -1;
     let lastParent: MDAST.Parent | undefined;
 
     let groupings: Grouping[] = [];
 
-    visit<SMDAST.ICode>(root, 'code', (node, index, parent) => {
+    visit<MDAST.Code>(root, 'code', (node, index, parent) => {
       const { title: metaTitle, ...metaProps } = parseMeta(node.meta);
 
       /**
        * Annotation processing
        */
 
-      const annotations: CodeAnnotations = Object.assign({}, node.annotations, metaProps);
+      let annotations: MDAST.Code['annotations'] = Object.assign({}, metaProps, node.annotations);
       const title = annotations.title || (metaTitle as string | undefined);
-      if (title) annotations.title = title;
-      node.annotations = annotations;
-
-      if (node.meta) {
-        // babel will crap out if certain characters, like ", are not escaped
-        // don't need meta anymore
-        delete node.meta;
+      if (title) {
+        annotations = {
+          // title first
+          title,
+          ...annotations,
+        };
       }
+      node.annotations = annotations;
 
       const data = node.data || (node.data = {});
       data.hProperties = {
+        lang: node.lang,
+        meta: node.meta,
         ...((data.hProperties as any) || {}),
         ...node.annotations,
       };
@@ -89,13 +107,18 @@ export function smdCode() {
 
       // if it's a sequential code block with same parent, add it to the list to later group
       const lastCodeBlock = sequentialCodeBlocks[sequentialCodeBlocks.length - 1];
+      // @ts-expect-error
       if (!lastCodeBlock || (lastIndex === index - 1 && lastParent === parent)) {
+        // @ts-expect-error
         lastIndex = index;
+        // @ts-expect-error
         lastParent = parent;
         sequentialCodeBlocks.push(node);
       } else {
         addCodeGrouping(groupings, lastParent!, lastIndex, sequentialCodeBlocks);
+        // @ts-expect-error
         lastIndex = index;
+        // @ts-expect-error
         lastParent = parent;
         sequentialCodeBlocks = [node];
       }

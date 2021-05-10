@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import { join } from 'path';
-import * as Unist from 'unist';
 
+import { MDAST } from '../../ast-types';
 import { parse } from '../../parse';
 import { parseWithPointers } from '../../parseWithPointers';
 import { stringify } from '../../stringify';
@@ -21,17 +21,18 @@ describe('Frontmatter', () => {
   });
 
   it('should throw when invalid ast is provided', () => {
-    const node: Unist.Parent = {
+    const node: MDAST.Content = {
       type: 'paragraph',
       value: '',
       children: [],
     };
 
+    // @ts-expect-error expect typing error because providing invalid ast...
     expect(() => new Frontmatter(node)).toThrow();
   });
 
   describe('no frontmatter fixture', () => {
-    const fixture = '**welcome**\n~test~\n';
+    const fixture = '**welcome**\n~~test~~\n';
     it('should return undefined when trying to access properties', () => {
       const instance = new Frontmatter(fixture);
 
@@ -59,7 +60,7 @@ foo: 123
 ---
 
 **welcome**
-~test~
+~~test~~
 `);
       });
     });

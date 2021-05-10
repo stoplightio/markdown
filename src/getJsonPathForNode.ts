@@ -2,13 +2,13 @@ import { JsonPath } from '@stoplight/types';
 
 import { MDAST } from './ast-types';
 
-export const getJsonPathForNode = (root: MDAST.Parent, node: MDAST.Node): JsonPath | void => {
+export const getJsonPathForNode = (root: MDAST.Parent, node: MDAST.Content): JsonPath | void => {
   const path: JsonPath = [];
   findNode(root, node, path);
   return path;
 };
 
-function findNode(root: MDAST.Parent | MDAST.Node, node: MDAST.Node, path: JsonPath): MDAST.Node | undefined {
+function findNode(root: MDAST.Parent | MDAST.Content, node: MDAST.Content, path: JsonPath): MDAST.Content | undefined {
   if (node.position === undefined || root.position === undefined) return;
 
   if (

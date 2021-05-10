@@ -2,13 +2,13 @@ import { Dictionary } from '@stoplight/types';
 import { parse, safeStringify } from '@stoplight/yaml';
 import * as remarkStringify from 'remark-stringify';
 import * as unified from 'unified';
-import visit from 'unist-util-visit';
+import { visit, Visitor } from 'unist-util-visit';
 
-import { ICode } from '../ast-types/mdast';
+import { MDAST } from '../../ast-types';
 
-type Resolver = (node: ICode, data: Dictionary<unknown>) => Promise<object>;
+type Resolver = (node: MDAST.Code, data: Dictionary<unknown>) => Promise<object>;
 
-export default function (this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
+export default function resolve(this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
   const { Compiler } = this;
 
   if (Compiler !== void 0) {
@@ -24,7 +24,7 @@ export default function (this: unified.Processor, opts?: { resolver: Resolver })
   }
 }
 
-const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visit.Visitor<ICode> => node => {
+const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): Visitor<MDAST.Code> => node => {
   if (typeof node.value !== 'string') return;
   if (node.meta !== 'json_schema' && node.meta !== 'http') return;
 
@@ -44,8 +44,11 @@ const createVisitor = (resolver: Resolver, promises: Array<Promise<void>>): visi
 };
 
 function createCompiler(
+  // @ts-ignore
   fn: typeof remarkStringify.Compiler['prototype']['visitors']['code'],
+  // @ts-ignore
 ): typeof remarkStringify.Compiler['prototype']['visitors']['code'] {
+  // @ts-ignore
   return function (this: remarkStringify.Compiler, node, parent) {
     if (node.type === 'code' && 'resolved' in node && node.resolved !== null) {
       return fn.call(

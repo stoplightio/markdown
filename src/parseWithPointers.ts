@@ -1,16 +1,13 @@
-import { RemarkParseOptions } from 'remark-parse';
-import * as unified from 'unified';
+import type { VFileCompatible } from 'vfile';
 
-import { MDAST } from './ast-types';
-import { parse } from './parse';
+import { parse, ParseOptions } from './parse';
 import { MarkdownParserResult } from './types';
 
 export const parseWithPointers = (
-  value: string,
-  opts?: Partial<RemarkParseOptions>,
-  processor?: unified.Processor,
+  markdown: VFileCompatible,
+  opts: Partial<ParseOptions> = {},
 ): MarkdownParserResult => {
-  const tree = parse(value, opts, processor) as MDAST.Parent;
+  const tree = parse(markdown, opts);
   return {
     data: tree,
     diagnostics: [],

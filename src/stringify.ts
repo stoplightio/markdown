@@ -1,31 +1,51 @@
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkGFM from 'remark-gfm';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 
 import { MDAST } from './ast-types';
-import jiraBlocks from './plugins/jiraBlocks';
-import resolver from './plugins/resolver';
-import { fromSpec } from './reader/transformers/from-spec';
+import { blockquoteHandler, codeHandler, tabHandler, tabsHandler } from './plugins/stringify';
+// import resolver from './plugins/resolver';
 
-const frontmatter = require('remark-frontmatter');
+export type StringifySettings = RemarkStringifyOptions;
 
-const defaultOpts: Partial<RemarkStringifyOptions> = {
-  commonmark: true,
-  gfm: true,
-  listItemIndent: 'mixed', // this is needed to preserve the original indentation
+export type StringifyOptions = {
+  remarkPlugins?: unified.PluggableList<unified.Settings>;
+  settings?: StringifySettings;
 };
 
-const defaultProcessor = unified()
-  .use<RemarkStringifyOptions[]>(remarkStringify)
-  .use(jiraBlocks)
-  .use(frontmatter, ['yaml'])
-  // @ts-expect-error unified typing issue
-  .use(() => fromSpec)
-  .use(resolver);
+const remarkStringifyPreset: unified.Preset<StringifySettings> = {
+  plugins: [
+    [remarkFrontmatter, ['yaml']],
+    remarkGFM,
+    // resolver
+  ],
+  settings: {
+    bullet: '-',
+    emphasis: '_',
+    fences: true,
+    incrementListMarker: true,
+    listItemIndent: 'one',
+    rule: '-',
+    handlers: {
+      blockquote: blockquoteHandler,
+      code: codeHandler,
+      tabs: tabsHandler,
+      tab: tabHandler,
+    },
+  },
+};
+
+const defaultProcessor = unified().use(remarkStringify).use(remarkStringifyPreset);
 
 export const stringify = (
-  tree: MDAST.Node,
-  opts: Partial<RemarkStringifyOptions> = defaultOpts,
+  tree: MDAST.Root,
+  opts: Partial<StringifyOptions> = {},
   processor: unified.Processor = defaultProcessor,
 ) => {
-  return processor().data('settings', opts).stringify(tree);
+  const processorInstance = processor()
+    .data('settings', Object.assign({}, remarkStringifyPreset.settings, opts.settings))
+    .use(opts.remarkPlugins || []);
+
+  return processorInstance.stringify(processorInstance.runSync(tree));
 };

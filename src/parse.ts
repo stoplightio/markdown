@@ -1,52 +1,45 @@
-import frontmatter from 'remark-frontmatter';
-// @ts-expect-error
-import inlineLinks from 'remark-inline-links';
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkGFM from 'remark-gfm';
 import remarkParse, { RemarkParseOptions } from 'remark-parse';
 // @ts-expect-error
 import remarkSlug from 'remark-slug';
 import unified from 'unified';
+import type { VFileCompatible } from 'vfile';
 
 import { MDAST } from './ast-types';
-import { mergeHtml } from './plugins';
-import { smdCode } from './plugins/code';
-import jiraBlocks from './plugins/jiraBlocks';
-import stripJsProtocol from './plugins/stripJsProtocol';
-import { toSpec } from './reader/transformers/to-spec';
+import { blockquoteMdast2Hast, inlineCodeMdast2Hast, smdAnnotations, smdCode } from './plugins/run';
 
-const defaultOpts: Partial<RemarkParseOptions> = {
-  commonmark: true,
-  gfm: true,
+export type ParseSettings = RemarkParseOptions;
+
+export type ParseOptions = {
+  remarkPlugins?: unified.PluggableList<unified.Settings>;
+  settings?: ParseSettings;
 };
 
-export const remarkPreset = [
-  remarkParse,
-  jiraBlocks,
-  [frontmatter, ['yaml']],
-  () => toSpec,
-  smdCode,
-  remarkSlug,
-  [inlineLinks, { commonmark: true }],
-  mergeHtml,
-  stripJsProtocol,
-];
+export const remarkParsePreset: unified.Preset<ParseSettings> = {
+  plugins: [
+    [remarkFrontmatter, ['yaml']],
+    remarkGFM,
+    remarkSlug,
+    smdAnnotations,
+    smdCode,
+    inlineCodeMdast2Hast,
+    blockquoteMdast2Hast,
+  ],
+  settings: {},
+};
 
-// @ts-expect-error
-const defaultProcessor = unified().use<RemarkParseOptions[]>(remarkPreset);
+const defaultProcessor = unified().use(remarkParse).use(remarkParsePreset);
 
 export const parse = (
-  input: string,
-  opts: Partial<RemarkParseOptions> = defaultOpts,
+  markdown: VFileCompatible,
+  opts: Partial<ParseOptions> = {},
   processor: unified.Processor = defaultProcessor,
-): MDAST.IRoot => {
-  // return the parsed remark ast
-  return processor().data('settings', opts).parse(input) as MDAST.IRoot;
-};
+): MDAST.Root => {
+  const processorInstance = processor()
+    .data('settings', Object.assign({}, remarkParsePreset.settings, opts.settings))
+    .use(opts.remarkPlugins || []);
 
-export const run = (
-  input: string,
-  opts: Partial<RemarkParseOptions> = defaultOpts,
-  processor: unified.Processor = defaultProcessor,
-): MDAST.IRoot => {
   // return the parsed remark ast
-  return processor().runSync(parse(input, opts, processor)) as MDAST.IRoot;
+  return processorInstance.runSync(processorInstance.parse(markdown)) as MDAST.Root;
 };
