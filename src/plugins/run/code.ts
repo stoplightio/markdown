@@ -127,6 +127,10 @@ export function smdCode() {
         ...node.annotations,
       };
 
+      // MDX+babel 2.0.0-next.9 will crap out on unicode characters in meta. We don't really need meta, so delete it
+      // Can remove this if/when we switch to xdm + esbuild ecosystem
+      if (node.meta) delete node.meta;
+
       /**
        * Code groupings
        */
