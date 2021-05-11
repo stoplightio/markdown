@@ -17,13 +17,18 @@ import {
 } from './plugins/run';
 import { replaceThirdPartyBlocks } from './replaceThirdPartyBlocks';
 
-export type ParseSettings = RemarkParseOptions & {
-  resolver?: Resolver;
-};
+export type ParseSettings = RemarkParseOptions;
 
 export type ParseOptions = {
   remarkPlugins?: unified.PluggableList<unified.Settings>;
   settings?: ParseSettings;
+};
+
+export type AsyncParseOptions = {
+  remarkPlugins?: unified.PluggableList<unified.Settings>;
+  settings?: ParseSettings & {
+    resolver?: Resolver;
+  };
 };
 
 export const remarkParsePreset: unified.Preset<ParseSettings> = {
@@ -35,7 +40,6 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
     smdCode,
     inlineCodeMdast2Hast,
     blockquoteMdast2Hast,
-    resolveCodeBlocks,
   ],
   settings: {},
 };
@@ -55,4 +59,20 @@ export const parse = (
 
   // return the parsed remark ast
   return processorInstance.runSync(processorInstance.parse(markdown)) as MDAST.Root;
+};
+
+export const parseAsync = (
+  input: VFileCompatible,
+  opts: Partial<AsyncParseOptions> = {},
+  processor: unified.Processor = defaultProcessor,
+): Promise<MDAST.Root> => {
+  const markdown = replaceThirdPartyBlocks(input);
+
+  const processorInstance = processor()
+    .data('settings', Object.assign({}, remarkParsePreset.settings, opts.settings))
+    .use(resolveCodeBlocks, { resolver: opts.settings?.resolver })
+    .use(opts.remarkPlugins || []);
+
+  // return the parsed remark ast
+  return processorInstance.run(processorInstance.parse(markdown)) as Promise<MDAST.Root>;
 };

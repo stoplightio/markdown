@@ -1,39 +1,48 @@
 import { Dictionary } from '@stoplight/types';
 import { parse } from '@stoplight/yaml';
 import * as unified from 'unified';
-import { visit, Visitor } from 'unist-util-visit';
+import { Parent } from 'unist';
+import { visit } from 'unist-util-visit';
 
 import { MDAST } from '../../ast-types';
 
 export type Resolver = (node: MDAST.Code, data: Dictionary<unknown>) => Promise<object>;
 
-export function resolveCodeBlocks(this: unified.Processor, opts?: { resolver: Resolver }): unified.Transformer | void {
-  if (opts?.resolver) {
-    return async tree => {
-      const promises: Array<Promise<void>> = [];
-      visit(tree, 'code', createVisitor(opts.resolver, promises));
-      await Promise.all(promises);
-    };
-  }
-}
+export const resolveCodeBlocks: unified.Attacher<[{ resolver?: Resolver }]> = function (opts) {
+  const resolver = opts?.resolver;
+  if (!resolver) return;
 
-const createVisitor =
-  (resolver: Resolver, promises: Array<Promise<void>>): Visitor<MDAST.Code> =>
-  node => {
-    if (typeof node.value !== 'string') return;
-    if (!node.annotations?.jsonSchema && !node.annotations?.http) return;
+  return async function transformer(tree, _file) {
+    const codes: Array<{ node: MDAST.Code; index: number | null; parent: Parent | null }> = [];
+    const promises: Array<Promise<void>> = [];
 
-    try {
-      promises.push(
-        resolver(node, parse(node.value))
-          .then(resolved => {
-            node.resolved = resolved;
-          })
-          .catch(() => {
-            node.resolved = null;
-          }),
-      );
-    } catch {
-      node.resolved = null;
+    visit<MDAST.Code>(tree, 'code', (node, index, parent) => {
+      codes.push({ node, index, parent });
+    });
+
+    for (const { node } of codes) {
+      if (typeof node.value !== 'string') continue;
+      if (!node.annotations?.jsonSchema && !node.annotations?.http) continue;
+
+      try {
+        promises.push(
+          resolver(node, parse(node.value))
+            .then(resolved => {
+              node.resolved = resolved;
+            })
+            .catch(() => {
+              node.resolved = null;
+            }),
+        );
+      } catch {
+        node.resolved = null;
+      }
     }
+
+    if (promises.length) {
+      await Promise.all(promises);
+    }
+
+    return tree;
   };
+};

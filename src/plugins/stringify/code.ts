@@ -1,12 +1,27 @@
+import { safeStringify } from '@stoplight/yaml';
 import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import code from 'mdast-util-to-markdown/lib/handle/code';
 
-export const codeHandler: Handler = (node, _, context) => {
+export const codeHandler: Handler = function (node, _, context) {
   const { lang, meta: _meta, ...annotations } = (node.data?.hProperties || {}) as any;
 
-  const metaProps = [];
+  // if node has resolved prop we want to replace value with resolved value when stringifying
+  if (node.resolved) {
+    node.value =
+      node.lang === 'json' ? JSON.stringify(node.resolved, null, 2) : safeStringify(node.resolved, { indent: 2 });
+  }
 
+  const metaProps = computeMetaProps(annotations);
+  if (metaProps.length) {
+    node.meta = metaProps.join(' ');
+  }
+
+  return code(node, _, context);
+};
+
+function computeMetaProps(annotations: object) {
+  const metaProps = [];
   if (Object.keys(annotations).length) {
     for (const key in annotations) {
       const annotationVal = annotations[key];
@@ -48,9 +63,5 @@ export const codeHandler: Handler = (node, _, context) => {
     }
   }
 
-  if (metaProps.length) {
-    node.meta = metaProps.join(' ');
-  }
-
-  return code(node, _, context);
-};
+  return metaProps;
+}

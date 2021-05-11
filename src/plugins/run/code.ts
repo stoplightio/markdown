@@ -1,10 +1,10 @@
-import * as UNIST from 'unist';
+import * as unified from 'unified';
 import { visit } from 'unist-util-visit';
 
 import { MDAST } from '../../ast-types';
 
-export function inlineCodeMdast2Hast() {
-  return function transform(root: MDAST.Root) {
+export const inlineCodeMdast2Hast: unified.Attacher = function () {
+  return function transform(root) {
     visit<MDAST.InlineCode>(root, 'inlineCode', node => {
       const data = node.data || (node.data = {});
 
@@ -14,84 +14,10 @@ export function inlineCodeMdast2Hast() {
       };
     });
   };
-}
+};
 
-const highlightLinesRangeRegex = /{([\d,-]+)}/;
-const metaKeyValPairMatcher = /(\S+)\s*=\s*(\"?)([^"]*)(\2|\s|$)/g;
-function parseMeta(metastring?: string | null) {
-  const props: Record<string, boolean | string> = {};
-
-  if (!metastring) return props;
-
-  let metaWithoutKeyValPairs = metastring;
-  let keyValPair: RegExpExecArray | null;
-  while ((keyValPair = metaKeyValPairMatcher.exec(metastring)) !== null) {
-    props[keyValPair[1]] = keyValPair[3];
-    metaWithoutKeyValPairs = metaWithoutKeyValPairs.replace(keyValPair[0], '');
-  }
-
-  const booleanProps = metaWithoutKeyValPairs.split(' ');
-  for (const booleanProp of booleanProps) {
-    const highlightLinesMatch = booleanProp.match(highlightLinesRangeRegex);
-    if (highlightLinesMatch) {
-      props.highlightLines = highlightLinesMatch[1];
-    } else if (booleanProp) {
-      props[booleanProp] = 'true';
-    }
-  }
-
-  return props;
-}
-
-type Grouping = { codeGroup: MDAST.CodeGroup; parent: MDAST.Parent; startIndex: number; numCodeBlocks: number };
-
-function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex: number, children: MDAST.Code[]) {
-  // if only one code block.. don't group
-  if (children.length <= 1) return;
-
-  const numCodeBlocks = children.length;
-
-  const codeGroup: MDAST.CodeGroup = {
-    type: 'codegroup',
-    data: {
-      hName: 'codegroup',
-    },
-    children,
-  };
-
-  groupings.push({
-    codeGroup,
-    parent,
-    startIndex: lastIndex - (numCodeBlocks - 1),
-    numCodeBlocks,
-  });
-}
-
-function handleLegacyAnnotations(annotations: MDAST.Code['annotations']) {
-  if (!annotations) return;
-
-  if (annotations.hasOwnProperty('type')) {
-    // @ts-expect-error type is no longer part of the typings, it is deprecated
-    const type = annotations.type;
-    if (type === 'json_schema') {
-      annotations.jsonSchema = 'true';
-    } else {
-      annotations[type] = 'true';
-    }
-
-    // @ts-expect-error ditto above
-    delete annotations.type;
-  }
-
-  if (annotations.hasOwnProperty('json_schema')) {
-    annotations.jsonSchema = 'true';
-    // @ts-expect-error ditto above
-    delete annotations.json_schema;
-  }
-}
-
-export function smdCode() {
-  return function transform(root: UNIST.Node) {
+export const smdCode: unified.Attacher = function () {
+  return function transform(root) {
     let sequentialCodeBlocks: MDAST.Code[] = [];
     let lastIndex = -1;
     let lastParent: MDAST.Parent | undefined;
@@ -167,4 +93,82 @@ export function smdCode() {
       removed.set(group.parent, removeCount + group.numCodeBlocks - 1);
     }
   };
+};
+
+/**
+ * Internal helpers below
+ */
+
+const highlightLinesRangeRegex = /{([\d,-]+)}/;
+const metaKeyValPairMatcher = /(\S+)\s*=\s*(\"?)([^"]*)(\2|\s|$)/g;
+function parseMeta(metastring?: string | null) {
+  const props: Record<string, boolean | string> = {};
+
+  if (!metastring) return props;
+
+  let metaWithoutKeyValPairs = metastring;
+  let keyValPair: RegExpExecArray | null;
+  while ((keyValPair = metaKeyValPairMatcher.exec(metastring)) !== null) {
+    props[keyValPair[1]] = keyValPair[3];
+    metaWithoutKeyValPairs = metaWithoutKeyValPairs.replace(keyValPair[0], '');
+  }
+
+  const booleanProps = metaWithoutKeyValPairs.split(' ');
+  for (const booleanProp of booleanProps) {
+    const highlightLinesMatch = booleanProp.match(highlightLinesRangeRegex);
+    if (highlightLinesMatch) {
+      props.highlightLines = highlightLinesMatch[1];
+    } else if (booleanProp) {
+      props[booleanProp] = 'true';
+    }
+  }
+
+  return props;
+}
+
+type Grouping = { codeGroup: MDAST.CodeGroup; parent: MDAST.Parent; startIndex: number; numCodeBlocks: number };
+
+function addCodeGrouping(groupings: Grouping[], parent: MDAST.Parent, lastIndex: number, children: MDAST.Code[]) {
+  // if only one code block.. don't group
+  if (children.length <= 1) return;
+
+  const numCodeBlocks = children.length;
+
+  const codeGroup: MDAST.CodeGroup = {
+    type: 'codegroup',
+    data: {
+      hName: 'codegroup',
+    },
+    children,
+  };
+
+  groupings.push({
+    codeGroup,
+    parent,
+    startIndex: lastIndex - (numCodeBlocks - 1),
+    numCodeBlocks,
+  });
+}
+
+function handleLegacyAnnotations(annotations: MDAST.Code['annotations']) {
+  if (!annotations) return;
+
+  if (annotations.hasOwnProperty('type')) {
+    // @ts-expect-error type is no longer part of the typings, it is deprecated
+    const type = annotations.type;
+    if (type === 'json_schema') {
+      annotations.jsonSchema = 'true';
+    } else {
+      annotations[type] = 'true';
+    }
+
+    // @ts-expect-error ditto above
+    delete annotations.type;
+  }
+
+  if (annotations.hasOwnProperty('json_schema')) {
+    annotations.jsonSchema = 'true';
+    // @ts-expect-error ditto above
+    delete annotations.json_schema;
+  }
 }

@@ -4,7 +4,7 @@ import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 
 import { MDAST } from '../../../ast-types';
-import { parse } from '../../../parse';
+import { parse, parseAsync } from '../../../parse';
 import { stringify } from '../../../stringify';
 import { resolveCodeBlocks } from '../resolver';
 
@@ -214,20 +214,16 @@ definitions:
 
   describe('stringifying', () => {
     it('should dump original blocks', async () => {
-      const parsed = parse(fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8'));
-
-      const processor = await unified()
-        .use<RemarkStringifyOptions[]>(remarkStringify)
-        .use(resolveCodeBlocks, {
-          async resolver(node, data) {
+      const input = fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8');
+      const tree = await parseAsync(input, {
+        settings: {
+          resolver: async (node, data) => {
             return replaceRefs({ ...data });
           },
-        });
+        },
+      });
 
-      const tree = (await processor.run(parsed)) as MDAST.Root;
-
-      expect(processor.stringify(tree)).toEqual(stringify(tree));
-      expect(processor.stringify(tree)).toMatchInlineSnapshot(`
+      expect(stringify(tree)).toMatchInlineSnapshot(`
         "# My article with $refs
 
         The beginning of an awesome article...
@@ -236,10 +232,11 @@ definitions:
         type: object
         properties:
           user:
-            $ref: #/definitions/User
+            $ref: <replaced>
         definitions:
           User:
-            $ref: ../reference/models/user.v1.yaml
+            $ref: <replaced>
+
         \`\`\`
 
         ## HTTP Try It Out
@@ -253,7 +250,7 @@ definitions:
             \\"method\\": \\"get\\",
             \\"url\\": \\"https://next-api.stoplight.io/projects/45\\",
             \\"headers\\": {
-              \\"$ref\\": \\"#/foo\\"
+              \\"$ref\\": \\"<replaced>\\"
             },
             \\"query\\": {
               \\"page\\": 2
@@ -269,7 +266,7 @@ definitions:
           \\"type\\": \\"object\\",
           \\"properties\\": {
             \\"street\\": {
-              \\"$ref\\": \\"#/test\\"
+              \\"$ref\\": \\"<replaced>\\"
             }
           }
         }

@@ -1,12 +1,14 @@
 import { Dictionary } from '@stoplight/types';
 import { parse } from '@stoplight/yaml';
+import * as unified from 'unified';
 
 import { MDAST } from '../../ast-types';
 
 // When we have bandwidth, might make sense to look into the new lower level pattern made possible by micromark ecosystem
 // Example in the gfm plugin - https://github.com/remarkjs/remark-gfm/blob/main/index.js#L30-L32
-export function smdAnnotations() {
-  return function transform(root: MDAST.Root) {
+export const smdAnnotations: unified.Attacher = function () {
+  return function transform($root) {
+    const root = $root as MDAST.Root;
     const nodes = root.children;
 
     const processed: MDAST.Content[] = [];
@@ -124,7 +126,7 @@ export function smdAnnotations() {
       children: processed,
     };
   };
-}
+};
 
 function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | undefined): T | {} {
   if (!node || !node.value) {

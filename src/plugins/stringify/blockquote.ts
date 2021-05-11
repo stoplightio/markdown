@@ -3,7 +3,7 @@ import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import blockquote from 'mdast-util-to-markdown/lib/handle/blockquote';
 
-export const blockquoteHandler: Handler = (node, _, context) => {
+export const blockquoteHandler: Handler = function (node, _, context) {
   const annotations = (node.data?.hProperties || {}) as any;
 
   const value = blockquote(node, _, context);

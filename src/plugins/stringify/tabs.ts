@@ -3,7 +3,7 @@ import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import flow from 'mdast-util-to-markdown/lib/util/container-flow';
 
-export const tabsHandler: Handler = (node, _, context) => {
+export const tabsHandler: Handler = function (node, _, context) {
   const exit = context.enter('tabs');
   const value = flow(node, context);
   exit();
@@ -12,7 +12,7 @@ export const tabsHandler: Handler = (node, _, context) => {
 <!-- type: tab-end -->`;
 };
 
-export const tabHandler: Handler = (node, _, context) => {
+export const tabHandler: Handler = function (node, _, context) {
   const exit = context.enter('tab');
 
   const { type, ...annotations } = (node.data?.hProperties || {}) as any;

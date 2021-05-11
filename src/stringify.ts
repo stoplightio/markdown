@@ -5,7 +5,6 @@ import unified from 'unified';
 
 import { MDAST } from './ast-types';
 import { blockquoteHandler, codeGroupHandler, codeHandler, tabHandler, tabsHandler } from './plugins/stringify';
-// import resolver from './plugins/resolver';
 
 export type StringifySettings = RemarkStringifyOptions;
 
@@ -15,11 +14,7 @@ export type StringifyOptions = {
 };
 
 const remarkStringifyPreset: unified.Preset<StringifySettings> = {
-  plugins: [
-    [remarkFrontmatter, ['yaml']],
-    remarkGFM,
-    // resolver
-  ],
+  plugins: [[remarkFrontmatter, ['yaml']], remarkGFM],
   settings: {
     bullet: '-',
     emphasis: '_',
