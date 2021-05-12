@@ -35,7 +35,7 @@ export const smdAnnotations: unified.Attacher = function () {
     const entries = nodes.entries()[Symbol.iterator]();
     for (const [i, node] of entries) {
       // next node
-      const next = nodes[+i + 1] ? nodes[+i + 1] : null;
+      const next = nodes[i + 1] ?? null;
 
       // collect annotations, if this is an html node
       const anno = captureAnnotations(node);
