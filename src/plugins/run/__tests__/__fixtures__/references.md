@@ -2,7 +2,7 @@
 
 The beginning of an awesome article...
 
-```yaml json_schema
+```yaml jsonSchema
 type: object
 properties:
   user:
@@ -14,8 +14,8 @@ definitions:
 
 ## HTTP Try It Out
 
-A smd http try it out block is a smd code block with the `http` language tag. The contents of the code fence should
-be the http object to be rendered.
+A smd http try it out block is a smd code block with the `http` language tag. The contents of the code fence should be
+the http object to be rendered.
 
 ```json http
 {
@@ -34,7 +34,7 @@ be the http object to be rendered.
 
 ### Example response
 
-```json json_schema
+```json jsonSchema
 {
   "type": "object",
   "properties": {

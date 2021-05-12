@@ -19,16 +19,14 @@ yarn add @stoplight/markdown
 
 ### Usage
 
-#### Example `parseWithPointers`
-
-_Note: Unlike most of the other functions, parseWithPointers is not exported from root. You must import by name._
+#### Example `parse`
 
 ```ts
-import { parseWithPointers } from '@stoplight/markdown/parseWithPointers';
+import { parse } from '@stoplight/markdown';
 
-const result = parseWithPointers('**markdown**');
+const result = parse('**markdown**');
 
-console.log(result.data); // => the MDAST compliant tree
+console.log(result); // => the MDAST compliant tree
 ```
 
 ### Contributing

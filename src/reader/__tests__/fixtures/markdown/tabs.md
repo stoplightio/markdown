@@ -1,8 +1,8 @@
 ## Tabs
 
 <!--
-title: My First Tab
 type: tab
+title: My First Tab
 -->
 
 ### Content 1
@@ -11,14 +11,14 @@ type: tab
 
 Some text
 
-* one
-* two
-  * nested
-  * nested again
+- one
+- two
+  - nested
+  - nested again
 
 <!--
-title: My Second Tab
 type: tab
+title: My Second Tab
 -->
 
 ### Content 2

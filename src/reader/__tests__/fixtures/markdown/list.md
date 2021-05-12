@@ -43,17 +43,17 @@ It tests lists (duh).
 3. Third item
    a) First third sub-item
 
-* Tab
-  * Tab
-    * Tab
+- Tab
+  - Tab
+    - Tab
 
 Here's another:
 
 1. First
 2. Second:
-   * Fee
-   * Fie
-   * Foe
+   - Fee
+   - Fie
+   - Foe
 3. Third
 
 Same thing but with paragraphs:
@@ -62,9 +62,9 @@ Same thing but with paragraphs:
 
 2. Second:
 
-   * Fee
-   * Fie
-   * Foe
+   - Fee
+   - Fie
+   - Foe
 
 3. Third
 
@@ -77,29 +77,29 @@ Same thing but with paragraphs:
 
 ### Tight
 
-* First item
-* Second item
-* Third item
+- First item
+- Second item
+- Third item
 
 ### Loose
 
-* First item (loose)
+- First item (loose)
 
-* Second item (loose)
+- Second item (loose)
 
-* Third item (loose)
+- Third item (loose)
 
 ### Nested
 
-* First item
-  * First sub-item
-  * Second sub-item
-* Second item
-* Third item
-  * First third sub-item
-    * First third sub-sub-item
+- First item
+  - First sub-item
+  - Second sub-item
+- Second item
+- Third item
+  - First third sub-item
+    - First third sub-sub-item
 
 ### Checked
 
-* [ ] First un-checked item
-* [x] Second checked item
+- [ ] First un-checked item
+- [x] Second checked item

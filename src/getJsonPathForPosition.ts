@@ -1,6 +1,6 @@
 import { GetJsonPathForPosition, IPosition, JsonPath } from '@stoplight/types';
-import * as Unist from 'unist';
 
+import { MDAST } from './ast-types';
 import { MarkdownParserResult } from './types';
 
 export const getJsonPathForPosition: GetJsonPathForPosition<MarkdownParserResult> = ({ ast }, position) => {
@@ -9,7 +9,11 @@ export const getJsonPathForPosition: GetJsonPathForPosition<MarkdownParserResult
   return path;
 };
 
-function findNodeAtPosition(node: Unist.Node, position: IPosition, path: JsonPath): Unist.Node | undefined {
+function findNodeAtPosition(
+  node: MDAST.Parent | MDAST.Content,
+  position: IPosition,
+  path: JsonPath,
+): MDAST.Parent | MDAST.Content | undefined {
   if (position.line >= node.position!.start.line - 1 && position.line <= node.position!.end.line - 1) {
     const { children } = node;
     if (Array.isArray(children)) {

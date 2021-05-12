@@ -16,6 +16,6 @@ And a code block, wow
 
 Some generic text, followed by a thematic break...
 
-* * *
+---
 
 Some more generic text, after a break.

@@ -1,4 +1,4 @@
-export * from './ast-types/mdast';
+export * from './ast-types';
 export * from './frontmatter';
 export * from './getJsonPathForPosition';
 export * from './getLocationForJsonPath';

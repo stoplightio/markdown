@@ -1,16 +1,15 @@
-import { RemarkParseOptions } from 'remark-parse';
-import * as unified from 'unified';
-import * as Unist from 'unist';
+import unified from 'unified';
+import type { VFileCompatible } from 'vfile';
 
-import { parse } from './parse';
+import { parse, ParseOptions } from './parse';
 import { MarkdownParserResult } from './types';
 
 export const parseWithPointers = (
-  value: string,
-  opts?: Partial<RemarkParseOptions>,
+  input: VFileCompatible,
+  opts: Partial<ParseOptions> = {},
   processor?: unified.Processor,
 ): MarkdownParserResult => {
-  const tree = parse(value, opts, processor) as Unist.Parent;
+  const tree = parse(input, opts, processor);
   return {
     data: tree,
     diagnostics: [],

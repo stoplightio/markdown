@@ -1,6 +1,3 @@
-import * as fs from 'fs';
-import * as path from 'path';
-
 import { Builder } from '../builder';
 
 describe('Builder', () => {
@@ -16,18 +13,6 @@ describe('Builder', () => {
       const markdown = '**foo**\n\nwooo';
       b.addMarkdown(markdown);
       expect(b.toString()).toEqual(`${markdown}\n`);
-    });
-
-    it('correctly parses stoplight markdown tabs', () => {
-      expect(
-        new Builder().addMarkdown(fs.readFileSync(path.resolve(__dirname, './__fixtures__/tabs/raw.md'), 'utf-8')).root,
-      ).toEqual(JSON.parse(fs.readFileSync(path.resolve(__dirname, './__fixtures__/tabs/root.json'), 'utf-8')));
-    });
-
-    it('correctly parses stoplight flavored markdown', () => {
-      expect(
-        new Builder().addMarkdown(fs.readFileSync(path.resolve(__dirname, './__fixtures__/smd/raw.md'), 'utf-8')).root,
-      ).toEqual(JSON.parse(fs.readFileSync(path.resolve(__dirname, './__fixtures__/smd/root.json'), 'utf-8')));
     });
   });
 
