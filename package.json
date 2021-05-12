@@ -22,7 +22,7 @@
     "**/*"
   ],
   "engines": {
-    "node": ">=10.8"
+    "node": ">=12"
   },
   "scripts": {
     "build": "sl-scripts build",
