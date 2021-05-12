@@ -1,3 +1,4 @@
+import { Heading } from '../ast-types/mdast';
 import { Builder } from '../builder';
 
 describe('Builder', () => {
@@ -20,7 +21,7 @@ describe('Builder', () => {
     it('takes any Mdast child and places it under the root node', () => {
       const b = new Builder();
 
-      const node = {
+      const node: Heading = {
         type: 'heading',
         depth: 1,
         children: [
