@@ -6,11 +6,7 @@ module.exports = {
   preset: '@stoplight/scripts',
   testEnvironment: 'node',
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
-  globals: {
-    'ts-jest': {
-      tsconfig: {
-        allowJs: true,
-      },
-    },
+  transform: {
+    '^.+\\.[tj]sx?$': ['babel-jest', { cwd: __dirname, configFile: './babel-jest.config.json' }],
   },
 };
