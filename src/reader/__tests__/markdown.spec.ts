@@ -5,8 +5,7 @@ import { Reader as MdReader } from '../reader';
 const mdReader = new MdReader();
 
 describe('markdown-tests', () => {
-  let files = fs.readdirSync(`${__dirname}/fixtures/markdown`);
-  // files = [files[2]];
+  const files = fs.readdirSync(`${__dirname}/fixtures/markdown`);
   for (const name of files) {
     if (!name.endsWith('.md')) {
       continue;
@@ -20,13 +19,6 @@ describe('markdown-tests', () => {
 
       const fromLang = mdReader.fromLang(contents);
       const toLang = mdReader.toLang(fromLang);
-
-      // console.log('fromLang ****************');
-      // console.log(JSON.stringify(fromLang, null, 4));
-
-      // console.log(toLang.trim());
-      // console.log('**********************************');
-      // console.log(contents.trim());
 
       expect(toLang.trim()).toEqual(contents.trim());
     });

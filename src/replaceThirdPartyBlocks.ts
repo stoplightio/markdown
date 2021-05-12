@@ -10,9 +10,5 @@ const blockEnd = /\[\/block\][^\S\n]*(?=\n)/g;
  * Simple pre-process to replace them with code blocks, since they mean nothing in markdown anyways.
  */
 export const replaceThirdPartyBlocks = (input: VFileCompatible): VFileCompatible => {
-  let markdown = input.toString();
-
-  markdown = markdown.replace(blockStart, '```block_$1').replace(blockEnd, '```');
-
-  return markdown;
+  return input.toString().replace(blockStart, '```block_$1').replace(blockEnd, '```');
 };

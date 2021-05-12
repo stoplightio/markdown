@@ -14,7 +14,6 @@ export const smdAnnotations: unified.Attacher = function () {
     const processed: MDAST.Content[] = [];
 
     let inTab: boolean = false;
-    let skipNext: boolean = false;
 
     // temporary variable for storing current tabContainer
     let tabPlaceholder: MDAST.Tabs = {
@@ -33,17 +32,8 @@ export const smdAnnotations: unified.Attacher = function () {
       ],
     };
 
-    for (const i in nodes) {
-      if (!nodes[i]) continue;
-
-      if (skipNext) {
-        skipNext = false;
-        continue;
-      }
-
-      // this node
-      const node = nodes[i];
-
+    const entries = nodes.entries()[Symbol.iterator]();
+    for (const [i, node] of entries) {
       // next node
       const next = nodes[+i + 1] ? nodes[+i + 1] : null;
 
@@ -115,7 +105,7 @@ export const smdAnnotations: unified.Attacher = function () {
       } else if (Object.keys(anno).length > 0 && next) {
         // annotations apply to next node, process next node now and skip next iteration
         processed.push(processNode(next, anno));
-        skipNext = true;
+        entries.next();
       } else {
         processed.push(processNode(node));
       }
@@ -129,9 +119,7 @@ export const smdAnnotations: unified.Attacher = function () {
 };
 
 function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | undefined): T | {} {
-  if (!node || !node.value) {
-    return {};
-  }
+  if (!node?.value) return {};
 
   if (
     // @ts-expect-error
@@ -151,7 +139,7 @@ function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | und
     // load contents of annotation into yaml
     try {
       const contents = parse<T>(raw);
-      if (typeof contents === 'object') {
+      if (contents && typeof contents === 'object') {
         for (const key in contents) {
           if (typeof contents[key] === 'string') {
             // babel will crap out if certain characters, like ", are not escaped
@@ -164,6 +152,7 @@ function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | und
         return contents;
       }
     } catch (error) {
+      console.error(`Markdown.captureAnnotations parse YAML error: ${String(error)}`, error);
       // ignore invalid YAML
     }
   } else if (
@@ -179,7 +168,7 @@ function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | und
     // load contents of annotation into yaml
     try {
       const contents = parse<T>(raw);
-      if (typeof contents === 'object') {
+      if (contents && typeof contents === 'object') {
         // annotations must be objects, otherwise it's just a regular ol html comment
         return contents;
       }
