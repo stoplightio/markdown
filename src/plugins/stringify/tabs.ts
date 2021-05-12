@@ -23,7 +23,7 @@ export const tabHandler: Handler = function (node, _, context) {
 
   return `<!--
 type: tab
-${safeStringify(annotations).trim()}
+${safeStringify(annotations, { skipInvalid: true }).trim()}
 -->
 
 ${value}`;

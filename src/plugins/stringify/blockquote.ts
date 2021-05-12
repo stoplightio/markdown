@@ -9,7 +9,7 @@ export const blockquoteHandler: Handler = function (node, _, context) {
   const value = blockquote(node, _, context);
 
   if (Object.keys(annotations).length) {
-    return `<!-- ${safeStringify(annotations).trim()} -->
+    return `<!-- ${safeStringify(annotations, { skipInvalid: true }).trim()} -->
 
 ${value}`;
   } else {
