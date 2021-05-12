@@ -42,7 +42,7 @@
   "dependencies": {
     "@stoplight/types": "^12.3.0",
     "@stoplight/yaml": "^4.2.2",
-    "lodash": "^4.17.21",
+    "lodash-es": "^4.17.21",
     "mdast-util-to-string": "^3.1.0",
     "remark-frontmatter": "^3.0.0",
     "remark-gfm": "^1.0.0",
@@ -59,7 +59,7 @@
     "@stoplight/scripts": "~8.2.3",
     "@types/hast": "^2.3.1",
     "@types/jest": "^26.0.23",
-    "@types/lodash": "^4.14.168",
+    "@types/lodash-es": "^4.17.4",
     "@types/unist": "^2.0.3",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
