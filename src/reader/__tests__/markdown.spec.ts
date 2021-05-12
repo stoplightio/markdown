@@ -1,8 +1,11 @@
 import * as fs from 'fs';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 import { Reader as MdReader } from '../reader';
 
 const mdReader = new MdReader();
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 describe('markdown-tests', () => {
   const files = fs.readdirSync(`${__dirname}/fixtures/markdown`);

@@ -1,10 +1,12 @@
 import * as fs from 'fs';
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 
 import { Paragraph, Strong } from '../ast-types/mdast';
 import { getJsonPathForNode } from '../getJsonPathForNode';
 import { parseWithPointers } from '../parseWithPointers';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = join(__dirname, '../reader/__tests__/fixtures/markdown/');
 
 const basic = fs.readFileSync(join(FIXTURES_DIR, 'basic.md'), 'utf-8');
