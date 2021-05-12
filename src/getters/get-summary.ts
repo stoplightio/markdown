@@ -1,4 +1,4 @@
-import { truncate } from 'lodash-es';
+import { truncate } from 'lodash';
 
 import { MDAST } from '../ast-types';
 import { getProperty } from './get-property';
