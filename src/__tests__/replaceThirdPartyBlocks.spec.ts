@@ -1,12 +1,10 @@
 import * as fs from 'fs';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { performance } from 'perf_hooks';
-import { fileURLToPath } from 'url';
 
 import { parse } from '../parse';
 import { stringify } from '../stringify';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURES_DIR = join(__dirname, '__fixtures__/third-party-blocks/');
 const simple = fs.readFileSync(join(FIXTURES_DIR, 'simple.md'), 'utf-8');
 const complex = fs.readFileSync(join(FIXTURES_DIR, 'complex.md'), 'utf-8');

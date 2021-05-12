@@ -1,10 +1,16 @@
-export default {
+const esModules = ['unist-util-visit', 'unist-util-select', 'mdast-util-to-string', 'unist-util-is', 'zwitch'].join(
+  '|',
+);
+
+module.exports = {
+  preset: '@stoplight/scripts',
   testEnvironment: 'node',
-  preset: 'ts-jest/presets/default-esm',
+  transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   globals: {
     'ts-jest': {
-      useESM: true,
-      isolatedModules: true,
+      tsconfig: {
+        allowJs: true,
+      },
     },
   },
 };

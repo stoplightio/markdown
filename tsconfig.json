@@ -3,11 +3,9 @@
 
   // target all ts files
   "include": ["."],
-  "exclude": ["node_modules"],
   "compilerOptions": {
     "esModuleInterop": true,
-    "module": "ESNext",
-    "target": "es2017",
-    "importHelpers": false
+    "module": "ES2020",
+    "target": "es2017"
   }
 }

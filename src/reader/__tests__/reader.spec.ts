@@ -1,14 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import prettier from 'prettier';
 import html from 'remark-html';
 import unified from 'unified';
-import { fileURLToPath } from 'url';
 
 import { MDAST } from '../../ast-types';
 import { Reader } from '../reader';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const prettier = require('prettier');
 
 const prettyStringify = (input: MDAST.Root) => {
   const processor = unified().use([html]);

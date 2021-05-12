@@ -1,14 +1,12 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import prettier from 'prettier';
 import html from 'remark-html';
 import remarkParse from 'remark-parse';
 import unified from 'unified';
-import { fileURLToPath } from 'url';
 
 import { remarkParsePreset } from '../../../parse';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const prettier = require('prettier');
 
 const prettyParse = (input: string) => {
   return prettier.format(

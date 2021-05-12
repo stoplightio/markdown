@@ -1,14 +1,11 @@
 import * as fs from 'fs';
-import path, { join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 
 import { MDAST } from '../../ast-types';
 import { parse } from '../../parse';
 import { parseWithPointers } from '../../parseWithPointers';
 import { stringify } from '../../stringify';
 import { Frontmatter } from '../frontmatter';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const FIXTURES_DIR = join(__dirname, './fixtures');
 
