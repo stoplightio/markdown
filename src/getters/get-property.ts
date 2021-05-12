@@ -1,12 +1,11 @@
-import * as Unist from 'unist';
+import { toString } from 'mdast-util-to-string';
 import { select } from 'unist-util-select';
 
+import { MDAST } from '../ast-types';
 import { Frontmatter } from '../frontmatter';
 
-const toString = require('mdast-util-to-string');
-
 // Priority: yaml title, then first heading
-export const getProperty = (propName: string, element?: string, data?: Unist.Node) => {
+export const getProperty = (propName: string, element?: string, data?: MDAST.Root) => {
   let target: string | void | undefined;
 
   if (data) {

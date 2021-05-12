@@ -1,9 +1,8 @@
-import * as Unist from 'unist';
-
+import { MDAST } from '../ast-types';
 import { Frontmatter } from '../frontmatter';
 
 // Priority: yaml tags
-export const getTags = (data?: Unist.Node): string[] => {
+export const getTags = (data?: MDAST.Root): string[] => {
   const tags: string[] = [];
 
   if (data) {

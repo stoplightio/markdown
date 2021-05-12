@@ -1,11 +1,11 @@
 import { GetLocationForJsonPath, JsonPath } from '@stoplight/types';
 import { get as _get } from 'lodash';
-import * as Unist from 'unist';
 
+import { MDAST } from './ast-types';
 import { MarkdownParserResult } from './types';
 
 export const getLocationForJsonPath: GetLocationForJsonPath<MarkdownParserResult> = ({ ast }, path: JsonPath) => {
-  const data = path.length === 0 ? ast : (_get(ast, path) as Unist.Node | undefined);
+  const data = path.length === 0 ? ast : (_get(ast, path) as MDAST.Content | undefined);
   if (data === void 0) return;
 
   return {

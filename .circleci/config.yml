@@ -26,6 +26,7 @@ commands:
 jobs:
   # https://nodejs.org/en/about/releases/
   test_node_lts:
+    resource_class: large
     docker:
       - image: circleci/node:lts
     steps:
@@ -45,14 +46,8 @@ jobs:
           command: |
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
 
-  test_node_dubnium:
-    docker:
-      - image: circleci/node:dubnium
-    steps:
-      - checkout
-      - install_and_test
-
   test_node_latest:
+    resource_class: large
     docker:
       - image: circleci/node:latest
     steps:
@@ -60,6 +55,7 @@ jobs:
       - install_and_test
 
   release:
+    resource_class: large
     docker:
       - image: circleci/node:lts
     steps:
@@ -73,13 +69,13 @@ workflows:
   test_and_release:
     jobs:
       - test_node_lts
-      - test_node_dubnium
       - test_node_latest
       - release:
           filters:
             branches:
-              only: master
+              only:
+                - master
+                - beta
           requires:
             - test_node_lts
-            - test_node_dubnium
             - test_node_latest

@@ -3,9 +3,10 @@ import * as path from 'path';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
 
-import { parse } from '../../parse';
-import { stringify } from '../../stringify';
-import resolver from '../resolver';
+import { MDAST } from '../../../ast-types';
+import { parse, parseAsync } from '../../../parse';
+import { stringify } from '../../../stringify';
+import { resolveCodeBlocks } from '../resolver';
 
 function replaceRefs(obj: object) {
   for (const value of Object.values(obj)) {
@@ -22,12 +23,12 @@ function replaceRefs(obj: object) {
 
 describe('Resolver plugin', () => {
   describe('parsing', () => {
-    it('should resolve $refs for json_schema & http', async () => {
+    it('should resolve $refs for jsonSchema & http', async () => {
       const parsed = parse(fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8'));
 
       expect(
         await unified()
-          .use(resolver, {
+          .use(resolveCodeBlocks, {
             async resolver(node, data) {
               return replaceRefs({ ...data });
             },
@@ -42,10 +43,10 @@ describe('Resolver plugin', () => {
           expect.objectContaining({
             type: 'paragraph',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'yaml',
-            meta: 'json_schema',
+            meta: 'jsonSchema',
             value: `type: object
 properties:
   user:
@@ -66,15 +67,14 @@ definitions:
                 },
               },
             },
-            position: expect.any(Object),
-          },
+          }),
           expect.objectContaining({
             type: 'heading',
           }),
           expect.objectContaining({
             type: 'paragraph',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'json',
             meta: 'http',
@@ -102,15 +102,14 @@ definitions:
                 },
               },
             },
-            position: expect.any(Object),
-          },
+          }),
           expect.objectContaining({
             type: 'heading',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'json',
-            meta: 'json_schema',
+            meta: 'jsonSchema',
             resolved: {
               type: 'object',
               properties: {
@@ -127,8 +126,7 @@ definitions:
     }
   }
 }`,
-            position: expect.any(Object),
-          },
+          }),
         ],
         position: expect.any(Object),
       });
@@ -139,7 +137,7 @@ definitions:
 
       expect(
         await unified()
-          .use(resolver, {
+          .use(resolveCodeBlocks, {
             async resolver() {
               throw new Error('Cannot resolve');
             },
@@ -154,10 +152,10 @@ definitions:
           expect.objectContaining({
             type: 'paragraph',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'yaml',
-            meta: 'json_schema',
+            meta: 'jsonSchema',
             value: `type: object
 properties:
   user:
@@ -166,15 +164,14 @@ definitions:
   User:
     $ref: ../reference/models/user.v1.yaml`,
             resolved: null,
-            position: expect.any(Object),
-          },
+          }),
           expect.objectContaining({
             type: 'heading',
           }),
           expect.objectContaining({
             type: 'paragraph',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'json',
             meta: 'http',
@@ -191,15 +188,14 @@ definitions:
   }
 }`,
             resolved: null,
-            position: expect.any(Object),
-          },
+          }),
           expect.objectContaining({
             type: 'heading',
           }),
-          {
+          expect.objectContaining({
             type: 'code',
             lang: 'json',
-            meta: 'json_schema',
+            meta: 'jsonSchema',
             resolved: null,
             value: `{
   "type": "object",
@@ -209,8 +205,7 @@ definitions:
     }
   }
 }`,
-            position: expect.any(Object),
-          },
+          }),
         ],
         position: expect.any(Object),
       });
@@ -218,26 +213,22 @@ definitions:
   });
 
   describe('stringifying', () => {
-    it('should dump resolved blocks', async () => {
-      const parsed = parse(fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8'));
-
-      const processor = await unified()
-        .use<RemarkStringifyOptions[]>(remarkStringify)
-        .use(resolver, {
-          async resolver(node, data) {
+    it('should dump original blocks', async () => {
+      const input = fs.readFileSync(path.join(__dirname, '__fixtures__/references.md'), 'utf8');
+      const tree = await parseAsync(input, {
+        settings: {
+          resolver: async (node, data) => {
             return replaceRefs({ ...data });
           },
-        });
+        },
+      });
 
-      const tree = await processor.run(parsed);
-
-      expect(processor.stringify(tree)).toEqual(stringify(tree));
-      expect(processor.stringify(tree)).toMatchInlineSnapshot(`
+      expect(stringify(tree)).toMatchInlineSnapshot(`
         "# My article with $refs
 
         The beginning of an awesome article...
 
-        \`\`\`yaml json_schema
+        \`\`\`yaml jsonSchema
         type: object
         properties:
           user:
@@ -250,8 +241,8 @@ definitions:
 
         ## HTTP Try It Out
 
-        A smd http try it out block is a smd code block with the \`http\` language tag. The contents of the code fence should
-        be the http object to be rendered.
+        A smd http try it out block is a smd code block with the \`http\` language tag. The contents of the code fence should be
+        the http object to be rendered.
 
         \`\`\`json http
         {
@@ -270,7 +261,7 @@ definitions:
 
         ### Example response
 
-        \`\`\`json json_schema
+        \`\`\`json jsonSchema
         {
           \\"type\\": \\"object\\",
           \\"properties\\": {
@@ -289,13 +280,13 @@ definitions:
 
       const processor = await unified()
         .use<RemarkStringifyOptions[]>(remarkStringify)
-        .use(resolver, {
+        .use(resolveCodeBlocks, {
           async resolver() {
             throw new Error('Cannot resolve');
           },
         });
 
-      const tree = await processor.run(JSON.parse(JSON.stringify(parsed)));
+      const tree = (await processor.run(JSON.parse(JSON.stringify(parsed)))) as MDAST.Root;
 
       expect(processor.stringify(tree)).toEqual(stringify(tree));
       expect(processor.stringify(tree)).toEqual(

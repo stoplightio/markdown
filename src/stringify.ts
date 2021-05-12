@@ -1,28 +1,47 @@
+import remarkFrontmatter from 'remark-frontmatter';
+import remarkGFM from 'remark-gfm';
 import remarkStringify, { RemarkStringifyOptions } from 'remark-stringify';
 import unified from 'unified';
-import { Node } from 'unist';
 
-import jiraBlocks from './plugins/jiraBlocks';
-import resolver from './plugins/resolver';
+import { MDAST } from './ast-types';
+import { blockquoteHandler, codeGroupHandler, codeHandler, tabHandler, tabsHandler } from './plugins/stringify';
 
-const frontmatter = require('remark-frontmatter');
+export type StringifySettings = RemarkStringifyOptions;
 
-const defaultOpts: Partial<RemarkStringifyOptions> = {
-  commonmark: true,
-  gfm: true,
-  listItemIndent: 'mixed', // this is needed to preserve the original indentation
+export type StringifyOptions = {
+  remarkPlugins?: unified.PluggableList<unified.Settings>;
+  settings?: StringifySettings;
 };
 
-const defaultProcessor = unified()
-  .use<RemarkStringifyOptions[]>(remarkStringify)
-  .use(jiraBlocks)
-  .use(frontmatter, ['yaml'])
-  .use(resolver);
+const remarkStringifyPreset: unified.Preset<StringifySettings> = {
+  plugins: [[remarkFrontmatter, ['yaml']], remarkGFM],
+  settings: {
+    bullet: '-',
+    emphasis: '_',
+    fences: true,
+    incrementListMarker: true,
+    listItemIndent: 'one',
+    rule: '-',
+    handlers: {
+      blockquote: blockquoteHandler,
+      code: codeHandler,
+      tabs: tabsHandler,
+      tab: tabHandler,
+      codegroup: codeGroupHandler,
+    },
+  },
+};
+
+const defaultProcessor = unified().use(remarkStringify).use(remarkStringifyPreset);
 
 export const stringify = (
-  tree: Node,
-  opts: Partial<RemarkStringifyOptions> = defaultOpts,
+  tree: MDAST.Root,
+  opts: Partial<StringifyOptions> = {},
   processor: unified.Processor = defaultProcessor,
 ) => {
-  return processor().data('settings', opts).stringify(tree);
+  const processorInstance = processor()
+    .data('settings', Object.assign({}, remarkStringifyPreset.settings, opts.settings))
+    .use(opts.remarkPlugins || []);
+
+  return processorInstance.stringify(processorInstance.runSync(tree));
 };
