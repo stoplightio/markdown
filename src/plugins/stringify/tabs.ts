@@ -1,7 +1,9 @@
-import { safeStringify } from '@stoplight/yaml';
+import * as Yaml from '@stoplight/yaml';
 import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import flow from 'mdast-util-to-markdown/lib/util/container-flow';
+
+const { safeStringify } = Yaml;
 
 export const tabsHandler: Handler = function (node, _, context) {
   const exit = context.enter('tabs');
