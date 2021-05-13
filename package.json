@@ -61,8 +61,6 @@
     "@babel/core": "^7.14.0",
     "@babel/preset-env": "^7.14.1",
     "@babel/preset-typescript": "^7.13.0",
-    "@rollup/plugin-alias": "^3.1.2",
-    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@stoplight/eslint-config": "^2.0.0",
     "@stoplight/scripts": "^9.0.0",
