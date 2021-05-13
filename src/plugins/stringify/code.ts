@@ -1,7 +1,9 @@
-import { safeStringify } from '@stoplight/yaml';
+import * as Yaml from '@stoplight/yaml';
 import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import code from 'mdast-util-to-markdown/lib/handle/code';
+
+const { safeStringify } = Yaml;
 
 export const codeHandler: Handler = function (node, _, context) {
   const { lang, meta: _meta, ...annotations } = (node.data?.hProperties || {}) as any;

@@ -10,6 +10,8 @@
 
   "compilerOptions": {
     "outDir": "dist",
-    "esModuleInterop": true
+    "declarationDir": "dist",
+    "esModuleInterop": true,
+    "module": "ESNext"
   }
 }

@@ -1,8 +1,10 @@
 import { Dictionary } from '@stoplight/types';
-import { parse } from '@stoplight/yaml';
+import * as Yaml from '@stoplight/yaml';
 import * as unified from 'unified';
 
 import { MDAST } from '../../ast-types';
+
+const { parse } = Yaml;
 
 // When we have bandwidth, might make sense to look into the new lower level pattern made possible by micromark ecosystem
 // Example in the gfm plugin - https://github.com/remarkjs/remark-gfm/blob/main/index.js#L30-L32

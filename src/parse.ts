@@ -2,7 +2,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGFM from 'remark-gfm';
 import remarkParse, { RemarkParseOptions } from 'remark-parse';
 // @ts-expect-error
-import remarkSlug from 'remark-slug';
+// import remarkSlug from 'remark-slug';
 import unified from 'unified';
 import type { VFileCompatible } from 'vfile';
 

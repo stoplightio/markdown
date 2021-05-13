@@ -1,7 +1,9 @@
-import { truncate } from 'lodash';
+import * as _ from 'lodash';
 
 import { MDAST } from '../ast-types';
 import { getProperty } from './get-property';
+
+const { truncate } = _;
 
 export interface IGetSummaryOpts {
   truncate?: number;

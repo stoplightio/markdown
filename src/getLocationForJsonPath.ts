@@ -1,8 +1,10 @@
 import { GetLocationForJsonPath, JsonPath } from '@stoplight/types';
-import { get as _get } from 'lodash';
+import * as _ from 'lodash';
 
 import { MDAST } from './ast-types';
 import { MarkdownParserResult } from './types';
+
+const { get: _get } = _;
 
 export const getLocationForJsonPath: GetLocationForJsonPath<MarkdownParserResult> = ({ ast }, path: JsonPath) => {
   const data = path.length === 0 ? ast : (_get(ast, path) as MDAST.Content | undefined);

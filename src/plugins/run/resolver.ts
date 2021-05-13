@@ -1,10 +1,12 @@
 import { Dictionary } from '@stoplight/types';
-import { parse } from '@stoplight/yaml';
+import * as Yaml from '@stoplight/yaml';
 import * as unified from 'unified';
 import { Parent } from 'unist';
 import { visit } from 'unist-util-visit';
 
 import { MDAST } from '../../ast-types';
+
+const { parse } = Yaml;
 
 export type Resolver = (node: MDAST.Code, data: Dictionary<unknown>) => Promise<object>;
 

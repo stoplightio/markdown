@@ -1,7 +1,9 @@
-import { safeStringify } from '@stoplight/yaml';
+import * as Yaml from '@stoplight/yaml';
 import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import blockquote from 'mdast-util-to-markdown/lib/handle/blockquote';
+
+const { safeStringify } = Yaml;
 
 export const blockquoteHandler: Handler = function (node, _, context) {
   const annotations = (node.data?.hProperties || {}) as any;

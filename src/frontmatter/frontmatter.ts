@@ -1,11 +1,16 @@
-import { DiagnosticSeverity, IDiagnostic, Optional } from '@stoplight/types';
-import { parseWithPointers as parseYaml, safeStringify } from '@stoplight/yaml';
-import { get, pullAt, set, toPath, unset } from 'lodash';
+import { IDiagnostic, Optional } from '@stoplight/types';
+import * as types from '@stoplight/types';
+import * as Yaml from '@stoplight/yaml';
+import * as _ from 'lodash';
 
 import { MDAST } from '../ast-types';
 import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
+
+const { get, pullAt, set, toPath, unset } = _;
+const { parseWithPointers: parseYaml, safeStringify } = Yaml;
+const { DiagnosticSeverity } = types;
 
 const isError = ({ severity }: IDiagnostic) => severity === DiagnosticSeverity.Error;
 
