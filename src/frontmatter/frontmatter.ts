@@ -1,14 +1,17 @@
 import { IDiagnostic, Optional } from '@stoplight/types';
 import * as types from '@stoplight/types';
 import * as Yaml from '@stoplight/yaml';
-import * as _ from 'lodash';
+import _get from 'lodash/get';
+import _pullAt from 'lodash/pullAt';
+import _set from 'lodash/set';
+import _toPath from 'lodash/toPath';
+import _unset from 'lodash/unset';
 
 import { MDAST } from '../ast-types';
 import { parseWithPointers } from '../parseWithPointers';
 import { stringify } from '../stringify';
 import { IFrontmatter, PropertyPath } from './types';
 
-const { get, pullAt, set, toPath, unset } = _;
 const { parseWithPointers: parseYaml, safeStringify } = Yaml;
 const { DiagnosticSeverity } = types;
 
@@ -72,7 +75,7 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
 
   public get<V = unknown>(prop: PropertyPath): V | void {
     if (this.properties !== null) {
-      return get(this.properties, prop);
+      return _get(this.properties, prop);
     }
   }
 
@@ -81,24 +84,24 @@ export class Frontmatter<T extends object = any> implements IFrontmatter<T> {
       this.properties = {};
     }
 
-    set(this.properties, prop, value);
+    _set(this.properties, prop, value);
     this.updateDocument();
   }
 
   public unset(prop: PropertyPath) {
     if (this.properties !== null) {
-      const path = toPath(prop);
+      const path = _toPath(prop);
       const lastSegment = Number(path[path.length - 1]);
       if (!Number.isNaN(lastSegment)) {
         const baseObj = path.length > 1 ? this.get(path.slice(0, path.length - 1)) : this.getAll();
         if (Array.isArray(baseObj)) {
           if (baseObj.length < lastSegment) return;
-          pullAt(baseObj, lastSegment);
+          _pullAt(baseObj, lastSegment);
         } else {
-          unset(this.properties, prop);
+          _unset(this.properties, prop);
         }
       } else {
-        unset(this.properties, prop);
+        _unset(this.properties, prop);
       }
 
       this.updateDocument();

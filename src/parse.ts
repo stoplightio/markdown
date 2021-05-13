@@ -1,8 +1,6 @@
 import remarkFrontmatter from 'remark-frontmatter';
 import remarkGFM from 'remark-gfm';
 import remarkParse, { RemarkParseOptions } from 'remark-parse';
-// @ts-expect-error
-// import remarkSlug from 'remark-slug';
 import unified from 'unified';
 import type { VFileCompatible } from 'vfile';
 
@@ -12,6 +10,7 @@ import {
   inlineCodeMdast2Hast,
   resolveCodeBlocks,
   Resolver,
+  slug,
   smdAnnotations,
   smdCode,
 } from './plugins/run';
@@ -35,7 +34,7 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
   plugins: [
     [remarkFrontmatter, ['yaml']],
     remarkGFM,
-    remarkSlug,
+    slug,
     smdAnnotations,
     smdCode,
     inlineCodeMdast2Hast,

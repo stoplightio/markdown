@@ -6,7 +6,10 @@ const newConfig = config.slice().map(entry => ({ ...entry }));
 newConfig[0].external = [
   '@stoplight/types',
   '@stoplight/yaml',
-  /* mdast-util-to-markdown is CJS, can stay */ 'mdast-util-to-markdown',
+  'lodash',
+
+  // mdast-util-to-markdown is CJS, can stay
+  'mdast-util-to-markdown',
 ];
 newConfig[0].plugins.unshift(nodeResolve());
 

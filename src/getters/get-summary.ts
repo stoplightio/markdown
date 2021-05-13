@@ -1,9 +1,7 @@
-import * as _ from 'lodash';
+import _truncate from 'lodash/truncate';
 
 import { MDAST } from '../ast-types';
 import { getProperty } from './get-property';
-
-const { truncate } = _;
 
 export interface IGetSummaryOpts {
   truncate?: number;
@@ -15,7 +13,7 @@ export const getSummary = (data?: MDAST.Root, opts: IGetSummaryOpts = {}) => {
 
   if (summary && opts.truncate) {
     // +3 to account for ellipsis
-    summary = truncate(summary, { length: opts.truncate + 3 });
+    summary = _truncate(summary, { length: opts.truncate + 3 });
   }
 
   return summary;
