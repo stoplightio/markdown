@@ -1,11 +1,11 @@
 import { IDiagnostic, Optional } from '@stoplight/types';
 import * as types from '@stoplight/types';
 import * as Yaml from '@stoplight/yaml';
-import _get from 'lodash/get';
-import _pullAt from 'lodash/pullAt';
-import _set from 'lodash/set';
-import _toPath from 'lodash/toPath';
-import _unset from 'lodash/unset';
+import _get from 'lodash/get.js';
+import _pullAt from 'lodash/pullAt.js';
+import _set from 'lodash/set.js';
+import _toPath from 'lodash/toPath.js';
+import _unset from 'lodash/unset.js';
 
 import { MDAST } from '../ast-types';
 import { parseWithPointers } from '../parseWithPointers';

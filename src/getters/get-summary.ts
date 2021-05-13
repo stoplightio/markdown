@@ -1,4 +1,4 @@
-import _truncate from 'lodash/truncate';
+import _truncate from 'lodash/truncate.js';
 
 import { MDAST } from '../ast-types';
 import { getProperty } from './get-property';
