@@ -26,7 +26,7 @@ describe('getJsonPathForPosition', () => {
       ${4}  | ${2}      | ${['children', 2, 'children', 0, 'children', 0]}
       ${6}  | ${0}      | ${['children', 3]}
       ${7}  | ${6}      | ${['children', 3]}
-      ${10} | ${8}      | ${['children', 4, 'children', 0]}
+      ${10} | ${8}      | ${['children', 4]}
       ${18} | ${3}      | ${['children', 8]}
     `('should return proper json path for line $line and character $character', ({ line, character, path }) => {
       expect(getJsonPathForPosition(result, { line, character })).toEqual(path);

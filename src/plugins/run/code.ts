@@ -48,9 +48,8 @@ export const smdCode: unified.Attacher = function () {
       const data = node.data || (node.data = {});
       data.hProperties = {
         lang: node.lang,
-        meta: node.meta,
-        ...((data.hProperties as any) || {}),
         ...node.annotations,
+        ...((data.hProperties as any) || {}),
       };
 
       /**

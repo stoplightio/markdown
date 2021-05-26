@@ -8,7 +8,7 @@ newConfig[0].external = [
   '@stoplight/yaml',
   'lodash',
 
-  // mdast-util-to-markdown is CJS, can stay
+  // these are CJS, can stay
   'mdast-util-to-markdown',
 ];
 newConfig[0].plugins.unshift(nodeResolve());
