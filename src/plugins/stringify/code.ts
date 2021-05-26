@@ -65,5 +65,6 @@ function computeMetaProps(annotations: object) {
     }
   }
 
-  return metaProps;
+  // remove duplicate values
+  return [...new Set(metaProps)];
 }

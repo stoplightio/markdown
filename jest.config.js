@@ -1,6 +1,11 @@
-const esModules = ['unist-util-visit', 'unist-util-select', 'mdast-util-to-string', 'unist-util-is', 'zwitch'].join(
-  '|',
-);
+const esModules = [
+  'unist-util-visit',
+  'unist-util-select',
+  'mdast-util-to-string',
+  'unist-util-is',
+  'zwitch',
+  'hast-util-whitespace',
+].join('|');
 
 module.exports = {
   preset: '@stoplight/scripts',

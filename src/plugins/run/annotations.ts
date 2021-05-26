@@ -187,6 +187,10 @@ function processNode(node: MDAST.Content, annotations?: object): MDAST.Content {
     return {
       ...node,
       annotations,
+      data: {
+        ...(node.data || {}),
+        hProperties: annotations,
+      },
     };
   }
 

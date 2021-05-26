@@ -174,6 +174,12 @@ export interface Link extends Parent, Resource {
 
 export interface Image extends Node, Resource, Alternative {
   type: 'image';
+
+  // custom
+  annotations?: {
+    bg?: string;
+    focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left';
+  };
 }
 
 export interface LinkReference extends Parent, Reference {

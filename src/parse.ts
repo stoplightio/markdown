@@ -13,6 +13,7 @@ import {
   slug,
   smdAnnotations,
   smdCode,
+  unwrapImages,
 } from './plugins/run';
 import { replaceThirdPartyBlocks } from './replaceThirdPartyBlocks';
 
@@ -35,6 +36,7 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
     [remarkFrontmatter, ['yaml']],
     remarkGFM,
     slug,
+    unwrapImages,
     smdAnnotations,
     smdCode,
     inlineCodeMdast2Hast,

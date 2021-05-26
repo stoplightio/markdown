@@ -28,23 +28,12 @@ describe('code plugin', () => {
           <p>Starting paragraph.</p>
           <codegroup>
             <pre>
-              <code
-                class=\\"language-bash\\"
-                lang=\\"bash\\"
-                meta=\\"title=&#x22;title 1&#x22;\\"
-                title=\\"title 1\\"
-              >
+              <code class=\\"language-bash\\" lang=\\"bash\\" title=\\"title 1\\">
                 # my bash
               </code>
             </pre>
             <pre>
-              <code
-                class=\\"language-js\\"
-                lang=\\"js\\"
-                meta=\\"lineNumbers title=&#x22;title 2&#x22;\\"
-                title=\\"title 2\\"
-                lineNumbers=\\"true\\"
-              >
+              <code class=\\"language-js\\" lang=\\"js\\" title=\\"title 2\\" lineNumbers=\\"true\\">
                 var x = 'y';
               </code>
             </pre>
@@ -65,28 +54,22 @@ describe('code plugin', () => {
             <code
               class=\\"language-yaml\\"
               lang=\\"yaml\\"
-              meta=\\"title=&#x22;title 1&#x22;\\"
               title=\\"title 1\\"
               jsonSchema=\\"true\\"
+              type=\\"json_schema\\"
             >
               type: object
             </code>
           </pre>
           <p>With legacy json_schema snakecase tag in meta:</p>
           <pre>
-            <code
-              class=\\"language-json\\"
-              lang=\\"json\\"
-              meta=\\"json_schema title=&#x22;title 1&#x22;\\"
-              title=\\"title 1\\"
-              jsonSchema=\\"true\\"
-            >
+            <code class=\\"language-json\\" lang=\\"json\\" title=\\"title 1\\" jsonSchema=\\"true\\">
               type: object
             </code>
           </pre>
           <p>With legacy http annotation:</p>
           <pre>
-            <code class=\\"language-yaml\\" lang=\\"yaml\\" http=\\"true\\">
+            <code class=\\"language-yaml\\" lang=\\"yaml\\" http=\\"true\\" type=\\"http\\">
               method: get
             </code>
           </pre>
