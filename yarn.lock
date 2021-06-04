@@ -1684,10 +1684,10 @@
   resolved "https://registry.yarnpkg.com/@stoplight/ordered-object-literal/-/ordered-object-literal-1.0.2.tgz#2a88a5ebc8b68b54837ac9a9ae7b779cdd862062"
   integrity sha512-0ZMS/9sNU3kVo/6RF3eAv7MK9DY8WLjiVJB/tVyfF2lhr2R4kqh534jZ0PlrFB9CRXrdndzn1DbX6ihKZXft2w==
 
-"@stoplight/scripts@^9.0.1":
-  version "9.0.1"
-  resolved "https://registry.yarnpkg.com/@stoplight/scripts/-/scripts-9.0.1.tgz#4064d4a41e48e1e54cf716456c23535397d07bc2"
-  integrity sha512-EEJQPe3srOTYFvU5KUpC/IIG22JHzLJ47/vEVOMlumjQJP/8gafMPV4HUi5QGSvxCkYmEwKumWVrOHbd7jOvqA==
+"@stoplight/scripts@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@stoplight/scripts/-/scripts-9.0.2.tgz#38f545ab21b9c3e0cfdd4f14c2bcb051b235c285"
+  integrity sha512-eUJUmm2q0IPKE9JslAJwG6crLHF/hQTxcOKky2lyXhdT7INihcIPKbxLKwL8zf9iS5A+UE+jmKTWbqb9BgR1sw==
   dependencies:
     "@commitlint/cli" "8.3.5"
     "@commitlint/config-conventional" "8.3.4"
