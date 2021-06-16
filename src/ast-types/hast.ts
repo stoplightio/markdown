@@ -11,39 +11,43 @@ export interface Element extends HAST.Element {
   properties?: HAST.Properties;
 }
 
+export interface BlockquoteProperties {
+  theme?: ThemeType;
+}
+
 export interface Blockquote extends HAST.Element {
   tagName: 'blockquote';
 
-  properties?: {
-    theme: ThemeType;
-  } & HAST.Properties;
+  properties?: BlockquoteProperties & HAST.Properties;
+}
+
+export interface ImageProperties {
+  bg?: string;
+  focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left' | 'default' | 'false';
+  invertOnDark?: 'true' | 'false';
+  inline?: 'true' | 'false';
 }
 
 export interface Image extends HAST.Element {
   tagName: 'img';
+  properties?: ImageProperties & HAST.Properties;
+}
 
-  properties?: {
-    bg?: string;
-    focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left' | 'default' | 'false';
-    invertOnDark?: 'true' | 'false';
-    inline?: 'true' | 'false';
-  } & HAST.Properties;
+export interface CodeProperties {
+  title?: string;
+  lang?: string;
+  lineNumbers?: 'true' | 'false';
+  /** stringified json: string[] | string[][] */
+  highlightLines?: string;
+  inline?: 'true' | 'false';
+  live?: 'true' | 'false';
+  jsonSchema?: 'true' | 'false';
+  http?: 'true' | 'false';
 }
 
 export interface Code extends HAST.Element {
   tagName: 'code';
-
-  properties?: {
-    title?: string;
-    lang?: string;
-    lineNumbers?: 'true' | 'false';
-    /** stringified json: string[] | string[][] */
-    highlightLines?: string;
-    inline?: 'true' | 'false';
-    live?: 'true' | 'false';
-    jsonSchema?: 'true' | 'false';
-    http?: 'true' | 'false';
-  } & HAST.Properties;
+  properties?: CodeProperties & HAST.Properties;
 }
 
 export interface Tabs extends HAST.Element {
