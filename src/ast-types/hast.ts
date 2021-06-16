@@ -19,18 +19,30 @@ export interface Blockquote extends HAST.Element {
   } & HAST.Properties;
 }
 
+export interface Image extends HAST.Element {
+  tagName: 'img';
+
+  properties?: {
+    bg?: string;
+    focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left' | 'default' | 'false';
+    invertOnDark?: 'true' | 'false';
+    inline?: 'true' | 'false';
+  } & HAST.Properties;
+}
+
 export interface Code extends HAST.Element {
   tagName: 'code';
 
   properties?: {
     title?: string;
     lang?: string;
-    lineNumbers?: boolean;
-    highlightLines?: string[] | string[][];
-    inline?: boolean;
-    live?: boolean;
-    jsonSchema?: boolean;
-    http?: boolean;
+    lineNumbers?: 'true' | 'false';
+    /** stringified json: string[] | string[][] */
+    highlightLines?: string;
+    inline?: 'true' | 'false';
+    live?: 'true' | 'false';
+    jsonSchema?: 'true' | 'false';
+    http?: 'true' | 'false';
   } & HAST.Properties;
 }
 

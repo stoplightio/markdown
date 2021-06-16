@@ -122,7 +122,7 @@ export interface Code extends Literal {
     highlightLines?: string[] | string[][];
     inline?: boolean;
     live?: boolean;
-    jsonSchema?: boolean | 'true' | 'false';
+    jsonSchema?: boolean;
     http?: boolean;
   };
 }
@@ -178,7 +178,9 @@ export interface Image extends Node, Resource, Alternative {
   // custom
   annotations?: {
     bg?: string;
-    focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left';
+    focus?: 'top' | 'bottom' | 'center' | 'top-right' | 'top-left' | 'default' | false;
+    invertOnDark?: boolean;
+    inline?: boolean;
   };
 }
 

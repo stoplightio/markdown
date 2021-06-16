@@ -10,7 +10,10 @@ const prettier = require('prettier');
 
 const prettyParse = (input: string) => {
   return prettier.format(
-    `<>${unified().use(remarkParse).use(remarkParsePreset).use(html).processSync(input).contents}</>`,
+    `<>${
+      unified().use(remarkParse).use(remarkParsePreset).use(html, { closeSelfClosing: true }).processSync(input)
+        .contents
+    }</>`,
     {
       parser: 'babel',
     },

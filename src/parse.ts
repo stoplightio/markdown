@@ -8,6 +8,7 @@ import { MDAST } from './ast-types';
 import {
   blockquoteMdast2Hast,
   inlineCodeMdast2Hast,
+  inlineImages,
   resolveCodeBlocks,
   Resolver,
   slug,
@@ -39,6 +40,7 @@ export const remarkParsePreset: unified.Preset<ParseSettings> = {
     unwrapImages,
     smdAnnotations,
     smdCode,
+    inlineImages,
     inlineCodeMdast2Hast,
     blockquoteMdast2Hast,
   ],
