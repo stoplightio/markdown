@@ -36,6 +36,8 @@ function applicable(node: Parent, inLink?: boolean): boolean | null {
     const isWhitespace = whitespace(child);
     if (!isWhitespace) nonwhitespaceChildren++;
 
+    if (nonwhitespaceChildren > 1) return false;
+
     if (isWhitespace) {
       // White space is fine.
     } else if (child.type === 'image' || child.type === 'imageReference') {
@@ -54,8 +56,6 @@ function applicable(node: Parent, inLink?: boolean): boolean | null {
       return false;
     }
   }
-
-  if (nonwhitespaceChildren > 1) return false;
 
   return image;
 }
