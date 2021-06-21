@@ -65,7 +65,7 @@ export const smdAnnotations: unified.Attacher = function () {
           // set annotations if present
           if (Object.keys(anno).length > 0) {
             Object.assign(children[children.length - 1].data, {
-              hProperties: anno,
+              hProperties: normalizeAnnotationsForHast(anno),
             });
           }
 
@@ -189,10 +189,29 @@ function processNode(node: MDAST.Content, annotations?: object): MDAST.Content {
       annotations,
       data: {
         ...(node.data || {}),
-        hProperties: annotations,
+        hProperties: normalizeAnnotationsForHast(annotations),
       },
     };
   }
 
   return node;
+}
+
+// micromark ecosystem passes data through html, and then to react
+// HTML does not allow for boolean properties, so here we stringify boolean values so that they can pass through
+// the html layer
+export function normalizeAnnotationsForHast(annotations?: object) {
+  if (!annotations) return annotations;
+
+  const cleaned = {};
+  for (const key in annotations) {
+    const annotation = annotations[key];
+    if (typeof annotation === 'boolean') {
+      cleaned[key] = String(annotation);
+    } else {
+      cleaned[key] = annotation;
+    }
+  }
+
+  return cleaned;
 }

@@ -270,137 +270,138 @@ var x = true;
       const mdastTree = mdReader.fromLang(input);
 
       expect(prettyStringify(mdastTree)).toMatchInlineSnapshot(`
-        "<>
-          <h1 id=\\"stoplight-flavored-markdown-smd\\">
-            Stoplight Flavored Markdown (smd)
-          </h1>
-          <h3 id=\\"the-two-laws\\">The Two Laws</h3>
-          <ol>
-            <li>
-              smd is human readable. A human with a simple text editor can easily read
-              and comprehend smd.
-            </li>
-            <li>
-              smd degrades gracefully. An smd document rendered on{\\" \\"}
-              <code inline=\\"true\\">github.com</code> should be readable and clean.
-            </li>
-          </ol>
-          <h3 id=\\"the-approach\\">The Approach</h3>
-          <ol>
-            <li>
-              Stoplight flavored markdown extends github flavor markdown with inline
-              comment annotations.
-            </li>
-            <li>
-              The value inside of the annotations is a yaml object, and the annotation
-              affects the following markdown block.
-            </li>
-          </ol>
-          <p>
-            By leveraging comments to store annotations, Stoplight flavored markdown
-            degrades gracefully to any other markdown renderer (Github, for example).
-          </p>
-          <blockquote>
-            <p>
-              <a href=\\"https://github.com/mdx-js/mdx\\">MDX</a> is an interesting project
-              that might allow our users to add more interactivity to their docs, at the
-              cost of complexity (this is a more advanced use case). We would have to
-              figure out a way to introduce this WITHOUT impacting those users that do
-              not need the feature.
-            </p>
-          </blockquote>
-          <h2 id=\\"tabs\\">Tabs</h2>
-          <p>
-            A smd tab container is a <code inline=\\"true\\">tab</code> annotation, followed
-            by the tab content, and closed by a final <code inline=\\"true\\">tab-end</code>{\\" \\"}
-            annotation.
-          </p>
-          <p>Tab containers cannot be nested.</p>
-          <tabs>
-            <tab type=\\"tab\\" title=\\"My First Tab\\">
-              <p>The contents of tab 1.</p>
-            </tab>
-            <tab type=\\"tab\\" title=\\"My Second Tab\\">
-              <p>The contents of tab 2.</p>
-            </tab>
-          </tabs>
-          <h4 id=\\"markdown-sample\\">Markdown Sample</h4>
-          <pre>
-            <code class=\\"language-md\\" lang=\\"md\\">
-              &#x3C;!-- type: tab title: My First Tab --> The contents of tab 1.
-              &#x3C;!-- type: tab title: My Second Tab --> The contents of tab 2.
-              &#x3C;!-- type: tab-end -->
-            </code>
-          </pre>
-          <h2 id=\\"callouts\\">Callouts</h2>
-          <p>
-            A callout is a md block quote with an optional annotation that indicates
-            intent.
-          </p>
-          <blockquote theme=\\"danger\\">
-            <h3 id=\\"danger-will-robinson\\">Danger Will Robinson!</h3>
-            <p>Here is my danger callout!</p>
-          </blockquote>
-          <blockquote theme=\\"warning\\">
-            <h3 id=\\"watch-out\\">Watch Out!</h3>
-            <p>Here is my warning callout!</p>
-          </blockquote>
-          <blockquote theme=\\"success\\">
-            <h3 id=\\"mission-accomplished\\">Mission Accomplished!</h3>
-            <p>Here is my success callout!</p>
-          </blockquote>
-          <blockquote theme=\\"info\\">
-            <h3 id=\\"a-thing-to-know\\">A thing to know</h3>
-            <p>Here is my info callout</p>
-          </blockquote>
-          <h4 id=\\"markdown-sample-1\\">Markdown Sample</h4>
-          <pre>
-            <code class=\\"language-md\\" lang=\\"md\\">
-              &#x3C;!-- theme: danger --> > ### Danger Will Robinson! > > Here is my
-              danger callout! &#x3C;!-- theme: warning --> > ### Watch Out! > > Here is
-              my warning callout! &#x3C;!-- theme: success --> > ### Mission
-              Accomplished! > > Here is my success callout! &#x3C;!-- theme: info --> >
-              ### A thing to know > > Here is my info callout
-            </code>
-          </pre>
-          <h2 id=\\"code-blocks\\">Code Blocks</h2>
-          <p>
-            A smd code block is md code fence with an optional annotation to tweak the
-            presentation of the code block.
-          </p>
-          <pre>
-            <code
-              class=\\"language-bash\\"
-              lang=\\"bash\\"
-              title=\\"Fibonacci In Javascript\\"
-              highlightLines=\\"1,2 4,5\\"
-            >
-              # hello
-            </code>
-          </pre>
-          <h2 id=\\"raw-html\\">Raw HTML</h2>
-          <pre>
-            <code>&#x3C;div>Hello world!&#x3C;/div></code>
-          </pre>
-          <div>Hello world!</div>
-          <h2 id=\\"inline-links\\">Inline Links</h2>
-          <p>
-            <a href=\\"http://example.com\\" title=\\"Example Domain\\">
-              foo
-            </a>
-            ,{\\" \\"}
-            <a href=\\"http://example.com\\" title=\\"Example Domain\\">
-              foo
-            </a>
-            ,{\\" \\"}
-            <a href=\\"http://example.com\\" title=\\"Example Domain\\">
-              bar
-            </a>
-            .
-          </p>
-        </>;
-        "
-      `);
+"<>
+  <h1 id=\\"stoplight-flavored-markdown-smd\\">
+    Stoplight Flavored Markdown (smd)
+  </h1>
+  <h3 id=\\"the-two-laws\\">The Two Laws</h3>
+  <ol>
+    <li>
+      smd is human readable. A human with a simple text editor can easily read
+      and comprehend smd.
+    </li>
+    <li>
+      smd degrades gracefully. An smd document rendered on{\\" \\"}
+      <code inline=\\"true\\">github.com</code> should be readable and clean.
+    </li>
+  </ol>
+  <h3 id=\\"the-approach\\">The Approach</h3>
+  <ol>
+    <li>
+      Stoplight flavored markdown extends github flavor markdown with inline
+      comment annotations.
+    </li>
+    <li>
+      The value inside of the annotations is a yaml object, and the annotation
+      affects the following markdown block.
+    </li>
+  </ol>
+  <p>
+    By leveraging comments to store annotations, Stoplight flavored markdown
+    degrades gracefully to any other markdown renderer (Github, for example).
+  </p>
+  <blockquote>
+    <p>
+      <a href=\\"https://github.com/mdx-js/mdx\\">MDX</a> is an interesting project
+      that might allow our users to add more interactivity to their docs, at the
+      cost of complexity (this is a more advanced use case). We would have to
+      figure out a way to introduce this WITHOUT impacting those users that do
+      not need the feature.
+    </p>
+  </blockquote>
+  <h2 id=\\"tabs\\">Tabs</h2>
+  <p>
+    A smd tab container is a <code inline=\\"true\\">tab</code> annotation, followed
+    by the tab content, and closed by a final <code inline=\\"true\\">tab-end</code>{\\" \\"}
+    annotation.
+  </p>
+  <p>Tab containers cannot be nested.</p>
+  <tabs>
+    <tab type=\\"tab\\" title=\\"My First Tab\\">
+      <p>The contents of tab 1.</p>
+    </tab>
+    <tab type=\\"tab\\" title=\\"My Second Tab\\">
+      <p>The contents of tab 2.</p>
+    </tab>
+  </tabs>
+  <h4 id=\\"markdown-sample\\">Markdown Sample</h4>
+  <pre>
+    <code class=\\"language-md\\" lang=\\"md\\">
+      &#x3C;!-- type: tab title: My First Tab --> The contents of tab 1.
+      &#x3C;!-- type: tab title: My Second Tab --> The contents of tab 2.
+      &#x3C;!-- type: tab-end -->
+    </code>
+  </pre>
+  <h2 id=\\"callouts\\">Callouts</h2>
+  <p>
+    A callout is a md block quote with an optional annotation that indicates
+    intent.
+  </p>
+  <blockquote theme=\\"danger\\">
+    <h3 id=\\"danger-will-robinson\\">Danger Will Robinson!</h3>
+    <p>Here is my danger callout!</p>
+  </blockquote>
+  <blockquote theme=\\"warning\\">
+    <h3 id=\\"watch-out\\">Watch Out!</h3>
+    <p>Here is my warning callout!</p>
+  </blockquote>
+  <blockquote theme=\\"success\\">
+    <h3 id=\\"mission-accomplished\\">Mission Accomplished!</h3>
+    <p>Here is my success callout!</p>
+  </blockquote>
+  <blockquote theme=\\"info\\">
+    <h3 id=\\"a-thing-to-know\\">A thing to know</h3>
+    <p>Here is my info callout</p>
+  </blockquote>
+  <h4 id=\\"markdown-sample-1\\">Markdown Sample</h4>
+  <pre>
+    <code class=\\"language-md\\" lang=\\"md\\">
+      &#x3C;!-- theme: danger --> > ### Danger Will Robinson! > > Here is my
+      danger callout! &#x3C;!-- theme: warning --> > ### Watch Out! > > Here is
+      my warning callout! &#x3C;!-- theme: success --> > ### Mission
+      Accomplished! > > Here is my success callout! &#x3C;!-- theme: info --> >
+      ### A thing to know > > Here is my info callout
+    </code>
+  </pre>
+  <h2 id=\\"code-blocks\\">Code Blocks</h2>
+  <p>
+    A smd code block is md code fence with an optional annotation to tweak the
+    presentation of the code block.
+  </p>
+  <pre>
+    <code
+      class=\\"language-bash\\"
+      lang=\\"bash\\"
+      title=\\"Fibonacci In Javascript\\"
+      lineNumbers=\\"false\\"
+      highlightLines=\\"1,2 4,5\\"
+    >
+      # hello
+    </code>
+  </pre>
+  <h2 id=\\"raw-html\\">Raw HTML</h2>
+  <pre>
+    <code>&#x3C;div>Hello world!&#x3C;/div></code>
+  </pre>
+  <div>Hello world!</div>
+  <h2 id=\\"inline-links\\">Inline Links</h2>
+  <p>
+    <a href=\\"http://example.com\\" title=\\"Example Domain\\">
+      foo
+    </a>
+    ,{\\" \\"}
+    <a href=\\"http://example.com\\" title=\\"Example Domain\\">
+      foo
+    </a>
+    ,{\\" \\"}
+    <a href=\\"http://example.com\\" title=\\"Example Domain\\">
+      bar
+    </a>
+    .
+  </p>
+</>;
+"
+`);
     });
   });
 });
