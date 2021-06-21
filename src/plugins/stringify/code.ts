@@ -29,7 +29,7 @@ function computeMetaProps(annotations: object) {
       const annotationVal = annotations[key];
 
       if (typeof annotationVal === 'boolean' || annotationVal === 'true' || annotationVal === 'false') {
-        if (annotationVal || annotationVal === 'true') {
+        if (annotationVal && annotationVal !== 'false') {
           metaProps.push(key);
         }
 

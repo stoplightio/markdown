@@ -156,6 +156,7 @@ function handleLegacyAnnotations(annotations: MDAST.Code['annotations']) {
     // @ts-expect-error type is no longer part of the typings, it is deprecated
     const type = annotations.type;
     if (type === 'json_schema') {
+      // @ts-expect-error
       annotations.jsonSchema = 'true';
     } else {
       annotations[type] = 'true';
@@ -166,6 +167,7 @@ function handleLegacyAnnotations(annotations: MDAST.Code['annotations']) {
   }
 
   if (annotations.hasOwnProperty('json_schema')) {
+    // @ts-expect-error
     annotations.jsonSchema = 'true';
     // @ts-expect-error ditto above
     delete annotations.json_schema;
