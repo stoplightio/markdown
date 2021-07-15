@@ -3,6 +3,8 @@ import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import code from 'mdast-util-to-markdown/lib/handle/code';
 
+import { MDAST } from '../../ast-types';
+
 const { safeStringify } = Yaml;
 
 export const codeHandler: Handler = function (node, _, context) {
@@ -14,7 +16,7 @@ export const codeHandler: Handler = function (node, _, context) {
       node.lang === 'json' ? JSON.stringify(node.resolved, null, 2) : safeStringify(node.resolved, { indent: 2 });
   }
 
-  const metaProps = computeMetaProps(annotations);
+  const metaProps = computeMetaProps({ ...(node.annotations as MDAST.Code['annotations']), ...annotations });
   if (metaProps.length) {
     node.meta = metaProps.join(' ');
   }
