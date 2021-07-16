@@ -1,4 +1,5 @@
 export * from './ast-types';
+export * from './builder';
 export * from './frontmatter';
 export * from './getJsonPathForNode';
 export * from './getJsonPathForPosition';

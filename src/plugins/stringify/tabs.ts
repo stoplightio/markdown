@@ -3,6 +3,8 @@ import { Handler } from 'mdast-util-to-markdown';
 // @ts-expect-error
 import flow from 'mdast-util-to-markdown/lib/util/container-flow';
 
+import { MDAST } from '../../ast-types';
+
 const { safeStringify } = Yaml;
 
 export const tabsHandler: Handler = function (node, _, context) {
@@ -25,7 +27,7 @@ export const tabHandler: Handler = function (node, _, context) {
 
   return `<!--
 type: tab
-${safeStringify(annotations, { skipInvalid: true }).trim()}
+${safeStringify({ ...(node.annotations as MDAST.Tab['annotations']), ...annotations }, { skipInvalid: true }).trim()}
 -->
 
 ${value}`;

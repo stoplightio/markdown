@@ -232,6 +232,10 @@ export type TabsContent = Tab;
 
 export interface Tab extends Parent {
   type: 'tab';
+
+  annotations?: {
+    title?: String;
+  };
 }
 
 export interface CodeGroup extends Parent<Code> {
