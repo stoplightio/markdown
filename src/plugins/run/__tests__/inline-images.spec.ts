@@ -61,4 +61,34 @@ describe('inline-images plugin', () => {
 "
 `);
   });
+
+  it('should ignore whitespaces', () => {
+    const input = fs.readFileSync(path.join(__dirname, '__fixtures__/images/whitespaces.md'), 'utf8');
+
+    // let's make sure the document does indeed have the whitespaces.
+    // someone may remove them when running prettier, etc., you know.
+    expect(input).toContain('<!-- inline: true -->      ');
+    expect(input).toContain('<!-- type: tab -->  ');
+    expect(input).toContain('  <!-- type: tab-end -->      ');
+
+    expect(prettyParse(input)).toMatchInlineSnapshot(`
+"<>
+  <p>Image in a paragraph:</p>
+  <p inline=\\"true\\">
+    <img
+      src=\\"https://img.shields.io/badge/Buy%20us%20a%20tree-%F0%9F%8C%B3-lightgreen\\"
+      alt=\\"should have inline\\"
+      inline=\\"true\\"
+    />
+    .
+  </p>
+  <tabs>
+    <tab type=\\"tab\\">
+      <p>Tab paragraph two.</p>
+    </tab>
+  </tabs>
+</>;
+"
+`);
+  });
 });
