@@ -157,15 +157,9 @@ function captureAnnotations<T extends Dictionary<any>>(node: MDAST.Content | und
       console.error(`Markdown.captureAnnotations parse YAML error: ${String(error)}`, error);
       // ignore invalid YAML
     }
-  } else if (
-    node.type === 'html' &&
-    (node.value as string).startsWith('<!--') &&
-    (node.value as string).endsWith('-->')
-  ) {
+  } else if (node.type === 'html' && isHTMLComment(node.value)) {
     // remove comments and whitespace
-    const raw = (node.value as string)
-      .substr('<!--'.length, (node.value as string).length - '-->'.length - '<!--'.length)
-      .trim();
+    const raw = node.value.slice(node.value.indexOf('<!--') + 4, node.value.lastIndexOf('-->')).trim();
 
     // load contents of annotation into yaml
     try {
@@ -214,4 +208,12 @@ export function normalizeAnnotationsForHast(annotations?: object) {
   }
 
   return cleaned;
+}
+
+function isHTMLComment(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+
+  const trimmedValue = value.trim();
+
+  return trimmedValue.startsWith('<!--') && trimmedValue.endsWith('-->');
 }
