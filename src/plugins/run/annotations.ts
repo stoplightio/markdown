@@ -98,18 +98,24 @@ export const smdAnnotations: unified.Attacher = function () {
         }
       }
 
+      let root = processed;
+
       if (inTab) {
         // if we're in a tab, push this node as a child of the last tab
         const size = tabPlaceholder.children.length;
         if (tabPlaceholder.children[size - 1]) {
-          (tabPlaceholder.children[size - 1].children as MDAST.Content[]).push(processNode(node, anno));
+          root = tabPlaceholder.children[size - 1].children as MDAST.Content[];
+        } else {
+          continue;
         }
-      } else if (Object.keys(anno).length > 0 && next) {
+      }
+
+      if (Object.keys(anno).length > 0 && next) {
         // annotations apply to next node, process next node now and skip next iteration
-        processed.push(processNode(next, anno));
+        root.push(processNode(next, anno));
         entries.next();
       } else {
-        processed.push(processNode(node));
+        root.push(processNode(node));
       }
     }
 
