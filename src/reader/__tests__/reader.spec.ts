@@ -8,9 +8,10 @@ import { Reader } from '../reader';
 
 const prettier = require('prettier');
 
-const prettyStringify = (input: MDAST.Root) => {
+const prettyStringify = (input: MDAST.Root, parser: 'babel' | 'html' = 'babel') => {
   const processor = unified().use([html]);
-  return prettier.format(`<>${processor.stringify(processor.runSync(input))}</>`, { parser: 'babel' });
+  const output = processor.stringify(processor.runSync(input));
+  return prettier.format(parser === 'babel' ? `<>${output}</>` : output, { parser });
 };
 
 describe('Reader', () => {
@@ -262,6 +263,27 @@ var x = true;
         </>;
         "
       `);
+    });
+
+    it('should support annotations placed within tabs', () => {
+      const input = fs.readFileSync(path.join(__dirname, 'fixtures/tabs-with-images.md'), 'utf8');
+
+      const mdastTree = mdReader.fromLang(input);
+
+      expect(prettyStringify(mdastTree, 'html')).toMatchInlineSnapshot(`
+"<h1 id=\\"article-with-tabs-containing-embedded-annotations\\">
+  Article with tabs containing embedded annotations
+</h1>
+<tabs
+  ><tab type=\\"tab\\" title=\\"My Tab\\"
+    ><p>The contents of tab 1.</p>
+    <img
+      src=\\"https://i.imgur.com/YCb6MWI.png\\"
+      alt=\\"https://i.imgur.com/YCb6MWI.png\\"
+      focus=\\"center\\" /></tab
+></tabs>
+"
+`);
     });
 
     it('should support kitchen sink smd', () => {
