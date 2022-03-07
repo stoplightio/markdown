@@ -1,6 +1,7 @@
 import { Dictionary } from '@stoplight/types';
 import * as Yaml from '@stoplight/yaml';
 import * as unified from 'unified';
+import type { Node } from 'unist';
 
 import { MDAST } from '../../ast-types';
 
@@ -34,10 +35,15 @@ export const smdAnnotations: unified.Attacher = function () {
       ],
     };
 
-    const entries = nodes.entries()[Symbol.iterator]();
-    for (const [i, node] of entries) {
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+
+      if ('children' in node) {
+        node.children = transform(node).children;
+      }
+
       // next node
-      const next = nodes[i + 1] ?? null;
+      const [skipped, next] = getNextNode(nodes, i);
 
       // collect annotations, if this is an html node
       const anno = captureAnnotations(node);
@@ -113,7 +119,7 @@ export const smdAnnotations: unified.Attacher = function () {
       if (Object.keys(anno).length > 0 && next) {
         // annotations apply to next node, process next node now and skip next iteration
         root.push(processNode(next, anno));
-        entries.next();
+        i += skipped;
       } else {
         root.push(processNode(node));
       }
@@ -222,4 +228,20 @@ function isHTMLComment(value: unknown): value is string {
   const trimmedValue = value.trim();
 
   return trimmedValue.startsWith('<!--') && trimmedValue.endsWith('-->');
+}
+
+function isEmptyNode(node: Node) {
+  return node.type === 'text' && String(node.value).trim().length === 0;
+}
+
+function getNextNode(nodes: MDAST.Content[], pos: number): [skipped: number, nextNode: MDAST.Content | null] {
+  let next: MDAST.Content | null = null;
+  let i = pos + 1;
+
+  while (i < nodes.length && (next === null || isEmptyNode(next))) {
+    next = nodes[i];
+    i++;
+  }
+
+  return [i - pos - 1, next];
 }

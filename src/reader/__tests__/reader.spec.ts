@@ -286,6 +286,36 @@ var x = true;
 `);
     });
 
+    it('should support annotations placed within table cells', () => {
+      const input = fs.readFileSync(path.join(__dirname, 'fixtures/table-cell-with-annotations.md'), 'utf8');
+
+      const mdastTree = mdReader.fromLang(input);
+
+      expect(prettyStringify(mdastTree, 'html')).toMatchInlineSnapshot(`
+"<table>
+  <thead>
+    <tr>
+      <th>foo</th>
+      <th>bar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>baz</td>
+      <td>
+        <img
+          src=\\"https://i.imgur.com/ueOOL8X.png\\"
+          alt=\\"picture\\"
+          focus=\\"false\\"
+        />
+      </td>
+    </tr>
+  </tbody>
+</table>
+"
+`);
+    });
+
     it('should support kitchen sink smd', () => {
       const input = fs.readFileSync(path.join(__dirname, 'fixtures/smd.md'), 'utf8');
 
